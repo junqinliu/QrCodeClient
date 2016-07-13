@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">QrCode</string>
+
+    <!--toolbar常量声明-->
+    <string name="menu_search">search</string>
+    <string name="menu_notifications">notifications</string>
+    <string name="menu_settings">settings</string>
+    <string name="menu_about_us">about_us</string>
+    <string name="home_page">home_page</string>
+
+    <string name="icon">icon</string>
+
+    <!--tab title-->
+    <string name="life_title">生活</string>
+    <string name="card_title">获取微卡</string>
+    <string name="personal_title">我的</string>
+
+
+    <string name="send_card_title">给亲友微卡</string>
+    <string name="send_card_visit_address">来访地址 ：</string>
+    <string name="send_card_visitor_name">访客姓名 ：</string>
+    <string name="send_card_visitor_phone">手机号码 ：</string>
+    <string name="create_card">生成串门微卡</string>
+
+    <string name="developing">正  在  开  发</string>
+    <string name="develop_title">title</string>
+
+    <string name="log_title">往来日志</string>
+    <string name="message_title">我的消息</string>
+    <string name="mycell">我的小区</string>
+
+    <string name="my_entrance_guard">我的门禁</string>
+    <string name="access_control_application">门禁申请</string>
+    <string name="family_micro_card">家属微卡</string>
+    <string name="problem_feedback">问题反馈</string>
+    <string name="about_micro_card">关于微卡</string>
+    <string name="modify_password">修改密码</string>
+    <string name="exit_login">退出登录</string>
+
+
+    <string name="Information_announcement">信息公告</string>
+    <string name="equipment_warranty">设备保修</string>
+    <string name="home_service">家政服务</string>
+    <string name="community_service">社区服务</string>
+    <string name="service_complaint">服务投诉</string>
+
+    <string name="submit">提交</string>
+    <string name="address">地&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;址 ：</string>
+
+    <string name="search">搜索：</string>
+    <string name="province">省份：</string>
+    <string name="region">地区：</string>
+    <string name="County">县区：</string>
+    <string name="street">街道：</string>
+    <string name="village">小区：</string>
+    <string name="building_no">栋号：</string>
+    <string name="unit">单元：</string>
+    <string name="room_number">房号：</string>
+    <string name="mobile_phone">手机：</string>
+    <string name="full_name">姓名：</string>
+
+    <string name="upload_apply">提交申请</string>
+
+    <string name="original_password">原始密码：</string>
+    <string name="new_password">新&#160;&#160;密&#160;&#160;码：</string>
+    <string name="confirm_password">确认密码：</string>
+    <string name="preservation">保存</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+
+    <!--login-->
+    <string name="intput_psw">1234567890.,zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP</string>
+    <string name="register_title">注册</string>
+    <string name="forget_pwd_title">忘记密码</string>
+    <string name="forget_pwd_title_next">下一步</string>
+
+</resources>

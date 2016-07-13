@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray_line">
+
+    <include
+        android:id="@+id/layout"
+        layout="@layout/header_toolbar"/>
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/announcement"-->
+        <!--style="@style/Personal_Item"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="@string/Information_announcement" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/blue_line"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_stroke_gray_background">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@mipmap/gonggao"/>
+        <TextView
+            android:id="@+id/announcement"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black_text"
+            android:textSize="17sp"
+            android:text="@string/Information_announcement" />
+    </LinearLayout>
+
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/warranty"-->
+        <!--style="@style/Personal_Item"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="@string/equipment_warranty" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/blue_line"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_stroke_gray_background">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@mipmap/shebeibaoxiu"/>
+        <TextView
+            android:id="@+id/warranty"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black_text"
+            android:textSize="17sp"
+            android:text="@string/equipment_warranty" />
+    </LinearLayout>
+
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/home_service"-->
+        <!--style="@style/Personal_Item"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="@string/home_service" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/blue_line"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_stroke_gray_background">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@mipmap/jiazhengfuwu"/>
+        <TextView
+            android:id="@+id/home_service"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black_text"
+            android:textSize="17sp"
+            android:text="@string/home_service" />
+    </LinearLayout>
+
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/community_service"-->
+        <!--style="@style/Personal_Item"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="@string/community_service" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/blue_line"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_stroke_gray_background">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@mipmap/shequfuwu"/>
+        <TextView
+            android:id="@+id/community_service"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black_text"
+            android:textSize="17sp"
+            android:text="@string/community_service" />
+    </LinearLayout>
+
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/service_complaint"-->
+        <!--style="@style/Personal_Item"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="@string/service_complaint" />-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/blue_line"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_stroke_gray_background">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@mipmap/fuwutousu"/>
+        <TextView
+            android:id="@+id/service_complaint"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black_text"
+            android:textSize="17sp"
+            android:text="@string/service_complaint" />
+    </LinearLayout>
+
+</LinearLayout>

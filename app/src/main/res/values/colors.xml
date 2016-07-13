@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="back">#000000</color>
+
+
+    <!--灰色字体颜色-->
+    <color name="gray_text">#9B9B9B</color>
+    <!--黑色字体颜色-->
+    <color name="black_text">#000000</color>
+    <!--灰色的背景颜色-->
+    <color name="gray_background">#F2F2F2</color>
+
+    <!--浅黑色色的背景颜色-->
+    <color name="liner_background">#2B2B2B</color>
+    <!--灰色分割线-->
+    <color name="gray_line">#cccccc</color>
+    <!--浅蓝色色分割线-->
+    <color name="blue_line">#c8ffff</color>
+    <!--浅蓝色色分割线-->
+    <color name="green_background">#00CD00</color>
+    <!---->
+    <color name="list_select">#F2F2F2</color>
+    <color name="list_divider">#cccccc</color>
+</resources>

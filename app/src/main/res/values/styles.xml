@@ -1,0 +1,198 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionOverflowMenuStyle">@style/AppTheme.PopupOverlay</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="overlapAnchor">false</item>
+        <item name="android:popupBackground">?attr/colorPrimary</item>
+        <item name="android:dropDownVerticalOffset">5dip</item>
+    </style>
+
+    <!--toolbar 主题样式-->
+    <style name="AppThemeToolbar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="actionMenuTextColor">#ffffff</item>
+        <!--设置toolbar中menu按钮的颜色-->
+        <item name="colorControlNormal">#ffffff</item>
+        <!--按钮选中或者点击获得焦点后的颜色-->
+        <item name="colorAccent">#ffffff</item>
+        <!--Button按钮正常状态颜色-->
+        <item name="colorButtonNormal">@color/accent_material_light</item>
+        <!--EditText 输入框中字体的颜色-->
+        <item name="editTextColor">#ffffff</item>
+        <!--OverflowMenuStyle 弹出框样式-->
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
+
+
+    </style>
+
+    <!--OverflowMenuStyle 弹出框样式-->
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
+        <!--false表示弹出框在toolbar的下面 true 则表示覆盖toolbar-->
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownWidth">wrap_content</item>
+        <item name="android:paddingRight">5dp</item>
+        <item name="android:dropDownVerticalOffset">4dip</item>
+        <item name="android:dropDownHorizontalOffset">0dip</item>
+        <!--弹出框的背景颜色-->
+        <item name="android:popupBackground">@color/colorPrimary</item>
+
+    </style>
+
+    <!--life item的字体样式-->
+    <style name="life_item_name">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <!--给亲友微卡 每一行布局的样式-->
+    <style name="send_card_linear">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:background">@drawable/shape_stroke_gray_bottom</item>
+    </style>
+    <!--给亲友微卡 输入框的样式-->
+    <style name="send_card_linear_edit">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/shape_stroke_radius_gray</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="send_card_Linear_Left">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!--正在开发中-->
+    <style name="developing_text">
+        <item name="android:padding">10dp</item>
+        <item name="android:background">@drawable/shape_stroke_radius_light_black</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+    <!--给亲友微卡界面的样式-->
+    <style name="Send_card_invitee">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+    <style name="Send_card_time">
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <!--我的消息界面的样式-->
+    <style name="Message_msg_type">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+    <style name="Message_msg_time">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="Message_msg_content">
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <!--我的界面的样式-->
+    <style name="Personal_Item">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/shape_stroke_gray_background</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <!--服务投诉-->
+    <style name="Cell_Complaint_edit">
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">start</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/shape_stroke_gray</item>
+    </style>
+    <style name="Cell_Complaint_btn">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/shape_stroke_radius_gray</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+    <!--设备维修-->
+    <style name="Cell_Warranty_Edit">
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">start</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/shape_stroke_gray</item>
+    </style>
+    <style name="Cell_Warranty_Btn">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/shape_stroke_radius_gray</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+    <style name="Cell_Warranty_Linear">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:background">@drawable/shape_stroke_gray_bottom</item>
+    </style>
+    <style name="Cell_Warranty_Linear_Edit">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/shape_stroke_radius_gray</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="Cell_Warranty_Linear_Left">
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!--问题反馈-->
+    <style name="Problem_Feed_Back_Edit">
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:gravity">start</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/shape_stroke_gray</item>
+    </style>
+    <style name="Problem_Feed_Back_Btn">
+        <item name="android:textColor">@color/black_text</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/shape_stroke_radius_gray</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+
+    <!-- 通用提示弹出框 -->
+    <style name="PromptDialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+
+    </resources>

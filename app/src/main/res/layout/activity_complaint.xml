@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/layout"
+        layout="@layout/header_toolbar"/>
+
+    <EditText
+        android:id="@+id/editText2"
+        style="@style/Cell_Complaint_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/gray_background"
+        android:minLines="5"
+        android:hint="请输入具体原因"/>
+
+    <Button
+        android:id="@+id/button2"
+        style="@style/Cell_Complaint_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/green_background"
+        android:text="@string/submit" />
+</LinearLayout>

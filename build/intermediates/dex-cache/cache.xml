@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\libs\ShareSDK-Core-2.7.3.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d90e081f60d97b39fbb688a3043e0dc227111ed6">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\ShareSDK-Core-2.7.3-6d889bd1070a2c84cca55a8d6968659af2edd49f.jar" />
+    </item>
+    <item
+        jar="C:\Users\liujunfeng\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\library-2.4.0-e3693897bb2e0ea5dd156194316e5b85999f14a1.jar" />
+    </item>
+    <item
+        jar="E:\tools\sdk\extras\android\m2repository\com\android\support\support-annotations\23.1.1\support-annotations-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8d680ba5a623724d1fb0e81c36a790f023a6cede">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\support-annotations-23.1.1-771079c9a870eab8cf20a6e8e09da1b1b8329b09.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6cbc7773921fcfedbe55657578f0cbfe614778dc">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\classes-5d1dae32f0ab35be30e98ceb62a2ade0b8a2033f.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\exploded-aar\com.android.support\design\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="379471b2bd17d9737c050345c08e8c7d16589784">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\classes-fe748198f4a0c1e6be4746c95a410a138b00fcc9.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="09c5e804bc67fc0580360043dff067df574a60d4">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\classes-c8222d07ef92939abfd35abc6d69b5eb474eb714.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\libs\ShareSDK-ShortMessage-2.7.3.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="90b10269c21942198260d74af086e578cf041d33">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\ShareSDK-ShortMessage-2.7.3-ea986177d2ede066af5e419ad7ba4d8277758f1a.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\libs\ShareSDK-QQ-2.7.3.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a1d89d2a66ec81307ae99a2a4ee0d7b11f75cb5b">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\ShareSDK-QQ-2.7.3-56b2e21cdd013300ee042212937d6749438b68c1.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\exploded-aar\QrCodeClient\model\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5d94286795b78a3cdd52ce95a5053d224284fd5a">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\classes-5eed5c24d0ab26555e83f9d80822811351afee7a.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\libs\ShareSDK-Wechat-2.7.3.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="b2bbbb5075adb434d125f3ac1d412129f0ab346e">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\ShareSDK-Wechat-2.7.3-01ea26055af836760a86f9d0d18f113d6ca550e5.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\exploded-aar\SMSSDKGUI-2.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="aec4cb4a1b3dbec3206cd9069569b8fa6db9974d">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\classes-7d708dea52c834d2f3bde3bb8e31fbefd2d5ce13.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="5c5699834e9722f1c288fea2de82725d078ba127">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\classes-43c907743ab695810eb7f8ae39c2c6bd5b3f3d50.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\libs\ShareSDK-Wechat-Core-2.7.3.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="6dfb6daefbe903a246e83032045501ab329701a8">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\ShareSDK-Wechat-Core-2.7.3-f5989c8a25a6298c5ceeae999c07bed4c0ade8c7.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.1.1\jars\libs\internal_impl-23.1.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="a4de9c81ae239414e1ed0f86441b02abaf29bca9">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\internal_impl-23.1.1-92317c70e43f67a32848589eac0a786a41e32666.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\exploded-aar\com.flyco.banner\FlycoBanner_Lib\2.0.2\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="8abec14cc3c220031c099b75078b3e3198cbdd65">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\classes-65b3844d834bba496c96055c3dee3e79b51758db.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\libs\MobCommons-2016.0624.1326.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="57eee6c3e8bab2ed4b9a585a7f590808d6518573">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\MobCommons-2016.0624.1326-a28c392da3f628b5d9d14b126bc9fb7255dd8902.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\libs\MobTools-2016.0624.1326.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="3c1d0c1670293a30fc29f2ed8ba33e0a6f9821fe">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\MobTools-2016.0624.1326-e0b8f670ba7f6ada27404809ad50ac76dc6d8afa.jar" />
+    </item>
+    <item
+        jar="C:\Users\liujunfeng\.gradle\caches\modules-2\files-2.1\com.github.bumptech.glide\glide\3.6.1\86b122e640af09b0723e1fa44083c354ba6d9089\glide-3.6.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="86b122e640af09b0723e1fa44083c354ba6d9089">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\glide-3.6.1-530ab2e9c058665d6cfe69f681172e7243cbdbbd.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\exploded-aar\SMSSDK-2.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="b7c2f2f380231573589af4e87e5d10a4c517c006">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\classes-96d44023882498d7a421ea03de003d390d6e52fb.jar" />
+    </item>
+    <item
+        jar="E:\TecherXM\app-prj\QrCodeClient\app\libs\zxing.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="e88c14e6e7daa0fa65172a62b54ee6a16ff4162d">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\zxing-b7994121cbb633f3e637b58168d72066c28f2ad4.jar" />
+    </item>
+    <item
+        jar="C:\Users\liujunfeng\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife\7.0.1\d5d13ea991eab0252e3710e5df3d6a9d4b21d461\butterknife-7.0.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
+        <dex dex="E:\TecherXM\app-prj\QrCodeClient\app\build\intermediates\pre-dexed\debug\butterknife-7.0.1-b78e9c46b568e8fade6b63ca2298d55c6cebdd6c.jar" />
+    </item>
+
+</items>
