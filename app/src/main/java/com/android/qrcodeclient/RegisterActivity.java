@@ -15,8 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.base.BaseAppCompatActivity;
+import com.android.constant.Constants;
+import com.android.utils.HttpUtil;
 import com.android.utils.TextUtil;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -141,9 +146,18 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
             //完成按钮
             case R.id.btn_finsh:
 
-                if(TextUtil.isEmpty(userPhone) || TextUtil.isEmpty(Code.getText().toString()) || TextUtil.isEmpty(mpassword.getText().toString())){
+                if(TextUtil.isEmpty(userPhone)){
 
-                    showToast("请完善信息");
+                    showToast("请输入手机号码");
+                    return;
+                }
+
+                if(TextUtil.isEmpty(Code.getText().toString())){
+                    showToast("请输入验证码");
+                    return;
+                }
+                if(TextUtil.isEmpty(mpassword.getText().toString())){
+                    showToast("请输入密码");
                     return;
                 }
 
@@ -180,20 +194,7 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
                         if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
                            Toast.makeText(RegisterActivity.this, "验证成功", Toast.LENGTH_LONG).show();
 
-                            /*if (check())//其他合法性的检测
-                            {
-                                UserModel user = new UserModel();
-                                user.setUserId(MyUUID.getUUID());  //id
-                                user.setUserPhone(userPhone);
-                                user.setUserPassword(MD5.md5(userPassword)); //md5加密
-                                user.setUserGender(gender);   //性别
-                                user.setUserName(userName);
-                                user.setUserBirthday("19920401");   //暂时为空
-                                //user.setUserIdCard(userIdCard);
-                                //user.setUserImage("");    //暂时为空
-                                //注册->服务器
-                                UserController.userRegister(user, handler);
-                            }*/
+                            registerUser();
 
                         }
                         //已发送验证码
@@ -261,5 +262,68 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
             }
         }
     }
+
+    /**
+     * 用户注册方法
+     */
+    private void registerUser(){
+
+
+        RequestParams params = new RequestParams();
+        params.put("phone", "15522503900");
+        params.put("password", "liujq");
+        params.put("ownerphone", "15522503900");
+
+        HttpUtil.post(Constants.HOST+Constants.Register, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+
+
+                    String str = new String(responseBody);
+                    System.out.print(str);
+                }
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
+
+
+    }
+
 
 }

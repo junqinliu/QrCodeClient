@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QrCode</string>
+    <string name="app_name">QrCodeClient</string>
 
     <!--toolbar常量声明-->
     <string name="menu_search">search</string>

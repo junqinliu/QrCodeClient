@@ -10,16 +10,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.base.BaseAppCompatActivity;
+import com.android.constant.Constants;
 import com.android.model.BannerItemBean;
 import com.android.qrcodeclient.Life.LifeActivity;
 import com.android.qrcodeclient.Personal.PersonalActivity;
 import com.android.qrcodeclient.R;
+import com.android.utils.HttpUtil;
 import com.android.utils.Utils;
 import com.android.view.SimpleImageBanner;
 import com.android.view.SquareImageView;
 import com.flyco.banner.anim.select.RotateEnter;
 import com.flyco.banner.anim.unselect.NoAnimExist;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -185,6 +192,67 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
         }
+    }
+
+    /**
+     * 获取广告列表的方法
+     */
+
+    private void getAdList(){
+
+
+        RequestParams params = new RequestParams();
+      //  params.put("phone", "15522503900");
+
+
+        HttpUtil.post(Constants.HOST + Constants.AdList, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+
+
+                    String str = new String(responseBody);
+                    System.out.print(str);
+                }
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
+
     }
 
 }

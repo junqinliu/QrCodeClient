@@ -133,11 +133,18 @@ public class PwdForgetActivity extends BaseAppCompatActivity implements View.OnC
             //注册按钮
             case R.id.btn_Next:
 
-                if (TextUtil.isEmpty(user_phone.getText().toString()) || TextUtil.isEmpty(code.getText().toString())) {
+                if (TextUtil.isEmpty(user_phone.getText().toString())) {
 
-                    showToast("请完善信息");
+                    showToast("请输入手机号");
                     return;
                 }
+
+                if( TextUtil.isEmpty(code.getText().toString())){
+
+                    showToast("请输入验证码");
+                    return;
+                }
+
                 //先去提交验证到mob平台验证，其次跳转界面
                 SMSSDK.submitVerificationCode("86", userPhone, code.getText().toString());//对验证码进行验证->回调函数
 

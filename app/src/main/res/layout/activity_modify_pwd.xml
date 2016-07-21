@@ -36,7 +36,8 @@
             android:padding="5dp"
             android:hint="请输入原始密码"
             android:textColor="@color/black_text"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:id="@+id/old_pwd_edt" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,7 +68,8 @@
             android:padding="5dp"
             android:hint="请输入新密码"
             android:textColor="@color/black_text"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:id="@+id/new_pwd_edt" />
     </LinearLayout>
 
     <LinearLayout
@@ -98,7 +100,8 @@
             android:padding="5dp"
             android:hint="确认密码"
             android:textColor="@color/black_text"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:id="@+id/comfirm_pwd_edt" />
     </LinearLayout>
 
     <Button
@@ -109,7 +112,7 @@
         android:text="@string/preservation"
         android:layout_gravity="center_horizontal"
         android:background="@color/green_background"
-        android:id="@+id/button3" />
+        android:id="@+id/modify_btn" />
 
 
 </LinearLayout>

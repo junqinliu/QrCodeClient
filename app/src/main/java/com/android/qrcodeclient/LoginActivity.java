@@ -8,7 +8,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.base.BaseAppCompatActivity;
+import com.android.constant.Constants;
 import com.android.qrcodeclient.Card.CardMainActivity;
+import com.android.utils.HttpUtil;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 
@@ -67,6 +74,8 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
         //登录按钮
         case R.id.btn_login:
 
+            Login1();
+
             Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
 
              startActivity(intent1);
@@ -94,4 +103,125 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
       }
     }
+
+    /**
+     * 登录接口
+     */
+    private void Login(){
+
+
+        RequestParams params = new RequestParams();
+      //  params.put("phone", "15522503900");
+      //  params.put("password", "liujq");
+
+
+        HttpUtil.post(Constants.HOST + Constants.Provice, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+
+
+                    String str = new String(responseBody);
+                    System.out.print(str);
+                }
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
+    }
+
+
+
+
+    private void Login1(){
+
+
+        RequestParams params = new RequestParams();
+        //  params.put("phone", "15522503900");
+        //  params.put("password", "liujq");
+
+
+        HttpUtil.get(Constants.HOST + Constants.Provice, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+
+
+                    String str = new String(responseBody);
+                    System.out.print(str);
+                }
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
+    }
+
 }

@@ -9,9 +9,16 @@ import android.widget.TextView;
 
 import com.android.adapter.EntranceAdapter;
 import com.android.base.BaseAppCompatActivity;
+import com.android.constant.Constants;
 import com.android.model.EntranceBean;
 import com.android.qrcodeclient.R;
+import com.android.utils.HttpUtil;
 import com.android.utils.TextUtil;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,14 +86,66 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
         list.add(new EntranceBean("福建福州西滨好美家1栋"));
         list.add(new EntranceBean("福建福州西滨好美家2栋"));
         list.add(new EntranceBean("福建福州西滨好美家3栋"));
-        list.add(new EntranceBean("福建福州西滨好美家4栋"));
-        list.add(new EntranceBean("福建福州西滨好美家5栋"));
-        list.add(new EntranceBean("福建福州西滨好美家6栋"));
-        list.add(new EntranceBean("福建福州西滨好美家7栋"));
-        list.add(new EntranceBean("福建福州西滨好美家8栋"));
-        list.add(new EntranceBean("福建福州西滨好美家9栋"));
-        list.add(new EntranceBean("福建福州西滨好美家10栋"));
+
         return list;
+    }
+
+    /**
+     * 我的门禁列表
+     */
+    private void getMyCard(){
+
+        RequestParams params = new RequestParams();
+        params.put("userid", "");
+
+
+        HttpUtil.post(Constants.HOST + Constants.MyCard, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+
+
+                    String str = new String(responseBody);
+                    System.out.print(str);
+                }
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
     }
 
 }

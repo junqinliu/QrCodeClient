@@ -9,7 +9,7 @@
         layout="@layout/header_toolbar"/>
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/complaint_content_edt"
         style="@style/Cell_Complaint_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         android:hint="请输入具体原因"/>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/complaint_submit_btn"
         style="@style/Cell_Complaint_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

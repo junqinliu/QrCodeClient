@@ -82,20 +82,29 @@ public class CellActivity extends BaseAppCompatActivity implements View.OnClickL
     @OnClick({R.id.announcement, R.id.warranty, R.id.home_service, R.id.community_service, R.id.service_complaint})
     public void onClick(TextView view) {
         switch (view.getId()) {
+            //信息公告
             case R.id.announcement:
                 break;
+
+            //设备报修
             case R.id.warranty:
                 bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
                 goNext(WarrantyActivity.class, bundle);
                 break;
+
+            //家政服务
             case R.id.home_service:
                 bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
                 goNext(DevelopingActivity.class, bundle);
                 break;
+
+            //社区服务
             case R.id.community_service:
                 bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
                 goNext(DevelopingActivity.class, bundle);
                 break;
+
+            //服务投诉
             case R.id.service_complaint:
                 bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
                 goNext(ComplaintActivity.class, bundle);
