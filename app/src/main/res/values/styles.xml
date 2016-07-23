@@ -87,6 +87,10 @@
         <item name="android:textColor">@color/black_text</item>
         <item name="android:textSize">17sp</item>
     </style>
+    <style name="Send_card_invitee1">
+        <item name="android:textColor">@color/gray_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
     <style name="Send_card_time">
         <item name="android:textColor">@color/gray_text</item>
         <item name="android:textSize">15sp</item>

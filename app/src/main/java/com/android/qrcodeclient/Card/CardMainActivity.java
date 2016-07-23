@@ -1,17 +1,27 @@
 package com.android.qrcodeclient.Card;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.android.adapter.BlockAdapter;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.BannerItemBean;
+import com.android.model.BlockBean;
+import com.android.notify.PushService;
+import com.android.notify.ServiceUtil;
 import com.android.qrcodeclient.Life.LifeActivity;
 import com.android.qrcodeclient.Personal.PersonalActivity;
 import com.android.qrcodeclient.R;
@@ -29,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import butterknife.Bind;
@@ -73,12 +84,15 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             "http://photocdn.sohu.com/tvmobilemvms/20150907/144159406950245847.jpg",//碟中谍4:阿汤哥高塔命悬一线,超越不可能
     };
 
-
+   public BlockAdapter blockAdapter;
+    public List<BlockBean> blockBeanList = new ArrayList<BlockBean>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_card);
+        //开启闹钟定时任务
+        ServiceUtil.invokeTimerPOIService(this);
     }
 
     @Override
@@ -90,7 +104,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
     @Override
     public void initData() {
-
+        toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
         title.setText(R.string.card_title);
         advert.setSelectAnimClass(RotateEnter.class)
                 .setUnselectAnimClass(NoAnimExist.class)
@@ -98,17 +112,23 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 .startScroll();
         binaryCode.setImageBitmap(Utils.createQRImage(this, "test", 500, 500));
 
-
     }
 
     @Override
     public void setListener() {
 
-        toolbar.setNavigationOnClickListener(this);
+     //   toolbar.setNavigationOnClickListener(this);
         life_layout.setOnClickListener(this);
         card_layout.setOnClickListener(this);
         my_layout.setOnClickListener(this);
         add_img.setOnClickListener(this);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCalendarPopwindow(v);
+            }
+        });
 
     }
 
@@ -253,6 +273,33 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
 
+    }
+
+
+    /**
+     * 切换楼栋弹出框
+     * @param v
+     */
+    private void showCalendarPopwindow(View v){
+        blockBeanList.clear();
+        blockBeanList.add(new BlockBean("方舟苑小区", "111"));
+        blockBeanList.add(new BlockBean("威尼斯花园","111"));
+        blockBeanList.add(new BlockBean("富泉花园","111"));
+        blockBeanList.add(new BlockBean("阳光都市","111"));
+        blockBeanList.add(new BlockBean("怡禾国际中心小区","111"));
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View vPopWindow=inflater.inflate(R.layout.block_popwindow, null, false);
+        ListView list_view = (ListView)vPopWindow.findViewById(R.id.list_view);
+        blockAdapter = new BlockAdapter(this,blockBeanList);
+        list_view.setAdapter(blockAdapter);
+        blockAdapter.notifyDataSetChanged();
+        final PopupWindow popWindow = new PopupWindow(vPopWindow,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,true);
+
+        popWindow.setBackgroundDrawable(new BitmapDrawable());
+        popWindow.setOutsideTouchable(true);
+
+        //popWindow.showAtLocation(getCurrentFocus(), Gravity.RIGHT | Gravity.TOP, 0,210);
+        popWindow.showAsDropDown(v);
     }
 
 }

@@ -100,6 +100,7 @@
 
         <activity
             android:name=".Card.CardMainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppThemeToolbar">
           <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -142,6 +143,19 @@
         <activity android:name=".Personal.AboutActivity" />
         <activity android:name=".Personal.ApplyActivity" />
         <activity android:name=".Personal.ModifyPwdActivity"></activity>
+
+
+        <service android:name="com.android.notify.PushService"
+            android:process=":push"/>
+
+        <receiver android:name="com.android.notify.NotificationReceiver"
+            android:process=":push"
+            />
+        <receiver android:name="com.android.notify.ShowNotificationReceiver"
+            android:process=":push"
+            />
+
+
     </application>
 
 </manifest>

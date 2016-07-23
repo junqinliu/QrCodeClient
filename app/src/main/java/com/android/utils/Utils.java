@@ -2,10 +2,17 @@ package com.android.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.Display;
 
+import com.android.qrcodeclient.Card.CardMainActivity;
+import com.android.qrcodeclient.R;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -94,4 +101,45 @@ public class Utils {
         }
         return bitmap;
     }
+
+
+    /*public void notifyKJ(Context context,String str) {
+        //获得通知管理器，通知是一项系统服务
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        //初始化通知对象 p1:通知的图标 p2:通知的状态栏显示的提示 p3:通知显示的时间
+        Notification notification = new Notification(R.mipmap.mylist2, "提醒", System.currentTimeMillis());
+        //点击通知后的Intent，此例子点击后还是在当前界面
+        Intent notificationIntent = new Intent(context, CardMainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+
+        //设置通知信息
+      //  notification.setLatestEventInfo(context, "提醒", str, contentIntent);
+        notification.
+
+        notification.flags|=Notification.FLAG_AUTO_CANCEL; //当查看后，自动消失
+        notification.defaults |= Notification.DEFAULT_SOUND;//默认声音提示
+        //通知
+        manager.notify(1, notification);
+    }*/
+
+
+      public static void showNotification(Context context,String str) {
+        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification.Builder builder = new Notification.Builder(context);
+        PendingIntent contentIndent = PendingIntent.getActivity(context, 0, new Intent(context,CardMainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+        builder .setContentIntent(contentIndent) .setSmallIcon(R.mipmap.mylist2)//设置状态栏里面的图标（小图标） 　　　　　　　　　　　　　　　　　　　　
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.mylist2))//下拉下拉列表里面的图标（大图标） 　　　　　　　
+                // .setTicker("this is bitch!") //设置状态栏的显示的信息
+                .setWhen(System.currentTimeMillis())//设置时间发生时间
+                .setAutoCancel(true)//设置可以清除
+                .setContentTitle("消息公告")//设置下拉列表里的标题
+                .setContentText("本小区今晚会通水，请大家做好准备");//设置上下文内容
+        Notification notification = builder.getNotification();
+          notification.flags|=Notification.FLAG_AUTO_CANCEL; //当查看后，自动消失
+          notification.defaults |= Notification.DEFAULT_SOUND;//默认声音提示
+        //加i是为了显示多条Notification
+        notificationManager.notify(1,notification);
+    }
+
+
 }
