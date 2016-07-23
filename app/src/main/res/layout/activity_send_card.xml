@@ -94,7 +94,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/green_background"
+        android:background="@drawable/bg_finsh"
         android:text="@string/create_card" />
 
 </LinearLayout>

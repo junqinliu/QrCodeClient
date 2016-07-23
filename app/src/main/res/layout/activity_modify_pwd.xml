@@ -111,7 +111,7 @@
         android:padding="10dp"
         android:text="@string/preservation"
         android:layout_gravity="center_horizontal"
-        android:background="@color/green_background"
+        android:background="@drawable/bg_finsh"
         android:id="@+id/modify_btn" />
 
 

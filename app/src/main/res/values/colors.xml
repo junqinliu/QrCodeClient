@@ -16,6 +16,8 @@
 
     <!--浅黑色色的背景颜色-->
     <color name="liner_background">#2B2B2B</color>
+    <!--暗紫色色色的背景颜色-->
+    <color name="home_background">#330066</color>
     <!--灰色分割线-->
     <color name="gray_line">#cccccc</color>
     <!--浅蓝色色分割线-->

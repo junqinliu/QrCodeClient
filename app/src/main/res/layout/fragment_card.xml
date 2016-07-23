@@ -4,7 +4,7 @@
     xmlns:banner="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/liner_background"
+    android:background="@color/home_background"
     android:orientation="vertical">
 
     <include
@@ -51,14 +51,15 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|bottom"
+            android:paddingBottom="5dp"
             android:orientation="vertical"
             android:id="@+id/life_layout">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@mipmap/mylist1"/>
 
             <TextView
@@ -75,6 +76,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            android:paddingBottom="5dp"
             android:orientation="vertical">
 
             <ImageView
@@ -94,13 +96,14 @@
             android:id="@+id/my_layout"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|bottom"
+            android:paddingBottom="5dp"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@mipmap/mylist3"/>
 
             <TextView
