@@ -92,7 +92,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_card);
         //开启闹钟定时任务
-        ServiceUtil.invokeTimerPOIService(this);
+        //ServiceUtil.invokeTimerPOIService(this);
     }
 
     @Override
