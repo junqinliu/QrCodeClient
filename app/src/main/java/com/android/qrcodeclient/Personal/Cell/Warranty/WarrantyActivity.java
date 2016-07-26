@@ -14,21 +14,12 @@ import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
-
 import butterknife.Bind;
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 import cz.msebera.android.httpclient.entity.StringEntity;
-import cz.msebera.android.httpclient.message.BasicHeader;
-import cz.msebera.android.httpclient.protocol.HTTP;
+
 
 /**
  * Created by jisx on 2016/6/14.
@@ -136,25 +127,55 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
             e.printStackTrace();
         }
 
-        HttpUtil.post(WarrantyActivity.this,Constants.HOST + Constants.Property, entity,"application/json", new JsonHttpResponseHandler() {
+        HttpUtil.post(WarrantyActivity.this,Constants.HOST + Constants.Property, entity,"application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
             }
 
 
-
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                showToast("请求接口失败，请联系管理员");
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if(jsonObject.getBoolean("success")){
+
+                                showToast("提交成功");
+                                finish();
+                            }else{
+
+                                showToast("请求接口失败，请联系管理员");
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-                showToast("请求接口失败，请联系管理员");
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if(responseBody != null){
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+
             }
+
 
             @Override
             public void onFinish() {
@@ -164,6 +185,7 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
 
 
         });
+
 
 
 

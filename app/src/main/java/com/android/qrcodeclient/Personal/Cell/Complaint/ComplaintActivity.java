@@ -141,7 +141,7 @@ public class ComplaintActivity extends BaseAppCompatActivity implements View.OnC
 
                             if(jsonObject.getBoolean("success")){
 
-                                showToast("提交成功!!!");
+                                showToast("提交成功");
                                 finish();
                             }else{
 

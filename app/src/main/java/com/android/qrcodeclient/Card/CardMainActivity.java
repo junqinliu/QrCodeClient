@@ -117,6 +117,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
             HttpUtil.getClient().addHeader("Token",userInfoBean.getToken());
             HttpUtil.getClient().addHeader("Userid",userInfoBean.getUserid());
+
         }
 
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);

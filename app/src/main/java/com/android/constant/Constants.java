@@ -6,7 +6,7 @@ public class Constants {
 	/**
 	 * url地址
 	 */
-	public static final String HOST = "http://120.76.202.60:8080/microcard";
+	public static final String HOST = "http://120.76.202.60:8080";
 
 	/**
 	 * 注册接口
