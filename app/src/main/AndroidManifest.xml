@@ -141,8 +141,15 @@
         <activity android:name=".Personal.MicroCardActivity" />
         <activity android:name=".Personal.FeedBackActivity" />
         <activity android:name=".Personal.AboutActivity" />
-        <activity android:name=".Personal.ApplyActivity" />
+        <activity
+            android:name=".Personal.ApplyActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".Personal.ModifyPwdActivity"></activity>
+        <activity android:name=".Personal.ProviceActivity"></activity>
+        <activity android:name=".Personal.CityActivity"></activity>
+        <activity android:name=".Personal.AreaActivity"></activity>
+        <activity android:name=".Personal.CommunityActivity"></activity>
+        <activity android:name=".Personal.CommunityBlockActivity"></activity>
 
 
         <service android:name="com.android.notify.PushService"

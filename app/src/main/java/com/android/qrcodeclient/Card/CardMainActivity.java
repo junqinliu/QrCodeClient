@@ -15,17 +15,20 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.android.adapter.BlockAdapter;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.BannerItemBean;
 import com.android.model.BlockBean;
+import com.android.model.UserInfoBean;
 import com.android.notify.PushService;
 import com.android.notify.ServiceUtil;
 import com.android.qrcodeclient.Life.LifeActivity;
 import com.android.qrcodeclient.Personal.PersonalActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
+import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.Utils;
 import com.android.view.SimpleImageBanner;
 import com.android.view.SquareImageView;
@@ -84,8 +87,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             "http://photocdn.sohu.com/tvmobilemvms/20150907/144159406950245847.jpg",//碟中谍4:阿汤哥高塔命悬一线,超越不可能
     };
 
-   public BlockAdapter blockAdapter;
+    public BlockAdapter blockAdapter;
     public List<BlockBean> blockBeanList = new ArrayList<BlockBean>();
+    private UserInfoBean userInfoBean = new UserInfoBean();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,6 +109,16 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
     @Override
     public void initData() {
+
+        userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+
+        //配置请求接口全局token 和 userid
+        if(userInfoBean != null){
+
+            HttpUtil.getClient().addHeader("Token",userInfoBean.getToken());
+            HttpUtil.getClient().addHeader("Userid",userInfoBean.getUserid());
+        }
+
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
         title.setText(R.string.card_title);
         advert.setSelectAnimClass(RotateEnter.class)
@@ -301,5 +316,9 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         //popWindow.showAtLocation(getCurrentFocus(), Gravity.RIGHT | Gravity.TOP, 0,210);
         popWindow.showAsDropDown(v);
     }
+
+
+
+
 
 }

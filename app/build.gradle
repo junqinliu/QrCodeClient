@@ -61,4 +61,7 @@ dependencies {
     /*请求接口框架*/
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'cz.msebera.android:httpclient:4.4.1.1'
+
+    /*json字符串解析*/
+    compile files('libs/fastjson-1.1.26.jar')
 }

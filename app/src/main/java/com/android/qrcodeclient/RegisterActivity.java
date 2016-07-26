@@ -2,6 +2,7 @@ package com.android.qrcodeclient;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -14,9 +15,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
+import com.android.model.UserInfoBean;
+import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.utils.HttpUtil;
+import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -24,11 +29,15 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
 
 public class RegisterActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -268,13 +277,25 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
      */
     private void registerUser(){
 
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("phone",userPhone);
+            jsonObject.put("password",mpassword.getText().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-        RequestParams params = new RequestParams();
-        params.put("phone", "15522503900");
-        params.put("password", "liujq");
-        params.put("ownerphone", "15522503900");
 
-        HttpUtil.post(Constants.HOST+Constants.Register, params, new AsyncHttpResponseHandler() {
+
+
+        HttpUtil.post(RegisterActivity.this,Constants.HOST + Constants.Register, entity,"application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -291,6 +312,23 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
                         String str = new String(responseBody);
                         JSONObject jsonObject = new JSONObject(str);
                         if (jsonObject != null) {
+
+                            if(jsonObject.getBoolean("success")){
+
+                               /* UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
+                                String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
+                                SharedPreferenceUtil.getInstance(LoginActivity.this).putData("UserInfo", userInfoBeanStr);*/
+
+                                Intent intent1 = new Intent(RegisterActivity.this, LoginActivity.class);
+                                startActivity(intent1);
+
+
+                            }else{
+
+                                showToast("请求接口失败，请联系管理员");
+                            }
+
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -302,12 +340,17 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 
-                if (responseBody != null) {
+                if(responseBody != null){
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
 
-
-                    String str = new String(responseBody);
-                    System.out.print(str);
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
                 }
+
             }
 
 

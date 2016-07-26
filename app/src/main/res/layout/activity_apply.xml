@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/shape_stroke_radius_gray"
+                android:background="@drawable/shape_stroke_radius_gray_one"
                 android:orientation="horizontal"
                 android:padding="10dp">
 
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/shape_stroke_radius_gray"
+                android:background="@drawable/shape_stroke_radius_gray_one"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -77,12 +77,15 @@
                         android:textSize="16sp" />
 
                     <EditText
+                        android:id="@+id/provice"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:layout_weight="8"
                         android:background="@drawable/shape_stroke_radius_gray"
                         android:padding="5dp"
+                        android:focusable="false"
+                        android:hint="@string/province_title"
                         android:textColor="@color/gray_text"
                         android:textSize="15sp" />
 
@@ -116,7 +119,9 @@
                         android:background="@drawable/shape_stroke_radius_gray"
                         android:padding="5dp"
                         android:textColor="@color/gray_text"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:focusable="false"
+                        android:id="@+id/city" />
 
                 </LinearLayout>
 
@@ -147,19 +152,22 @@
                         android:background="@drawable/shape_stroke_radius_gray"
                         android:padding="5dp"
                         android:textColor="@color/gray_text"
-                        android:textSize="15sp" />
+                        android:focusable="false"
+                        android:textSize="15sp"
+                        android:id="@+id/zone" />
 
                 </LinearLayout>
 
-                <View
+               <!-- <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="@color/gray_line" />
-
+-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:padding="10dp">
 
                     <TextView
@@ -178,7 +186,8 @@
                         android:background="@drawable/shape_stroke_radius_gray"
                         android:padding="5dp"
                         android:textColor="@color/gray_text"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:id="@+id/street" />
 
                 </LinearLayout>
 
@@ -188,7 +197,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/shape_stroke_radius_gray"
+                android:background="@drawable/shape_stroke_radius_gray_one"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -213,7 +222,10 @@
                         android:background="@drawable/shape_stroke_radius_gray"
                         android:padding="5dp"
                         android:textColor="@color/gray_text"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:id="@+id/xiaoqu"
+                        android:focusable="false"
+                        android:text="请选择小区信息" />
 
                 </LinearLayout>
 
@@ -245,7 +257,8 @@
                         android:background="@drawable/shape_stroke_radius_gray"
                         android:padding="5dp"
                         android:textColor="@color/gray_text"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:id="@+id/block" />
 
                 </LinearLayout>
 
@@ -276,7 +289,8 @@
                         android:background="@drawable/shape_stroke_radius_gray"
                         android:padding="5dp"
                         android:textColor="@color/gray_text"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:id="@+id/unit" />
 
                 </LinearLayout>
 
@@ -307,7 +321,8 @@
                         android:background="@drawable/shape_stroke_radius_gray"
                         android:padding="5dp"
                         android:textColor="@color/gray_text"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:id="@+id/house_num" />
 
                 </LinearLayout>
 
@@ -317,7 +332,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/shape_stroke_radius_gray"
+                android:background="@drawable/shape_stroke_radius_gray_one"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -335,6 +350,7 @@
                         android:textSize="16sp" />
 
                     <EditText
+                        android:id="@+id/user_phone"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
@@ -366,6 +382,7 @@
                         android:textSize="16sp" />
 
                     <EditText
+                        android:id="@+id/user_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"

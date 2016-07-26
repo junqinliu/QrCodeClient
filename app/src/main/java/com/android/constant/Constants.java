@@ -43,7 +43,24 @@ public class Constants {
 	public static final String  LoginOut = "";
 
 	/**
-	 * 获取省份的接口
+	 * 获取省份
 	 */
 	public static final String  Provice = "/v0.1/place/province";
+	/**
+	 * 获取城市
+	 */
+	public static final String  City = "/v0.1/place/city";
+	/**
+	 * 获取区县
+	 */
+	public static final String  Area = "/v0.1/place/area";
+
+	/**
+	 * 小区列表
+	 */
+	public static final String  House = "/v0.1/place/house";
+	/**
+	 * 楼栋列表
+	 */
+	public static final String  Block = "/v0.1/place/build";
 }

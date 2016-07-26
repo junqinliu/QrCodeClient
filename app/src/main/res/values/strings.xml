@@ -48,6 +48,9 @@
     <string name="address">地&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;址 ：</string>
 
     <string name="search">搜索：</string>
+    <string name="province_title">请选择省份</string>
+    <string name="city_title">请选择城市</string>
+    <string name="zone_title">请选择区/县</string>
     <string name="province">省份：</string>
     <string name="region">地区：</string>
     <string name="County">县区：</string>
@@ -58,6 +61,8 @@
     <string name="room_number">房号：</string>
     <string name="mobile_phone">手机：</string>
     <string name="full_name">姓名：</string>
+    <string name="community_name">请选择小区</string>
+    <string name="block_name">请选择楼栋</string>
 
     <string name="upload_apply">提交申请</string>
 

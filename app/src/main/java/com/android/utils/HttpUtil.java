@@ -1,12 +1,18 @@
 package com.android.utils;
 
 
+import android.content.Context;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.ResponseHandlerInterface;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
 
 
 public class HttpUtil {
@@ -31,9 +37,7 @@ public class HttpUtil {
 
     }
 
-    /********************
-     * get请求
-     *******************************/
+    /******************** * get请求*******************************/
     public static void get(String urlString, AsyncHttpResponseHandler res)    //用一个完整url获取�?��string对象
     {
         client.get(urlString, res);
@@ -42,6 +46,12 @@ public class HttpUtil {
     public static void get(String urlString, RequestParams params, AsyncHttpResponseHandler res)   //url里面带参�?
     {
         client.get(urlString, params, res);
+    }
+    public static void get(Context context,String urlString,Header[] headers, RequestParams params, AsyncHttpResponseHandler res)   //url里面带参�?
+    {
+        client.get(context,urlString,headers, params, res);
+
+
     }
 
     public static void get(String urlString, JsonHttpResponseHandler res)   //不带参数，获取json对象或�?数组
@@ -57,6 +67,7 @@ public class HttpUtil {
     public static void get(String uString, BinaryHttpResponseHandler bHandler)   //下载数据使用，会返回byte数据
     {
         client.get(uString, bHandler);
+
     }
 
     /********************
@@ -95,6 +106,13 @@ public class HttpUtil {
 
     }
 
+    public static RequestHandle post(Context context,String url,HttpEntity entity,String contentType,ResponseHandlerInterface responseHandler){
+
+        return client.post(context,url,entity,contentType,responseHandler);
+
+    }
+
+
     /********************
      * put请求
      *******************************/
@@ -102,6 +120,12 @@ public class HttpUtil {
     {
 
         return client.put(urlString, params, res);
+    }
+
+
+    public static AsyncHttpClient getClient()
+    {
+        return client;
     }
 
 }
