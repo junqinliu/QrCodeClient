@@ -16,8 +16,10 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.android.adapter.CommunityAdapter;
 import com.android.adapter.CommunityBlockAdapter;
+import com.android.application.AppContext;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
+import com.android.model.CBBean;
 import com.android.model.CommunityBean;
 import com.android.model.CommunityBlockBean;
 import com.android.qrcodeclient.R;
@@ -60,6 +62,8 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
 
     int pageNumber = 0;
     int pageSize = 10;
+    String  buildid;
+    String  name;
     String  areaId;
     String  areaName;
 
@@ -100,13 +104,19 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                /*Intent intent = new Intent(ProviceActivity.this, CityActivity.class);
-                String provinceCode = proviceBeanList.get(arg2).getCode();
-                String provinceName = proviceBeanList.get(arg2).getName();
-                intent.putExtra("provinceId", provinceCode);
-                intent.putExtra("provinceName", provinceName);
 
-                startActivity(intent);*/
+                buildid = list.get(arg2).getBuildid();
+                name = list.get(arg2).getName();
+
+                CBBean cb = new CBBean();
+                cb.setAreaId(areaId);
+                cb.setAreaName(areaName);
+                cb.setBuildid(buildid);
+                cb.setName(name);
+                AppContext myApplicaton = (AppContext)getApplication();
+                myApplicaton.setcBBean(cb);
+                finish();
+
             }
         });
 

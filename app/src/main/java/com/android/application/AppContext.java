@@ -4,6 +4,7 @@ package com.android.application;
 import android.app.Application;
 import com.android.exception.CrashHandler;
 import com.android.model.AddressBean;
+import com.android.model.CBBean;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.smssdk.SMSSDK;
@@ -13,6 +14,7 @@ public class AppContext extends Application {
 	
 	private static AppContext appContext;
 	AddressBean addressBean;
+	CBBean cBBean;
 	
 	/**
 	 *
@@ -46,5 +48,13 @@ public class AppContext extends Application {
 
 	public void setAddressBean(AddressBean addressBean) {
 		this.addressBean = addressBean;
+	}
+
+	public CBBean getcBBean() {
+		return cBBean;
+	}
+
+	public void setcBBean(CBBean cBBean) {
+		this.cBBean = cBBean;
 	}
 }

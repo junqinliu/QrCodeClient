@@ -257,20 +257,22 @@
                         android:background="@drawable/shape_stroke_radius_gray"
                         android:padding="5dp"
                         android:textColor="@color/gray_text"
+                        android:focusable="false"
                         android:textSize="15sp"
                         android:id="@+id/block" />
 
                 </LinearLayout>
 
-                <View
+               <!-- <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="@color/gray_line" />
-
+-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:padding="10dp">
 
                     <TextView
@@ -303,6 +305,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     android:padding="10dp">
 
                     <TextView

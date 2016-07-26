@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.android.application.AppContext;
 import com.android.base.BaseAppCompatActivity;
 import com.android.model.AddressBean;
+import com.android.model.CBBean;
 import com.android.qrcodeclient.R;
 import com.android.utils.TextUtil;
 
@@ -52,6 +53,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     EditText user_name;
 
     AddressBean addressBean;
+    CBBean cBBean;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +100,13 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
             city.setText(addressBean.getCityName());
             zone.setText(addressBean.getAreaName());
 
+        }
+
+        cBBean = myApplicaton.getcBBean();
+        if(cBBean != null){
+
+            xiaoqu.setText(cBBean.getAreaName());
+            block.setText(cBBean.getName());
         }
     }
 

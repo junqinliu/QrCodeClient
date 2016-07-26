@@ -19,7 +19,12 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 import butterknife.Bind;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
 
 /**
  * Created by jisx on 2016/6/13.
@@ -87,6 +92,9 @@ public class ComplaintActivity extends BaseAppCompatActivity implements View.OnC
                     return;
 
                 }
+
+                submitComplaintContent();
+
                 break;
             default:
                 break;
@@ -99,19 +107,26 @@ public class ComplaintActivity extends BaseAppCompatActivity implements View.OnC
      */
     private  void submitComplaintContent(){
 
-        RequestParams params = new RequestParams();
-        params.put("title", "");
-        params.put("content", "");
-        params.put("userid", "");
-        params.put("propertytype", "REPAIR");
 
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("title",complaint_content_edt.getText().toString());
+            jsonObject.put("propertytype","COMPLAIN");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-        HttpUtil.post(Constants.HOST + Constants.Property, params, new AsyncHttpResponseHandler() {
+        HttpUtil.post(ComplaintActivity.this,Constants.HOST + Constants.Property, entity,"application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
-
-
             }
 
 
@@ -123,6 +138,16 @@ public class ComplaintActivity extends BaseAppCompatActivity implements View.OnC
                         String str = new String(responseBody);
                         JSONObject jsonObject = new JSONObject(str);
                         if (jsonObject != null) {
+
+                            if(jsonObject.getBoolean("success")){
+
+                                showToast("提交成功!!!");
+                                finish();
+                            }else{
+
+                                showToast("请求接口失败，请联系管理员");
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -134,12 +159,17 @@ public class ComplaintActivity extends BaseAppCompatActivity implements View.OnC
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 
-                if (responseBody != null) {
+                if(responseBody != null){
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
 
-
-                    String str = new String(responseBody);
-                    System.out.print(str);
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
                 }
+
             }
 
 

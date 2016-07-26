@@ -22,7 +22,7 @@ public class Constants {
 	public static final String AdList = "/v0.1/ad";
 
 	/**
-	 * 我的小区 服务投诉 设备报修接口
+	 * 我的信息 服务投诉 设备报修接口
 	 */
 	public static final String Property = "/v0.1/property";
 
