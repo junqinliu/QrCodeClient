@@ -17,6 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.android.adapter.CommunityAdapter;
 import com.android.adapter.CommunityBlockAdapter;
 import com.android.application.AppContext;
+import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.CBBean;
@@ -115,6 +116,7 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
                 cb.setName(name);
                 AppContext myApplicaton = (AppContext)getApplication();
                 myApplicaton.setcBBean(cb);
+                ExitApplication.getInstance().exitAddressActivity();
                 finish();
 
             }

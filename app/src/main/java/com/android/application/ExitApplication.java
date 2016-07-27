@@ -69,7 +69,7 @@ public class ExitApplication extends Application {
 		}
 	}
 
-	/** 添加我的收入模块Activity到容器中 */
+	/** 添加省份地址模块Activity到容器中 */
 	public void addAddressActivity(Activity activity) {
 		if (addressList.contains(activity)) {
 
@@ -78,7 +78,7 @@ public class ExitApplication extends Application {
 		}
 	}
 
-	/** 遍历所有Activity并finish */
+	/** 遍历所有省份地址Activity并finish */
 	public void exitAddressActivity() {
 		for (Activity activity : addressList) {
 			activity.finish();

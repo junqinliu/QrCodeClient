@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.adapter.CommunityAdapter;
+import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.CommunityBean;
@@ -69,6 +70,7 @@ public class CommunityActivity extends BaseAppCompatActivity implements View.OnC
     @Override
     public void initView() {
 
+        ExitApplication.getInstance().addAddressActivity(this);
     }
 
     @Override
@@ -213,23 +215,7 @@ public class CommunityActivity extends BaseAppCompatActivity implements View.OnC
 
     }
 
-   public static Handler myHandler = new Handler() {
 
-       public void handleMessage(Message msg) {
-           switch (msg.what) {
-               case 1:
-
-
-
-                   break;
-           }
-           super.handleMessage(msg);
-       }
-
-
-
-
-    };
 
 }
 

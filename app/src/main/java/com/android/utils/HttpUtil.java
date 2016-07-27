@@ -121,6 +121,14 @@ public class HttpUtil {
     {
 
         return client.put(urlString, params, res);
+
+    }
+    public static RequestHandle put(Context context,String url,HttpEntity entity,String contentType,ResponseHandlerInterface responseHandler)   //url里面带参�?
+    {
+
+        return client.put(context,url,entity,contentType,responseHandler);
+
+
     }
 
 

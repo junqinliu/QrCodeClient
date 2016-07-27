@@ -5,25 +5,12 @@ package com.android.model;
  */
 public class LogBean {
 
-    private String name;
 
     private String time;
-
-    public LogBean() {
-    }
-
-    public LogBean(String name, String time) {
-        this.name = name;
-        this.time = time;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String invitename;
+    private String invitephone;
+    private String buildname;
+    private String buildid;
 
     public String getTime() {
         return time;
@@ -31,5 +18,37 @@ public class LogBean {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getInvitename() {
+        return invitename;
+    }
+
+    public void setInvitename(String invitename) {
+        this.invitename = invitename;
+    }
+
+    public String getInvitephone() {
+        return invitephone;
+    }
+
+    public void setInvitephone(String invitephone) {
+        this.invitephone = invitephone;
+    }
+
+    public String getBuildname() {
+        return buildname;
+    }
+
+    public void setBuildname(String buildname) {
+        this.buildname = buildname;
+    }
+
+    public String getBuildid() {
+        return buildid;
+    }
+
+    public void setBuildid(String buildid) {
+        this.buildid = buildid;
     }
 }

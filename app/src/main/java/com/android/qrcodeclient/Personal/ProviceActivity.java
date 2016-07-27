@@ -63,6 +63,7 @@ public class ProviceActivity extends BaseAppCompatActivity implements View.OnCli
     public void initView() {
 
         ExitApplication.getInstance().addAddressActivity(this);
+
     }
 
     @Override

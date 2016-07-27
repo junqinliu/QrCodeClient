@@ -56,7 +56,7 @@ public class LogAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.invitee.setText("邀请" + list.get(i).getName() + "来访");
+        holder.invitee.setText("邀请" + list.get(i).getInvitename() + "来访");
         holder.time.setText(list.get(i).getTime());
         return convertView;
     }

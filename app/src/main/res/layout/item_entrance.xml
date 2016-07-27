@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_stroke_gray_bottom"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="15dp">
 
     <TextView
         android:id="@+id/entrance"

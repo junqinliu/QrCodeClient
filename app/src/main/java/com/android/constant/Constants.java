@@ -6,7 +6,7 @@ public class Constants {
 	/**
 	 * url地址
 	 */
-	public static final String HOST = "http://120.76.202.60:8080";
+	public static final String HOST = "http://120.76.202.60:8080/microcard";
 
 	/**
 	 * 注册接口
@@ -27,15 +27,15 @@ public class Constants {
 	public static final String Property = "/v0.1/property";
 
 	/**
-	 * 我的门禁
-	 */
-	public static final String MyCard = "/v0.1/card";
-
-	/**
 	 * 修改密码
 	 */
 
-	public static final String  ModifyPwd = "";
+	public static final String  ModifyPwd = "/v0.1/user/updatePassword";
+	/**
+	 * 忘记密码
+	 */
+
+	public static final String  ForgetPassword = "/v0.1/user/forgetPassword";
 
 	/**
 	 * 注销
@@ -63,4 +63,18 @@ public class Constants {
 	 * 楼栋列表
 	 */
 	public static final String  Block = "/v0.1/place/build";
+
+	/**
+	 * 往来日志
+	 */
+	public static final String  InviteLog = "/v0.1/user/invite";
+	/**
+	 * 邀请
+	 */
+	public static final String  Invite = "/v0.1/user/invite";
+
+	/**
+	 * 我的门禁列表
+	 */
+	public static final String  MyCardList = "/v0.1/place/build/card";
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.android.adapter.CommonAdapter;
 import com.android.application.AppContext;
+import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.AddressBean;
@@ -122,7 +123,9 @@ public class AreaActivity extends BaseAppCompatActivity implements View.OnClickL
                 addressBean.setAreaName(areaName);
                 addressBean.setAreaCode(areaCode);
                 myApplicaton.setAddressBean(addressBean);
+                ExitApplication.getInstance().exitAddressActivity();
                 finish();
+
 
 
 

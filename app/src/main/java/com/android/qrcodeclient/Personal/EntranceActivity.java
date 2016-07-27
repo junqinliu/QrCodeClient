@@ -7,10 +7,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.android.adapter.EntranceAdapter;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.EntranceBean;
+import com.android.model.LogBean;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
 import com.android.utils.TextUtil;
@@ -43,8 +45,11 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
     private boolean loadingMore = false;
 
     List<EntranceBean> list;
+    List<EntranceBean> listTemp = new ArrayList<>();
 
     EntranceAdapter adapter;
+    int pageNumber = 0;
+    int pageSize = 10;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,8 +72,9 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         list = new ArrayList<>();
-        adapter = new EntranceAdapter(this, getData());
+        adapter = new EntranceAdapter(this,list);
         listView.setAdapter(adapter);
+        getMyCard();
     }
 
     @Override
@@ -81,14 +87,7 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
         finish();
     }
 
-    private List<EntranceBean> getData() {
-        List<EntranceBean> list = new ArrayList<>();
-        list.add(new EntranceBean("福建福州西滨好美家1栋"));
-        list.add(new EntranceBean("福建福州西滨好美家2栋"));
-        list.add(new EntranceBean("福建福州西滨好美家3栋"));
 
-        return list;
-    }
 
     /**
      * 我的门禁列表
@@ -96,17 +95,13 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
     private void getMyCard(){
 
         RequestParams params = new RequestParams();
-        params.put("userid", "");
-
-
-        HttpUtil.post(Constants.HOST + Constants.MyCard, params, new AsyncHttpResponseHandler() {
+        params.put("pageSize",pageSize);
+        params.put("pageNumber",pageNumber);
+        HttpUtil.get(Constants.HOST + Constants.MyCardList, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
-
-
             }
-
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
@@ -116,6 +111,25 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
                         String str = new String(responseBody);
                         JSONObject jsonObject = new JSONObject(str);
                         if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+                                pageNumber = pageNumber + 1;
+                                JSONObject gg = new JSONObject(jsonObject.getString("data"));
+                                listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), EntranceBean.class);
+                                list.addAll(listTemp);
+                                adapter.notifyDataSetChanged();
+                                if (listTemp.size() == 10) {
+                                    loadingMore = true;
+                                } else {
+                                    loadingMore = false;
+                                }
+
+                            } else {
+
+                                showToast("请求接口失败，请联系管理员");
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -128,11 +142,16 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 
                 if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
 
-
-                    String str = new String(responseBody);
-                    System.out.print(str);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
 
 
@@ -144,7 +163,6 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
 
 
         });
-
 
     }
 

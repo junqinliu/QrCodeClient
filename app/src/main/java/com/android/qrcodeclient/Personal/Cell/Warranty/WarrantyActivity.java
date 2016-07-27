@@ -116,13 +116,15 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
         try {
             jsonObject.put("title",user_address_edt.getText().toString());
             jsonObject.put("propertytype","REPAIR");
+            jsonObject.put("propertyphone",user_phone_edt.getText().toString());
+            jsonObject.put("propertyaddress",user_address_edt.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         StringEntity entity = null;
         try {
             entity = new StringEntity(jsonObject.toString());
-           // entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

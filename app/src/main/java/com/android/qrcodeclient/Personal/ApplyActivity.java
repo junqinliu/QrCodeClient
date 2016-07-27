@@ -54,6 +54,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
     AddressBean addressBean;
     CBBean cBBean;
+    AppContext myApplicaton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     protected void onResume() {
         super.onResume();
-        AppContext myApplicaton = (AppContext)getApplication();
+        myApplicaton = (AppContext)getApplication();
         addressBean = myApplicaton.getAddressBean();
         if(addressBean != null ){
             provice.setText(addressBean.getProvinceName());
@@ -110,7 +111,15 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+         addressBean = null;
+         cBBean = null;
+        myApplicaton.setAddressBean(addressBean);
+        myApplicaton.setcBBean(cBBean);
 
+    }
 
     @Override
     public void onClick(View v) {

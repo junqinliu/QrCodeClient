@@ -19,7 +19,10 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+
 import butterknife.Bind;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 /**
  * Created by jisx on 2016/6/13.
@@ -99,6 +102,14 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
                     showToast("请输入确认密码");
                     return;
                 }
+
+                if(!new_pwd_edt.getText().toString().equals(comfirm_pwd_edt.getText().toString())){
+
+                    showToast("新密码和确认密码不一样");
+                    return;
+                }
+
+                submit();
                 break;
         }
     }
@@ -108,19 +119,25 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
      */
     private void submit(){
 
-        RequestParams params = new RequestParams();
-        params.put("title", "");
-        params.put("content", "");
-        params.put("userid", "");
-        params.put("propertytype", "REPAIR");
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("password",old_pwd_edt.getText().toString());
+            jsonObject.put("newpassword",new_pwd_edt.getText().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        StringEntity entity = null;
+        try {
+            entity = new StringEntity(jsonObject.toString());
 
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-        HttpUtil.post(Constants.HOST + Constants.ModifyPwd, params, new AsyncHttpResponseHandler() {
+        HttpUtil.put(ModifyPwdActivity.this, Constants.HOST + Constants.ModifyPwd, entity, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
-
-
             }
 
 
@@ -132,6 +149,16 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
                         String str = new String(responseBody);
                         JSONObject jsonObject = new JSONObject(str);
                         if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+                                showToast("密码修改成功");
+                                finish();
+                            } else {
+
+                                showToast("请求接口失败，请联系管理员");
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -144,11 +171,16 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 
                 if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
 
-
-                    String str = new String(responseBody);
-                    System.out.print(str);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
 
 
@@ -160,5 +192,7 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
 
 
         });
+
     }
+
 }
