@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.model.BlockBean;
+import com.android.model.EntranceBean;
 import com.android.model.LogBean;
 import com.android.qrcodeclient.R;
 
@@ -20,9 +21,9 @@ import butterknife.ButterKnife;
 public class BlockAdapter extends BaseAdapter {
 
     Context context;
-    List<BlockBean> list;
+    List<EntranceBean> list;
 
-    public BlockAdapter(Context context, List<BlockBean> list) {
+    public BlockAdapter(Context context, List<EntranceBean> list) {
         this.context = context;
         this.list = list;
     }
@@ -57,7 +58,7 @@ public class BlockAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.block_txt.setText(list.get(i).getName());
+        holder.block_txt.setText(list.get(i).getHousename()+list.get(i).getBuildname());
 
         return convertView;
     }

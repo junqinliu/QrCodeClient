@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.qrcodeclient.Personal.Cell.CellActivity;
@@ -63,6 +64,7 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
 
         title.setText(R.string.personal_title);
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
+        ExitApplication.getInstance().addActivity(this);
 
     }
 

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.model.AdBean;
 import com.android.model.BannerItemBean;
 import com.android.qrcodeclient.R;
 import com.android.utils.ViewFindUtils;
@@ -17,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.flyco.banner.widget.Banner.BaseIndicatorBanner;
 
 
-public class SimpleImageBanner extends BaseIndicatorBanner<BannerItemBean, SimpleImageBanner> {
+public class SimpleImageBanner extends BaseIndicatorBanner<AdBean, SimpleImageBanner> {
     private ColorDrawable colorDrawable;
 
     public SimpleImageBanner(Context context) {
@@ -35,8 +36,8 @@ public class SimpleImageBanner extends BaseIndicatorBanner<BannerItemBean, Simpl
 
     @Override
     public void onTitleSlect(TextView tv, int position) {
-        final BannerItemBean item = mDatas.get(position);
-        tv.setText(item.title);
+        final AdBean item = mDatas.get(position);
+        tv.setText(item.getTitle());
     }
 
     @Override
@@ -44,13 +45,13 @@ public class SimpleImageBanner extends BaseIndicatorBanner<BannerItemBean, Simpl
         View inflate = View.inflate(mContext, R.layout.item_simple_image, null);
         ImageView iv = ViewFindUtils.find(inflate, R.id.iv);
 
-        final BannerItemBean item = mDatas.get(position);
+        final AdBean item = mDatas.get(position);
         int itemWidth = mDisplayMetrics.widthPixels;
         int itemHeight = (int) (itemWidth * 360 * 1.0f / 640);
         iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
         iv.setLayoutParams(new LinearLayout.LayoutParams(itemWidth, itemHeight));
 
-        String imgUrl = item.imgUrl;
+        String imgUrl = item.getPicurl();
 
         if (!TextUtils.isEmpty(imgUrl)) {
             Glide.with(mContext)

@@ -43,7 +43,7 @@ public class ExitApplication extends Application {
 	}
 
 	/** 遍历所有Activity并finish */
-	public void exit() {
+	public void exitActivity() {
 		for (Activity activity : activityList) {
 			activity.finish();
 		}

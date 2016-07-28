@@ -1,20 +1,25 @@
 package com.android.qrcodeclient.Personal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.adapter.EntranceAdapter;
+import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.EntranceBean;
 import com.android.model.LogBean;
+import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
+import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -80,6 +85,24 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void setListener() {
         toolbar.setNavigationOnClickListener(this);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                //把选中的楼栋的信息保存到本地，下次进来直接可以显示
+                String  BeanStr = JSON.toJSONString(list.get(arg2));
+                SharedPreferenceUtil.getInstance(EntranceActivity.this).putData("EntranceBean", BeanStr);
+
+                ExitApplication.getInstance().exitActivity();
+                Intent intent = new Intent(EntranceActivity.this, CardMainActivity.class);
+                intent.putExtra("secret",list.get(arg2).getSecret());
+                intent.putExtra("buildname",list.get(arg2).getBuildname());
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
     }
 
     @Override
