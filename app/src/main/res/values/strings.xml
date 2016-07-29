@@ -20,6 +20,9 @@
     <string name="send_card_visit_address">来访地址 ：</string>
     <string name="send_card_visitor_name">访客姓名 ：</string>
     <string name="send_card_visitor_phone">手机号码 ：</string>
+    <string name="send_card_visitor_phone_hint">请输入手机号码</string>
+    <string name="send_card_visitor_name_hint">请输入姓名</string>
+    <string name="send_card_visitor_address_hint">请选择地址</string>
     <string name="create_card">生成串门微卡</string>
 
     <string name="developing">正  在  开  发</string>
@@ -63,6 +66,7 @@
     <string name="full_name">姓名：</string>
     <string name="community_name">请选择小区</string>
     <string name="block_name">请选择楼栋</string>
+    <string name="owner_phone">业主号码:</string>
 
     <string name="upload_apply">提交申请</string>
 

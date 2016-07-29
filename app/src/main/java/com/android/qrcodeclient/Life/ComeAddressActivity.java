@@ -1,4 +1,4 @@
-package com.android.qrcodeclient.Personal;
+package com.android.qrcodeclient.Life;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.EntranceBean;
-import com.android.model.LogBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
@@ -35,7 +34,7 @@ import butterknife.Bind;
 /**
  * Created by jisx on 2016/6/13.
  */
-public class EntranceActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class ComeAddressActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     @Bind(R.id.title)
     TextView title;
@@ -71,10 +70,8 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
     public void initData() {
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
         //设置标题
-        String titleName = getIntent().getStringExtra(getResources().getString(R.string.develop_title));
-        if (!TextUtil.isEmpty(titleName)) {
-            title.setText(titleName);
-        }
+
+        title.setText("请选择地址");
 
         list = new ArrayList<>();
         adapter = new EntranceAdapter(this,list);
@@ -89,16 +86,12 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                //把选中的楼栋的信息保存到本地，下次进来直接可以显示
-                String  BeanStr = JSON.toJSONString(list.get(arg2));
-                SharedPreferenceUtil.getInstance(EntranceActivity.this).putData("EntranceBean", BeanStr);
 
-                ExitApplication.getInstance().exitActivity();
-                Intent intent = new Intent(EntranceActivity.this, CardMainActivity.class);
-                intent.putExtra("secret",list.get(arg2).getSecret());
-                intent.putExtra("buildname",list.get(arg2).getBuildname());
+                Intent intent = new Intent();
                 intent.putExtra("buildid",list.get(arg2).getBuildid());
-                startActivity(intent);
+                intent.putExtra("housename",list.get(arg2).getHousename());
+                intent.putExtra("buildname",list.get(arg2).getBuildname());
+                setResult(200, intent);
                 finish();
 
             }
@@ -114,7 +107,7 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
 
 
     /**
-     * 我的门禁列表
+     * 地址列表
      */
     private void getMyCard(){
 

@@ -77,4 +77,9 @@ public class Constants {
 	 * 我的门禁列表
 	 */
 	public static final String  MyCardList = "/v0.1/place/build/card";
+
+	/**
+	 * 申请微卡提交申请
+	 */
+	public static final String  submitCardApply = "/v0.1/user/audit/apply";
 }

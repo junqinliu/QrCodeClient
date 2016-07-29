@@ -23,9 +23,12 @@
             android:text="@string/send_card_visit_address" />
 
         <EditText
+            android:id="@+id/address_edit"
             style="@style/send_card_linear_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
+            android:hint="@string/send_card_visitor_address_hint"
             android:background="@null"/>
     </LinearLayout>
     <View
@@ -49,10 +52,11 @@
             android:text="@string/send_card_visitor_name" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/name_edit"
             style="@style/send_card_linear_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/send_card_visitor_name_hint"
             android:background="@null"/>
     </LinearLayout>
     <View
@@ -75,9 +79,12 @@
             android:text="@string/send_card_visitor_phone" />
 
         <EditText
+            android:id="@+id/uesr_phone_edit"
             style="@style/send_card_linear_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:hint="@string/send_card_visitor_phone_hint"
             android:background="@null"/>
     </LinearLayout>
     <View
@@ -87,7 +94,8 @@
         android:background="@color/blue_line"
         />
     <Button
-        android:id="@+id/button"
+
+        android:id="@+id/submit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

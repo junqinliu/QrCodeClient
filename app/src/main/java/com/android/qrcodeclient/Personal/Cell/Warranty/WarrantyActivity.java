@@ -18,7 +18,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import butterknife.Bind;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
 
 
 /**
@@ -121,10 +124,17 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        StringEntity entity = null;
+       /* StringEntity entity = null;
         try {
             entity = new StringEntity(jsonObject.toString());
 
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }*/
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

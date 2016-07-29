@@ -57,6 +57,7 @@ public class CommunityActivity extends BaseAppCompatActivity implements View.OnC
     List<CommunityBean> list;
     List<CommunityBean> listTemp = new ArrayList<>();
     CommunityAdapter adapter;
+    String areacode;
 
     int pageNumber = 0;
     int pageSize = 10;
@@ -71,6 +72,8 @@ public class CommunityActivity extends BaseAppCompatActivity implements View.OnC
     public void initView() {
 
         ExitApplication.getInstance().addAddressActivity(this);
+
+        areacode = getIntent().getStringExtra("areacode");
     }
 
     @Override
@@ -142,8 +145,8 @@ public class CommunityActivity extends BaseAppCompatActivity implements View.OnC
 
         RequestParams params = new RequestParams();
         params.put("pageSize",pageSize);
-        params.put("pageNumber",pageNumber);
-        HttpUtil.get(Constants.HOST + Constants.House + "/350102", params, new AsyncHttpResponseHandler() {
+        params.put("pageNumber",pageNumber);  //350102 测试时的县区编号
+        HttpUtil.get(Constants.HOST + Constants.House + "/"+areacode, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -164,13 +167,22 @@ public class CommunityActivity extends BaseAppCompatActivity implements View.OnC
                                 pageNumber = pageNumber + 1;
                                 JSONObject gg = new JSONObject(jsonObject.getString("data"));
                                 listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), CommunityBean.class);
-                                list.addAll(listTemp);
-                                adapter.notifyDataSetChanged();
-                                if(listTemp.size() == 10){
-                                    loadingMore = true;
+
+                                if(listTemp != null && listTemp.size() > 0){
+
+                                    list.addAll(listTemp);
+                                    adapter.notifyDataSetChanged();
+                                    if(listTemp.size() == 10){
+                                        loadingMore = true;
+                                    }else{
+                                        loadingMore = false;
+                                    }
+
                                 }else{
-                                    loadingMore = false;
+
+                                    showToast("该县区目前还没有维护小区");
                                 }
+
 
                             } else {
 

@@ -30,6 +30,8 @@ import com.android.model.UserInfoBean;
 import com.android.notify.PushService;
 import com.android.notify.ServiceUtil;
 import com.android.qrcodeclient.Life.LifeActivity;
+import com.android.qrcodeclient.Life.SendCardActivity;
+import com.android.qrcodeclient.Personal.ApplyActivity;
 import com.android.qrcodeclient.Personal.PersonalActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
@@ -79,7 +81,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     List<EntranceBean> list = new ArrayList<>();
     List<EntranceBean> listTemp = new ArrayList<>();
     String buildname = "";//表示选中的楼栋名称 用来与 点击获取微卡获取的最新楼栋列表做比较 更新二维码
-
+    String buildid = "";
    /* public static String[] titles = new String[]{
             "伪装者:胡歌演绎'痞子特工'",
             "无心法师:生死离别!月牙遭虐杀",
@@ -146,6 +148,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         if (!TextUtil.isEmpty(secret)) {
             //从我的门禁列表进来
             buildname = getIntent().getStringExtra("buildname");
+            buildid = getIntent().getStringExtra("buildid");
             showToast(secret);
             binaryCode.setImageBitmap(Utils.createQRImage(this, secret, 500, 500));
         } else {
@@ -155,15 +158,25 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                 EntranceBean EntranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
                 buildname = EntranceBean.getBuildname();
+                buildid = EntranceBean.getBuildid();
                 binaryCode.setImageBitmap(Utils.createQRImage(this,EntranceBean.getSecret(), 500, 500));
 
             }else{
 
-                binaryCode.setImageBitmap(Utils.createQRImage(this,"test", 500, 500));
+                if("PASS".equals(userInfoBean.getAduitstatus())){
+                    //已经审核通过
+                    binaryCode.setImageBitmap(Utils.createQRImage(this,"test", 500, 500));
+
+                }else{
+
+                }
             }
 
-            //获取我的门禁
-            getMyCard();
+            if("PASS".equals(userInfoBean.getAduitstatus())){
+                //已经审核通过 开始获取我的门禁
+                getMyCard();
+            }
+
         }
 
         //获取图片路径
@@ -175,7 +188,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void setListener() {
 
-        //   toolbar.setNavigationOnClickListener(this);
+
         life_layout.setOnClickListener(this);
         card_layout.setOnClickListener(this);
         my_layout.setOnClickListener(this);
@@ -184,7 +197,16 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCalendarPopwindow(v);
+
+                if("PASS".equals(userInfoBean.getAduitstatus())){
+
+                    showCalendarPopwindow(v);
+                }else{
+                    //跳到门禁申请界面
+                    startActivity(new Intent(CardMainActivity.this, ApplyActivity.class));
+                }
+
+
             }
         });
 
@@ -205,23 +227,65 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             //生活
             case R.id.life_layout:
 
-                startActivity(new Intent(this, LifeActivity.class));
+                if("PASS".equals(userInfoBean.getAduitstatus())){
+
+                    startActivity(new Intent(this, LifeActivity.class));
+                }else{
+                    //跳到门禁申请界面
+                    startActivity(new Intent(this, ApplyActivity.class));
+                }
+
+
 
                 break;
             //获取微卡
             case R.id.card_layout:
 
-                getMyCard();
+
+
+                if("PASS".equals(userInfoBean.getAduitstatus())){
+
+                    getMyCard();
+                }else{
+                    //跳到门禁申请界面
+                    startActivity(new Intent(this, ApplyActivity.class));
+                }
+
+
                 break;
             //我的
             case R.id.my_layout:
 
-                startActivity(new Intent(this, PersonalActivity.class));
+
+                if("PASS".equals(userInfoBean.getAduitstatus())){
+
+                    startActivity(new Intent(this, PersonalActivity.class));
+                }else{
+                    //跳到门禁申请界面
+                    startActivity(new Intent(this, ApplyActivity.class));
+                }
+
+
                 break;
 
             //分享
             case R.id.add_img:
 
+                if("PASS".equals(userInfoBean.getAduitstatus())){
+
+                    Intent intent = new Intent(this, SendCardActivity.class);
+                    intent.putExtra("buildname",buildname);
+                    intent.putExtra("buildid",buildid);
+                    startActivity(intent);
+                }else{
+                    //跳到门禁申请界面
+                    startActivity(new Intent(this, ApplyActivity.class));
+                }
+
+
+
+
+                /*
                 OnekeyShare oks = new OnekeyShare();
                 //关闭sso授权
                 oks.disableSSOWhenAuthorize();
@@ -252,7 +316,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                 // 启动分享GUI
                 oks.show(this);
-
+             */
 
                 break;
             default:
@@ -288,7 +352,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                             if (jsonObject.getBoolean("success")) {
                                 JSONObject gg = new JSONObject(jsonObject.getString("data"));
                                adBeanList = JSON.parseArray(gg.getJSONArray("items").toString(),AdBean.class);
-                                if(adBeanList != null){
+                                if(adBeanList != null && adBeanList.size() > 0){
 
                                     advert.setSelectAnimClass(RotateEnter.class)
                                             .setUnselectAnimClass(NoAnimExist.class)
@@ -366,6 +430,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 //选中的楼栋二维码
                 if (!TextUtil.isEmpty(list.get(arg2).getSecret())) {
                     buildname = list.get(arg2).getBuildname();
+                    buildid = list.get(arg2).getHouseid();
                     showToast(list.get(arg2).getSecret());
                     binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), 500, 500));
                     popWindow.dismiss();
@@ -425,6 +490,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                         if (buildname.equals(list.get(i).getBuildname())) {
 
                                             //表示上次选中的二维码，此时更新最新的二维码
+                                            buildname = list.get(i).getBuildname();
+                                            buildid = list.get(i).getBuildid();
                                             showToast(buildname + "比较" + list.get(i).getBuildname());
                                             binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500));
 
@@ -440,6 +507,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                     //初始化二维码
                                     if (!TextUtil.isEmpty(list.get(0).getSecret())) {
                                         buildname = list.get(0).getBuildname();
+                                        buildid = list.get(0).getBuildid();
                                         showToast(list.get(0).getSecret());
                                         binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), 500, 500));
 

@@ -176,17 +176,24 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
 
                             if (jsonObject.getBoolean("success")) {
 
-
                                 pageNumber = pageNumber + 1;
                                 JSONObject gg = new JSONObject(jsonObject.getString("data"));
                                 listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), CommunityBlockBean.class);
-                                list.addAll(listTemp);
-                                adapter.notifyDataSetChanged();
-                                if(listTemp.size() == 10){
-                                    loadingMore = true;
+
+                                if(listTemp != null && listTemp.size() > 0){
+
+                                    list.addAll(listTemp);
+                                    adapter.notifyDataSetChanged();
+                                    if(listTemp.size() == 10){
+                                        loadingMore = true;
+                                    }else{
+                                        loadingMore = false;
+                                    }
                                 }else{
-                                    loadingMore = false;
+
+                                    showToast("该小区目前还没有维护楼栋");
                                 }
+
 
                             } else {
 

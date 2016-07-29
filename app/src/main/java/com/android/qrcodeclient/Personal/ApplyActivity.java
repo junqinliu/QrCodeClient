@@ -6,19 +6,30 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.application.AppContext;
 import com.android.base.BaseAppCompatActivity;
+import com.android.constant.Constants;
 import com.android.model.AddressBean;
 import com.android.model.CBBean;
 import com.android.qrcodeclient.R;
+import com.android.utils.HttpUtil;
 import com.android.utils.TextUtil;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.logging.Handler;
 
 import butterknife.Bind;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
 
 /**
  * Created by jisx on 2016/6/13.
@@ -52,6 +63,12 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     @Bind(R.id.user_name)
     EditText user_name;
 
+    @Bind(R.id.owner_phone_num_edit)
+    EditText owner_phone_num_edit;
+
+    @Bind(R.id.submit_apply_btn)
+    Button submit_apply_btn;
+
     AddressBean addressBean;
     CBBean cBBean;
     AppContext myApplicaton;
@@ -71,10 +88,11 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     public void initData() {
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
         //设置标题
-        String titleName = getIntent().getStringExtra(getResources().getString(R.string.develop_title));
+        title.setText(getResources().getString(R.string.access_control_application));
+       /* String titleName = getIntent().getStringExtra(getResources().getString(R.string.develop_title));
         if (!TextUtil.isEmpty(titleName)) {
             title.setText(titleName);
-        }
+        }*/
     }
 
     @Override
@@ -89,6 +107,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
         provice.setOnClickListener(this);
         xiaoqu.setOnClickListener(this);
+        submit_apply_btn.setOnClickListener(this);
     }
 
     @Override
@@ -135,11 +154,132 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
            //获取小区列表
            case R.id.xiaoqu:
 
-               startActivity(new Intent(this,CommunityActivity.class));
+               if(TextUtil.isEmpty(provice.getText().toString())){
+
+                   showToast("请先选省份");
+                   return;
+               }
+
+               Intent intent = new Intent(this,CommunityActivity.class);
+               intent.putExtra("areacode",addressBean.getAreaCode());
+               startActivity(intent);
+               break;
+
+           //提交申请
+           case R.id.submit_apply_btn:
+
+               submit();
+
                break;
 
            default:
                break;
        }
     }
+
+
+    /**
+     * 提交申请
+     */
+
+    private  void submit(){
+
+
+        if(TextUtil.isEmpty(user_phone.getText().toString())){
+
+            showToast("请输入手机");
+            return;
+        }
+        if(TextUtil.isEmpty(user_name.getText().toString())){
+
+            showToast("请输入姓名");
+            return;
+        }
+        if(TextUtil.isEmpty(owner_phone_num_edit.getText().toString())){
+
+            showToast("请输入业主号码");
+            return;
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("houseid",cBBean.getAreaId());
+            jsonObject.put("buildid",cBBean.getBuildid());
+            jsonObject.put("name",user_name.getText().toString());
+            jsonObject.put("sex","1");
+            jsonObject.put("ownerphone",owner_phone_num_edit.getText().toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        HttpUtil.post(ApplyActivity.this, Constants.HOST + Constants.submitCardApply, entity, "application/json", new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+                                showToast("提交成功");
+                                finish();
+                            } else {
+
+                                showToast("请求接口失败，请联系管理员");
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
+    }
+
 }

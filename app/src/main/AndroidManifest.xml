@@ -124,6 +124,9 @@
             android:name=".Life.MessageActivity"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".Life.ComeAddressActivity"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".Personal.PersonalActivity"
             android:theme="@style/AppTheme" />
         <activity
