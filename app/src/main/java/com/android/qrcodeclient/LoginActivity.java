@@ -13,6 +13,7 @@ import com.android.constant.Constants;
 import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -149,7 +150,11 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
             @Override
             public void onStart() {
                 super.onStart();
+                if(!NetUtil.checkNetInfo(LoginActivity.this)){
 
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
 
             }
 
@@ -165,13 +170,13 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
                           if(jsonObject.getBoolean("success")){
 
-                                  UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(),UserInfoBean.class);
+                                  UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
                                   String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
                                   SharedPreferenceUtil.getInstance(LoginActivity.this).putData("UserInfo", userInfoBeanStr);
 
                                   Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
                                   startActivity(intent1);
-
+                                  finish();
 
                           }else{
 

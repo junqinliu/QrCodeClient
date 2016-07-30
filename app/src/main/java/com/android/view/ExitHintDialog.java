@@ -28,10 +28,14 @@ public class ExitHintDialog extends Dialog {
     @Bind(R.id.confirm)
     TextView confirm;
 
+    OnConfirmListener onConfirmListener;
+    OnCancelListener onCancelListener;
 
-    public ExitHintDialog(Context context) {
+    public ExitHintDialog(Context context,OnConfirmListener onConfirmListener,OnCancelListener onCancelListener) {
         super(context, R.style.PromptDialog);
         this.context = context;
+        this.onConfirmListener = onConfirmListener;
+        this.onCancelListener = onCancelListener;
     }
 
     @Override
@@ -76,6 +80,17 @@ public class ExitHintDialog extends Dialog {
     public void dismiss() {
         ButterKnife.unbind(this);
         super.dismiss();
+    }
+
+    public interface OnConfirmListener{
+
+        public void onConfirm();
+
+    }
+    public interface OnCancelListener{
+
+        public void onCancel();
+
     }
 
 }

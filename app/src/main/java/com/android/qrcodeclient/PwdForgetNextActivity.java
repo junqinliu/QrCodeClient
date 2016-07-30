@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -126,6 +127,11 @@ public class PwdForgetNextActivity extends BaseAppCompatActivity implements View
             @Override
             public void onStart() {
                 super.onStart();
+                if(!NetUtil.checkNetInfo(PwdForgetNextActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
             }
 
 

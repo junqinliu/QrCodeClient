@@ -18,6 +18,7 @@ import com.android.model.EntranceBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -118,6 +119,11 @@ public class ComeAddressActivity extends BaseAppCompatActivity implements View.O
             @Override
             public void onStart() {
                 super.onStart();
+                if(!NetUtil.checkNetInfo(ComeAddressActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
             }
 
             @Override

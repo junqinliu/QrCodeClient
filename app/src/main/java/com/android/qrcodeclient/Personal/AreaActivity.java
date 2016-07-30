@@ -20,6 +20,7 @@ import com.android.model.AreaBean;
 import com.android.model.CityBean;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -148,6 +149,11 @@ public class AreaActivity extends BaseAppCompatActivity implements View.OnClickL
             @Override
             public void onStart() {
                 super.onStart();
+                if(!NetUtil.checkNetInfo(AreaActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
             }
 
 

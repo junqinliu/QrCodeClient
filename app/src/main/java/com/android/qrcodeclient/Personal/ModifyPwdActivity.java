@@ -12,6 +12,7 @@ import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -138,6 +139,11 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
             @Override
             public void onStart() {
                 super.onStart();
+                if(!NetUtil.checkNetInfo(ModifyPwdActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
             }
 
 

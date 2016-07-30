@@ -2,6 +2,8 @@ package com.android.qrcodeclient.Card;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -35,6 +37,7 @@ import com.android.qrcodeclient.Personal.ApplyActivity;
 import com.android.qrcodeclient.Personal.PersonalActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
 import com.android.utils.Utils;
@@ -44,10 +47,13 @@ import com.flyco.banner.anim.select.RotateEnter;
 import com.flyco.banner.anim.unselect.NoAnimExist;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -97,8 +103,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             "http://photocdn.sohu.com/tvmobilemvms/20150907/144159406950245847.jpg",//碟中谍4:阿汤哥高塔命悬一线,超越不可能
     };*/
 
-    public  String[] titles;
-    public  String[] urls;
+    public String[] titles;
+    public String[] urls;
 
     public BlockAdapter blockAdapter;
     private UserInfoBean userInfoBean = new UserInfoBean();
@@ -154,25 +160,27 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         } else {
 
             //从登陆界面进来 获取我的门禁列表(就是把上次二维码保存到share文件中再取出来用)
-            if(!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))){
+            if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
                 EntranceBean EntranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
                 buildname = EntranceBean.getBuildname();
                 buildid = EntranceBean.getBuildid();
-                binaryCode.setImageBitmap(Utils.createQRImage(this,EntranceBean.getSecret(), 500, 500));
+                binaryCode.setImageBitmap(Utils.createQRImage(this, EntranceBean.getSecret(), 500, 500));
 
-            }else{
+            } else {
 
-                if("PASS".equals(userInfoBean.getAduitstatus())){
+                if ("PASS".equals(userInfoBean.getAduitstatus())) {
                     //已经审核通过
-                    binaryCode.setImageBitmap(Utils.createQRImage(this,"test", 500, 500));
+                    binaryCode.setImageBitmap(Utils.createQRImage(this, "test", 500, 500));
 
-                }else{
+                } else {
 
+                    //表示用户还没审核通过 则显示默认的图片
+                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                 }
             }
 
-            if("PASS".equals(userInfoBean.getAduitstatus())){
+            if ("PASS".equals(userInfoBean.getAduitstatus())) {
                 //已经审核通过 开始获取我的门禁
                 getMyCard();
             }
@@ -198,10 +206,14 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onClick(View v) {
 
-                if("PASS".equals(userInfoBean.getAduitstatus())){
+                if ("PASS".equals(userInfoBean.getAduitstatus())) {
 
                     showCalendarPopwindow(v);
-                }else{
+                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+
+                    showToast("您所申请的微卡正在审核。。。");
+
+                } else {
                     //跳到门禁申请界面
                     startActivity(new Intent(CardMainActivity.this, ApplyActivity.class));
                 }
@@ -221,20 +233,31 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+    }
+
+    @Override
     public void onClick(View view) {
 
         switch (view.getId()) {
             //生活
             case R.id.life_layout:
 
-                if("PASS".equals(userInfoBean.getAduitstatus())){
+                if ("PASS".equals(userInfoBean.getAduitstatus())) {
 
                     startActivity(new Intent(this, LifeActivity.class));
-                }else{
+
+                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+
+                    showToast("您所申请的微卡正在审核。。。");
+
+                } else {
                     //跳到门禁申请界面
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
-
 
 
                 break;
@@ -242,11 +265,15 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             case R.id.card_layout:
 
 
-
-                if("PASS".equals(userInfoBean.getAduitstatus())){
+                if ("PASS".equals(userInfoBean.getAduitstatus())) {
 
                     getMyCard();
-                }else{
+
+                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+
+                    showToast("您所申请的微卡正在审核。。。");
+
+                } else {
                     //跳到门禁申请界面
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
@@ -257,10 +284,14 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             case R.id.my_layout:
 
 
-                if("PASS".equals(userInfoBean.getAduitstatus())){
+                if ("PASS".equals(userInfoBean.getAduitstatus())) {
 
                     startActivity(new Intent(this, PersonalActivity.class));
-                }else{
+                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+
+                    showToast("您所申请的微卡正在审核。。。");
+
+                } else {
                     //跳到门禁申请界面
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
@@ -271,52 +302,21 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             //分享
             case R.id.add_img:
 
-                if("PASS".equals(userInfoBean.getAduitstatus())){
+                if ("PASS".equals(userInfoBean.getAduitstatus())) {
 
                     Intent intent = new Intent(this, SendCardActivity.class);
-                    intent.putExtra("buildname",buildname);
-                    intent.putExtra("buildid",buildid);
+                    intent.putExtra("buildname", buildname);
+                    intent.putExtra("buildid", buildid);
                     startActivity(intent);
-                }else{
+                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+
+                    showToast("您所申请的微卡正在审核。。。");
+
+                } else {
                     //跳到门禁申请界面
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
 
-
-
-
-                /*
-                OnekeyShare oks = new OnekeyShare();
-                //关闭sso授权
-                oks.disableSSOWhenAuthorize();
-
-                // 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
-                //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
-                // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-                oks.setTitle("微卡管理");
-                // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-                // oks.setTitleUrl("http://sharesdk.cn");
-                // text是分享文本，所有平台都需要这个字段
-                oks.setText("我是分享文本");
-
-                oks.setTitleUrl("http://mob.com");
-
-                oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
-
-                // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-                //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
-                // url仅在微信（包括好友和朋友圈）中使用
-                //oks.setUrl("http://sharesdk.cn");
-                // comment是我对这条分享的评论，仅在人人网和QQ空间使用
-                //   oks.setComment("我是测试评论文本");
-                // site是分享此内容的网站名称，仅在QQ空间使用
-                // oks.setSite(getString(R.string.app_name));
-                // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-                // oks.setSiteUrl("http://sharesdk.cn");
-
-                // 启动分享GUI
-                oks.show(this);
-             */
 
                 break;
             default:
@@ -337,6 +337,12 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onStart() {
                 super.onStart();
+                if(!NetUtil.checkNetInfo(CardMainActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
+
             }
 
 
@@ -351,8 +357,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                             if (jsonObject.getBoolean("success")) {
                                 JSONObject gg = new JSONObject(jsonObject.getString("data"));
-                               adBeanList = JSON.parseArray(gg.getJSONArray("items").toString(),AdBean.class);
-                                if(adBeanList != null && adBeanList.size() > 0){
+                                adBeanList = JSON.parseArray(gg.getJSONArray("items").toString(), AdBean.class);
+                                if (adBeanList != null && adBeanList.size() > 0) {
 
                                     advert.setSelectAnimClass(RotateEnter.class)
                                             .setUnselectAnimClass(NoAnimExist.class)
@@ -435,7 +441,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), 500, 500));
                     popWindow.dismiss();
                     //把选中的楼栋的信息保存到本地，下次进来直接可以显示
-                    String  BeanStr = JSON.toJSONString(list.get(arg2));
+                    String BeanStr = JSON.toJSONString(list.get(arg2));
                     SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
                 }
 
@@ -458,6 +464,12 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onStart() {
                 super.onStart();
+
+                if(!NetUtil.checkNetInfo(CardMainActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
             }
 
             @Override
@@ -496,7 +508,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                             binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500));
 
                                             //把选中的楼栋的信息保存到本地，下次进来直接可以显示
-                                            String  BeanStr = JSON.toJSONString(list.get(i));
+                                            String BeanStr = JSON.toJSONString(list.get(i));
                                             SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
 
                                         }
@@ -512,7 +524,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                         binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), 500, 500));
 
                                         //把选中的楼栋的信息保存到本地，下次进来直接可以显示
-                                        String  BeanStr = JSON.toJSONString(list.get(0));
+                                        String BeanStr = JSON.toJSONString(list.get(0));
                                         SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
                                     }
                                 }

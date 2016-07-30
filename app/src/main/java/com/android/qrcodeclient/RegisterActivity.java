@@ -21,6 +21,7 @@ import com.android.constant.Constants;
 import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -299,7 +300,11 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onStart() {
                 super.onStart();
+                if(!NetUtil.checkNetInfo(RegisterActivity.this)){
 
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
 
             }
 

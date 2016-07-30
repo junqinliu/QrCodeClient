@@ -40,7 +40,7 @@ public class Constants {
 	/**
 	 * 注销
 	 */
-	public static final String  LoginOut = "";
+	public static final String  LoginOut = "/v0.1/user/loginout";
 
 	/**
 	 * 获取省份

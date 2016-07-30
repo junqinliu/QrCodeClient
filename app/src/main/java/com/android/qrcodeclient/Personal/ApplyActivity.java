@@ -10,13 +10,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.android.application.AppContext;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.AddressBean;
 import com.android.model.CBBean;
+import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
+import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -224,6 +228,11 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
             @Override
             public void onStart() {
                 super.onStart();
+                if(!NetUtil.checkNetInfo(ApplyActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
             }
 
 
@@ -239,6 +248,12 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                             if (jsonObject.getBoolean("success")) {
 
                                 showToast("提交成功");
+                                //门卡申请提交成功后，改变本地文件userinfobean中的状态变为审核
+                                UserInfoBean   userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(ApplyActivity.this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+                                userInfoBean.setAduitstatus("AUDITING");
+                                String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
+                                SharedPreferenceUtil.getInstance(ApplyActivity.this).putData("UserInfo", userInfoBeanStr);
+
                                 finish();
                             } else {
 
@@ -261,6 +276,8 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                         String str1 = new String(responseBody);
                         JSONObject jsonObject1 = new JSONObject(str1);
                         showToast(jsonObject1.getString("msg"));
+
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();

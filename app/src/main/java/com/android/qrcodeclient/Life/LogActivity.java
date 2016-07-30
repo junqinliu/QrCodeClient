@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -17,6 +18,7 @@ import com.android.model.CommunityBean;
 import com.android.model.LogBean;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -128,6 +130,11 @@ public class LogActivity extends BaseAppCompatActivity implements View.OnClickLi
             @Override
             public void onStart() {
                 super.onStart();
+                if(!NetUtil.checkNetInfo(LogActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
             }
 
             @Override
