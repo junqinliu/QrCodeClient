@@ -69,6 +69,10 @@ public class Constants {
 	 */
 	public static final String  InviteLog = "/v0.1/user/invite";
 	/**
+	 * 我的消息
+	 */
+	public static final String  Message = "/v0.1/property";
+	/**
 	 * 邀请
 	 */
 	public static final String  Invite = "/v0.1/user/invite";

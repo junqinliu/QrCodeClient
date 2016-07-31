@@ -9,10 +9,20 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.android.adapter.MessageAdapter;
 import com.android.base.BaseAppCompatActivity;
+import com.android.constant.Constants;
+import com.android.model.LogBean;
 import com.android.model.MessageBean;
 import com.android.qrcodeclient.R;
+import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +51,11 @@ public class MessageActivity extends BaseAppCompatActivity implements View.OnCli
     private boolean loadingMore = false;
 
     List<MessageBean> list;
+    List<MessageBean> listTemp = new ArrayList<>();
 
     MessageAdapter adapter;
+    int pageNumber = 0;
+    int pageSize = 10;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +77,7 @@ public class MessageActivity extends BaseAppCompatActivity implements View.OnCli
         list = new ArrayList<>();
         adapter = new MessageAdapter(this,list);
         listView.setAdapter(adapter);
+        getData();
     }
 
     @Override
@@ -80,7 +94,9 @@ public class MessageActivity extends BaseAppCompatActivity implements View.OnCli
 
     @Override
     public void onRefresh() {
-        adapter.reAddList(getData());
+        pageNumber = 0;
+        list.clear();
+        getData();
         swipeRefresh.setRefreshing(false);
     }
 
@@ -91,35 +107,104 @@ public class MessageActivity extends BaseAppCompatActivity implements View.OnCli
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-// 倒数第二个item为当前屏最后可见时，加载更多
-        if ((firstVisibleItem + visibleItemCount + 1 >= totalItemCount) && !loadingMore) {
-            loadingMore = true;
+        // 倒数第二个item为当前屏最后可见时，加载更多
+        if ((firstVisibleItem + visibleItemCount + 1 >= totalItemCount) && loadingMore) {
+           /* loadingMore = true;
             //TODO 加载数据
             adapter.addAll(getData());
-            loadingMore = false;
+            loadingMore = false;*/
+            getData();
         }
     }
 
-    private List<MessageBean> getData() {
-        List<MessageBean> list = new ArrayList<>();
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容1"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容2"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容3"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容4"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容5"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容6"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容7"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容8"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容9"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容10"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容11"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容12"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容13"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容14"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容15"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容16"));
-        list.add(new MessageBean("2016-4-3 19:20:32","系统通知的内容17"));
-        return list;
+
+
+
+    private void getData() {
+
+        RequestParams params = new RequestParams();
+        params.put("pageSize",pageSize);
+        params.put("pageNumber",pageNumber);
+        params.put("propertytype","PUSH");
+        HttpUtil.get(Constants.HOST + Constants.Message, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (!NetUtil.checkNetInfo(MessageActivity.this)) {
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+                                pageNumber = pageNumber + 1;
+                                JSONObject gg = new JSONObject(jsonObject.getString("data"));
+                                listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), MessageBean.class);
+                                list.addAll(listTemp);
+                                adapter.notifyDataSetChanged();
+                                if (listTemp.size() == 10) {
+                                    loadingMore = true;
+                                } else {
+                                    loadingMore = false;
+                                }
+
+                                if(list == null || list.size() <=0){
+
+                                    showToast("暂无消息通告");
+                                }
+
+                            } else {
+
+                                showToast("请求接口失败，请联系管理员");
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
     }
+
 
 }

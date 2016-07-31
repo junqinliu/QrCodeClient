@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.base.BaseAppCompatActivity;
 import com.android.qrcodeclient.Life.DevelopingActivity;
+import com.android.qrcodeclient.Life.MessageActivity;
 import com.android.qrcodeclient.Personal.Cell.Complaint.ComplaintActivity;
 import com.android.qrcodeclient.Personal.Cell.Warranty.WarrantyActivity;
 import com.android.qrcodeclient.R;
@@ -84,8 +85,10 @@ public class CellActivity extends BaseAppCompatActivity implements View.OnClickL
         switch (view.getId()) {
             //信息公告
             case R.id.announcement:
-                break;
 
+                bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
+                goNext(MessageActivity.class, bundle);
+                break;
             //设备报修
             case R.id.warranty:
                 bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
