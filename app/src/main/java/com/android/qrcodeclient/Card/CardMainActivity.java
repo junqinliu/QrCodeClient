@@ -127,8 +127,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         }
 
-        toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
-        title.setText(R.string.card_title);
+        toolbar.setNavigationIcon(R.mipmap.qiehuan);//
+        //title.setText(R.string.card_title);//
 
         //广告
        /* advert.setSelectAnimClass(RotateEnter.class)
@@ -142,6 +142,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             //从我的门禁列表进来
             buildname = getIntent().getStringExtra("buildname");
             buildid = getIntent().getStringExtra("buildid");
+            title.setText(buildname);//
             showToast(secret);
             binaryCode.setImageBitmap(Utils.createQRImage(this, secret, 500, 500));
         } else {
@@ -425,6 +426,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     buildname = list.get(arg2).getBuildname();
                     buildid = list.get(arg2).getHouseid();
                     showToast(list.get(arg2).getSecret());
+                    title.setText(buildname);//ljf
                     binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), 500, 500));
                     popWindow.dismiss();
                     //把选中的楼栋的信息保存到本地，下次进来直接可以显示
@@ -492,6 +494,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                             buildname = list.get(i).getBuildname();
                                             buildid = list.get(i).getBuildid();
                                             showToast(buildname + "比较" + list.get(i).getBuildname());
+                                            title.setText(buildname);//ljf
                                             binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500));
 
                                             //把选中的楼栋的信息保存到本地，下次进来直接可以显示
@@ -513,6 +516,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                         buildname = list.get(0).getBuildname();
                                         buildid = list.get(0).getBuildid();
                                         showToast(list.get(0).getSecret());
+                                        title.setText(buildname);//ljf
                                         binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), 500, 500));
 
                                         //把选中的楼栋的信息保存到本地，下次进来直接可以显示

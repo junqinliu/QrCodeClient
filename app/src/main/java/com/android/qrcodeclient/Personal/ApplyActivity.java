@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.application.AppContext;
+import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.AddressBean;
 import com.android.model.CBBean;
 import com.android.model.UserInfoBean;
+import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
@@ -77,6 +79,8 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     CBBean cBBean;
     AppContext myApplicaton;
 
+    private String flag;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +97,22 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
         //设置标题
         title.setText(getResources().getString(R.string.access_control_application));
+        flag = getIntent().getStringExtra("flag");
+
+        if("register".equals(flag)){
+
+            //表示是注册界面进来
+           UserInfoBean   userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+
+            //配置请求接口全局token 和 userid
+            if (userInfoBean != null) {
+
+                HttpUtil.getClient().addHeader("Token", userInfoBean.getToken());
+                HttpUtil.getClient().addHeader("Userid", userInfoBean.getUserid());
+
+            }
+        }
+
        /* String titleName = getIntent().getStringExtra(getResources().getString(R.string.develop_title));
         if (!TextUtil.isEmpty(titleName)) {
             title.setText(titleName);
@@ -253,8 +273,15 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                                 userInfoBean.setAduitstatus("AUDITING");
                                 String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
                                 SharedPreferenceUtil.getInstance(ApplyActivity.this).putData("UserInfo", userInfoBeanStr);
+                                if("register".equals(flag)){
+                                   Intent intent = new Intent(ApplyActivity.this, CardMainActivity.class);
+                                    startActivity(intent);
+                                    ExitApplication.getInstance().exitAll();
+                                }else{
+                                    finish();
+                                }
 
-                                finish();
+
                             } else {
 
                                 showToast("请求接口失败，请联系管理员");

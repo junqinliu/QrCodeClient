@@ -110,6 +110,7 @@ public class CityActivity extends BaseAppCompatActivity implements View.OnClickL
                 intent.putExtra("cityCode",cityCode);
                 intent.putExtra("cityName",cityName);
                 startActivity(intent);
+                finish();
             }
         });
 

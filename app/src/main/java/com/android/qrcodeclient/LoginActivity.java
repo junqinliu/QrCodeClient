@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.UserInfoBean;
@@ -50,7 +51,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        ExitApplication.getInstance().addAllActivity(this);
     }
 
 

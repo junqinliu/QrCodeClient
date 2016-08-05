@@ -20,6 +20,7 @@ import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
+import com.android.qrcodeclient.Personal.ApplyActivity;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
@@ -155,7 +156,6 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
 
             //完成按钮
             case R.id.btn_finsh:
-
                 if(TextUtil.isEmpty(userPhone)){
 
                     showToast("请输入手机号码");
@@ -320,13 +320,16 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
 
                             if(jsonObject.getBoolean("success")){
 
-                               /* UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
+                                UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
                                 String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
-                                SharedPreferenceUtil.getInstance(LoginActivity.this).putData("UserInfo", userInfoBeanStr);*/
+                                SharedPreferenceUtil.getInstance(RegisterActivity.this).putData("UserInfo", userInfoBeanStr);/**/
 
-                                Intent intent1 = new Intent(RegisterActivity.this, LoginActivity.class);
+
+//                                Intent intent1 = new Intent(RegisterActivity.this, LoginActivity.class);
+                                Intent intent1 = new Intent(RegisterActivity.this, ApplyActivity.class);
+                                intent1.putExtra("flag","register");
                                 startActivity(intent1);
-
+                                finish();
 
                             }else{
 

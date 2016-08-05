@@ -108,6 +108,7 @@ public class ProviceActivity extends BaseAppCompatActivity implements View.OnCli
                 intent.putExtra("provinceName", provinceName);
 
                 startActivity(intent);
+                finish();
             }
         });
 

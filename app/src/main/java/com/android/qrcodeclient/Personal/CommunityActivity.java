@@ -40,6 +40,7 @@ import butterknife.Bind;
 public class CommunityActivity extends BaseAppCompatActivity implements View.OnClickListener ,
         SwipeRefreshLayout.OnRefreshListener,AbsListView.OnScrollListener{
 
+    static String houseId ;
     @Bind(R.id.title)
     TextView title;
 
@@ -232,6 +233,8 @@ public class CommunityActivity extends BaseAppCompatActivity implements View.OnC
 
 
     }
+
+
 
 
 
