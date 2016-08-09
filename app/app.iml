@@ -100,8 +100,9 @@
     <orderEntry type="library" exported="" name="support-annotations-23.1.1" level="project" />
     <orderEntry type="library" exported="" name="SMSSDK-2.1.0-" level="project" />
     <orderEntry type="library" exported="" name="design-23.1.1" level="project" />
-    <orderEntry type="library" exported="" name="glide-3.6.1" level="project" />
     <orderEntry type="library" exported="" name="butterknife-7.0.1" level="project" />
+    <orderEntry type="library" exported="" name="glide-3.6.1" level="project" />
+    <orderEntry type="library" exported="" name="fastjson-1.1.26" level="project" />
     <orderEntry type="library" exported="" name="MobTools-2016.0623.1641" level="project" />
     <orderEntry type="library" exported="" name="android-async-http-1.4.9" level="project" />
     <orderEntry type="library" exported="" name="ShareSDK-ShortMessage-2.7.3" level="project" />
@@ -116,8 +117,8 @@
     <orderEntry type="library" exported="" name="FlycoBanner_Lib-2.0.2" level="project" />
     <orderEntry type="library" exported="" name="zxing" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
-    <orderEntry type="library" exported="" name="ShareSDK-QQ-2.7.3" level="project" />
     <orderEntry type="library" exported="" name="ShareSDK-Wechat-2.7.3" level="project" />
+    <orderEntry type="library" exported="" name="ShareSDK-QQ-2.7.3" level="project" />
     <orderEntry type="module" module-name="model" exported="" />
     <orderEntry type="library" exported="" name="org.apache.http.legacy-android-23" level="project" />
   </component>

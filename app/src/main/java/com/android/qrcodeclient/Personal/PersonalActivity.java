@@ -123,10 +123,6 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
 
             //退出登录
             case R.id.loginout:
-               /* if(exitHintDialog == null){
-                    exitHintDialog = new ExitHintDialog(PersonalActivity.this);
-                }
-                exitHintDialog.show();*/
 
                 new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT).setTitle("提示")
                         .setMessage("确定退出？")

@@ -99,10 +99,10 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
         title.setText(getResources().getString(R.string.access_control_application));
         flag = getIntent().getStringExtra("flag");
 
+        UserInfoBean   userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
         if("register".equals(flag)){
 
             //表示是注册界面进来
-           UserInfoBean   userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
 
             //配置请求接口全局token 和 userid
             if (userInfoBean != null) {
@@ -113,10 +113,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
             }
         }
 
-       /* String titleName = getIntent().getStringExtra(getResources().getString(R.string.develop_title));
-        if (!TextUtil.isEmpty(titleName)) {
-            title.setText(titleName);
-        }*/
+        user_phone.setText(userInfoBean.getPhone());
     }
 
     @Override

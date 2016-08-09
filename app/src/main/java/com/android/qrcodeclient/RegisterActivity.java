@@ -202,7 +202,7 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
                     if (result == SMSSDK.RESULT_COMPLETE) {
                         //验证码验证成功
                         if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {
-                           Toast.makeText(RegisterActivity.this, "验证成功", Toast.LENGTH_LONG).show();
+                           //Toast.makeText(RegisterActivity.this, "验证成功", Toast.LENGTH_LONG).show();
 
                             registerUser();
 
@@ -321,15 +321,17 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
                             if(jsonObject.getBoolean("success")){
 
                                 UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
+                                userInfoBean.setPhone(userPhone);
                                 String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
                                 SharedPreferenceUtil.getInstance(RegisterActivity.this).putData("UserInfo", userInfoBeanStr);/**/
 
+                                //跳转到门禁申请界面
+                                new AlertDialog.Builder(RegisterActivity.this, AlertDialog.THEME_HOLO_LIGHT).setTitle("提示")
+                                        .setMessage("注册成功")
+                                       /* .setNegativeButton("取消", null)*/
+                                        .setPositiveButton("确定", dialogListener).create().show();
 
-//                                Intent intent1 = new Intent(RegisterActivity.this, LoginActivity.class);
-                                Intent intent1 = new Intent(RegisterActivity.this, ApplyActivity.class);
-                                intent1.putExtra("flag","register");
-                                startActivity(intent1);
-                                finish();
+
 
                             }else{
 
@@ -375,6 +377,21 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
 
 
     }
+
+
+    // 提示框按钮监听
+    android.content.DialogInterface.OnClickListener dialogListener = new android.content.DialogInterface.OnClickListener() {
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+            Intent intent1 = new Intent(RegisterActivity.this, ApplyActivity.class);
+            intent1.putExtra("flag","register");
+            startActivity(intent1);
+            finish();
+
+        }
+    };
 
 
 }

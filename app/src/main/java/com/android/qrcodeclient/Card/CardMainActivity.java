@@ -36,6 +36,7 @@ import com.android.qrcodeclient.Life.SendCardActivity;
 import com.android.qrcodeclient.Personal.ApplyActivity;
 import com.android.qrcodeclient.Personal.PersonalActivity;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageUtil;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
@@ -127,8 +128,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         }
 
-        toolbar.setNavigationIcon(R.mipmap.qiehuan);//
-        //title.setText(R.string.card_title);//
+        toolbar.setNavigationIcon(R.mipmap.qiehuan);
+        //title.setText(R.string.card_title);
 
         //广告
        /* advert.setSelectAnimClass(RotateEnter.class)
@@ -325,7 +326,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onStart() {
                 super.onStart();
-                if(!NetUtil.checkNetInfo(CardMainActivity.this)){
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
 
                     showToast("当前网络不可用,请检查网络");
                     return;
@@ -404,6 +405,11 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
      */
     private void showCalendarPopwindow(View v) {
 
+        if(list == null || list.size() ==0){
+            DialogMessageUtil.showDialog(CardMainActivity.this,"您还没有开门微卡，请联系小区管理员");
+            return;
+        }
+
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View vPopWindow = inflater.inflate(R.layout.block_popwindow, null, false);
         ListView list_view = (ListView) vPopWindow.findViewById(R.id.list_view);
@@ -472,16 +478,9 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                             if (jsonObject.getBoolean("success")) {
                                 list.clear();
-                                //  pageNumber = pageNumber + 1;
                                 JSONObject gg = new JSONObject(jsonObject.getString("data"));
                                 listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), EntranceBean.class);
                                 list.addAll(listTemp);
-                                //  blockAdapter.notifyDataSetChanged();
-                              /*  if (listTemp.size() == 10) {
-                                    loadingMore = true;
-                                } else {
-                                    loadingMore = false;
-                                }*/
 
 
                                 if (!TextUtil.isEmpty(buildname)) {
@@ -493,7 +492,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                             //表示上次选中的二维码，此时更新最新的二维码
                                             buildname = list.get(i).getBuildname();
                                             buildid = list.get(i).getBuildid();
-                                            showToast(buildname + "比较" + list.get(i).getBuildname());
+                                         //   showToast(buildname + "比较" + list.get(i).getBuildname());
                                             title.setText(buildname);//ljf
                                             binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500));
 
@@ -509,6 +508,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                     //初始化二维码
                                     if(list == null || list.size() <= 0){
 
+                                        DialogMessageUtil.showDialog(CardMainActivity.this,"您还没有开门微卡，请联系小区管理员");
                                         binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                                         return;
                                     }

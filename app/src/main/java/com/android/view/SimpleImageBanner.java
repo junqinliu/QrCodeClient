@@ -37,7 +37,7 @@ public class SimpleImageBanner extends BaseIndicatorBanner<AdBean, SimpleImageBa
     @Override
     public void onTitleSlect(TextView tv, int position) {
         final AdBean item = mDatas.get(position);
-        tv.setText(item.getTitle());
+        //tv.setText(item.getTitle()); remove by liujq 2016/08/08 去掉图片的标题
     }
 
     @Override

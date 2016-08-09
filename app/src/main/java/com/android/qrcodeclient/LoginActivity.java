@@ -30,8 +30,7 @@ import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
 
-public class LoginActivity extends BaseAppCompatActivity implements View.OnClickListener{
-
+public class LoginActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
 
     @Bind(R.id.btn_login)
@@ -64,6 +63,17 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     public void initData() {
 
+        if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""))) {
+
+            UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+            if (userInfoBean != null) {
+                Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
+                startActivity(intent1);
+                finish();
+            }
+        }
+
+
     }
 
     @Override
@@ -80,52 +90,52 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
 
-      switch (view.getId()){
+        switch (view.getId()) {
 
-        //登录按钮
-        case R.id.btn_login:
+            //登录按钮
+            case R.id.btn_login:
 
-            Login();
-
-
-          break;
-
-        //注册按钮
-       case  R.id.tv_resiger:
+                Login();
 
 
-          Intent intent2 = new Intent(LoginActivity.this, RegisterActivity.class);
-          startActivity(intent2);
+                break;
 
-          break;
-
-        //忘记密码
-        case  R.id.tv_forgetpassword:
-
-          Intent intent3 = new Intent(LoginActivity.this, PwdForgetActivity.class);
-          startActivity(intent3);
-
-          break;
-        default:
-          break;
+            //注册按钮
+            case R.id.tv_resiger:
 
 
-      }
+                Intent intent2 = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent2);
+
+                break;
+
+            //忘记密码
+            case R.id.tv_forgetpassword:
+
+                Intent intent3 = new Intent(LoginActivity.this, PwdForgetActivity.class);
+                startActivity(intent3);
+
+                break;
+            default:
+                break;
+
+
+        }
     }
 
     /**
      * 登录接口
      */
-    private void Login(){
+    private void Login() {
 
 
-        if(TextUtil.isEmpty(ed_account.getText().toString())){
+        if (TextUtil.isEmpty(ed_account.getText().toString())) {
 
             showToast("请输入手机号码");
 
             return;
         }
-        if(TextUtil.isEmpty(ed_password.getText().toString())){
+        if (TextUtil.isEmpty(ed_password.getText().toString())) {
 
             showToast("请输入密码");
 
@@ -134,8 +144,8 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("phone",ed_account.getText().toString());
-            jsonObject.put("password",ed_password.getText().toString());
+            jsonObject.put("phone", ed_account.getText().toString());
+            jsonObject.put("password", ed_password.getText().toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -147,11 +157,11 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
             e.printStackTrace();
         }
 
-        HttpUtil.post(LoginActivity.this,Constants.HOST + Constants.Login, entity,"application/json", new AsyncHttpResponseHandler() {
+        HttpUtil.post(LoginActivity.this, Constants.HOST + Constants.Login, entity, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
-                if(!NetUtil.checkNetInfo(LoginActivity.this)){
+                if (!NetUtil.checkNetInfo(LoginActivity.this)) {
 
                     showToast("当前网络不可用,请检查网络");
                     return;
@@ -169,20 +179,21 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
                         JSONObject jsonObject = new JSONObject(str);
                         if (jsonObject != null) {
 
-                          if(jsonObject.getBoolean("success")){
+                            if (jsonObject.getBoolean("success")) {
 
-                                  UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
-                                  String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
-                                  SharedPreferenceUtil.getInstance(LoginActivity.this).putData("UserInfo", userInfoBeanStr);
+                                UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
+                                userInfoBean.setPhone(ed_account.getText().toString());
+                                String userInfoBeanStr = JSON.toJSONString(userInfoBean);
+                                SharedPreferenceUtil.getInstance(LoginActivity.this).putData("UserInfo", userInfoBeanStr);
 
-                                  Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
-                                  startActivity(intent1);
-                                  finish();
+                                Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
+                                startActivity(intent1);
+                                finish();
 
-                          }else{
+                            } else {
 
-                              showToast("请求接口失败，请联系管理员");
-                          }
+                                showToast("请求接口失败，请联系管理员");
+                            }
 
                         }
                     } catch (JSONException e) {
@@ -197,18 +208,16 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
                /* store = JSON.parseObject(jsonObj.getJSONObject("store").toString(),Store.class);*/
                 /*list = JSON.parseArray(jsonObj.getJSONArray("data").toString(),OrderListBean.class);*/
 
-                if(responseBody != null){
+                if (responseBody != null) {
                     try {
                         String str1 = new String(responseBody);
                         JSONObject jsonObject1 = new JSONObject(str1);
                         showToast(jsonObject1.getString("msg"));
 
-                    }catch (JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
-
 
 
             }
@@ -225,7 +234,6 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
 
     }
-
 
 
 }
