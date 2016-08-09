@@ -245,6 +245,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     showToast("您所申请的微卡正在审核。。。");
 
                 } else {
+
                     //跳到门禁申请界面
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
