@@ -2,8 +2,6 @@ package com.android.qrcodeclient.Personal;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
@@ -15,14 +13,12 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.adapter.CommunityAdapter;
-import com.android.adapter.CommunityBlockAdapter;
-import com.android.application.AppContext;
+import com.android.adapter.KeySearchCommunityAdapter;
 import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
-import com.android.model.CBBean;
 import com.android.model.CommunityBean;
-import com.android.model.CommunityBlockBean;
+import com.android.model.KeySearchCommunityBean;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
@@ -40,9 +36,10 @@ import butterknife.Bind;
 /**
  * Created by liujq on 2016/7/24.
  */
-public class CommunityBlockActivity extends BaseAppCompatActivity implements View.OnClickListener ,
+public class KeySearchCommunityActivity extends BaseAppCompatActivity implements View.OnClickListener ,
         SwipeRefreshLayout.OnRefreshListener,AbsListView.OnScrollListener{
 
+    static String houseId ;
     @Bind(R.id.title)
     TextView title;
 
@@ -58,16 +55,13 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
     /*是不是在加载更多的状态中*/
     private boolean loadingMore = false;
 
-    List<CommunityBlockBean> list;
-    List<CommunityBlockBean> listTemp = new ArrayList<>();
-    CommunityBlockAdapter adapter;
+    List<KeySearchCommunityBean> list;
+    List<KeySearchCommunityBean> listTemp = new ArrayList<>();
+    KeySearchCommunityAdapter adapter;
+    String queryword = "";
 
     int pageNumber = 0;
     int pageSize = 10;
-    String  buildid;
-    String  name;
-    String  areaId;
-    String  areaName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,20 +72,19 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
     @Override
     public void initView() {
 
+        ExitApplication.getInstance().addAddressActivity(this);
+
+        queryword = getIntent().getStringExtra("queryword");
     }
 
     @Override
     public void initData() {
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
         //设置标题
-        title.setText(R.string.block_name);
-
-        Intent intent=getIntent();
-        areaId=intent.getStringExtra("areaId");
-        areaName=intent.getStringExtra("areaName");
+        title.setText(R.string.community_name);
 
         list = new ArrayList<>();
-        adapter = new CommunityBlockAdapter(this,list);
+        adapter = new KeySearchCommunityAdapter(this,list);
         listView.setAdapter(adapter);
         getData();
     }
@@ -106,20 +99,19 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                Intent intent = new Intent(KeySearchCommunityActivity.this, KeyCommunityBlockActivity.class);
+                String houseId = list.get(arg2).getHouseid();
+                String houseName = list.get(arg2).getName();
+                String provice = list.get(arg2).getProvincename();
+                String city = list.get(arg2).getCityname();
+                String area = list.get(arg2).getAreaname();
+                intent.putExtra("houseId", houseId);
+                intent.putExtra("houseName", houseName);
+                intent.putExtra("provice", provice);
+                intent.putExtra("city", city);
+                intent.putExtra("area", area);
 
-                buildid = list.get(arg2).getBuildid();
-                name = list.get(arg2).getName();
-
-                CBBean cb = new CBBean();
-                cb.setAreaId(areaId);
-                cb.setAreaName(areaName);
-                cb.setBuildid(buildid);
-                cb.setName(name);
-                AppContext myApplicaton = (AppContext)getApplication();
-                myApplicaton.setcBBean(cb);
-                ExitApplication.getInstance().exitAddressActivity();
-                finish();
-
+                startActivity(intent);
             }
         });
 
@@ -132,7 +124,7 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
 
     @Override
     public void onRefresh() {
-       // adapter.reAddList(getData());
+
         pageNumber = 0;
         list.clear();
         getData();
@@ -150,7 +142,7 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
         if ((firstVisibleItem + visibleItemCount + 1 >= totalItemCount) && loadingMore) {
 
             //TODO 加载数据
-            getData();
+             getData();
 
         }
     }
@@ -160,11 +152,12 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
         RequestParams params = new RequestParams();
         params.put("pageSize",pageSize);
         params.put("pageNumber",pageNumber);
-        HttpUtil.get(Constants.HOST + Constants.Block + "/"+ areaId, params, new AsyncHttpResponseHandler() {
+        params.put("queryword",queryword);
+        HttpUtil.get(Constants.HOST + Constants.SearchHouse, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
-                if(!NetUtil.checkNetInfo(CommunityBlockActivity.this)){
+                if(!NetUtil.checkNetInfo(KeySearchCommunityActivity.this)){
 
                     showToast("当前网络不可用,请检查网络");
                     return;
@@ -182,9 +175,10 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
 
                             if (jsonObject.getBoolean("success")) {
 
+
                                 pageNumber = pageNumber + 1;
                                 JSONObject gg = new JSONObject(jsonObject.getString("data"));
-                                listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), CommunityBlockBean.class);
+                                listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), KeySearchCommunityBean.class);
 
                                 if(listTemp != null && listTemp.size() > 0){
 
@@ -195,9 +189,10 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
                                     }else{
                                         loadingMore = false;
                                     }
+
                                 }else{
 
-                                    //showToast("该小区目前还没有维护楼栋");
+
                                 }
 
 
@@ -244,23 +239,9 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
 
     }
 
-   public static Handler myHandler = new Handler() {
-
-       public void handleMessage(Message msg) {
-           switch (msg.what) {
-               case 1:
 
 
 
-                   break;
-           }
-           super.handleMessage(msg);
-       }
-
-
-
-
-    };
 
 }
 

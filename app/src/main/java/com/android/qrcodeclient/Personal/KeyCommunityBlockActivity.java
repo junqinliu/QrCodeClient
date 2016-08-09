@@ -14,15 +14,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.android.adapter.CommunityAdapter;
 import com.android.adapter.CommunityBlockAdapter;
 import com.android.application.AppContext;
 import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.CBBean;
-import com.android.model.CommunityBean;
 import com.android.model.CommunityBlockBean;
+import com.android.model.KeyAddressBean;
 import com.android.qrcodeclient.R;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
@@ -40,7 +39,7 @@ import butterknife.Bind;
 /**
  * Created by liujq on 2016/7/24.
  */
-public class CommunityBlockActivity extends BaseAppCompatActivity implements View.OnClickListener ,
+public class KeyCommunityBlockActivity extends BaseAppCompatActivity implements View.OnClickListener ,
         SwipeRefreshLayout.OnRefreshListener,AbsListView.OnScrollListener{
 
     @Bind(R.id.title)
@@ -66,8 +65,11 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
     int pageSize = 10;
     String  buildid;
     String  name;
-    String  areaId;
-    String  areaName;
+    String  houseid;
+    String  housename;
+    String  provice;
+    String  city;
+    String  area;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,8 +89,11 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
         title.setText(R.string.block_name);
 
         Intent intent=getIntent();
-        areaId=intent.getStringExtra("areaId");
-        areaName=intent.getStringExtra("areaName");
+        houseid = intent.getStringExtra("houseId");
+        housename = intent.getStringExtra("houseName");
+        provice = intent.getStringExtra("provice");
+        city = intent.getStringExtra("city");
+        area = intent.getStringExtra("area");
 
         list = new ArrayList<>();
         adapter = new CommunityBlockAdapter(this,list);
@@ -110,15 +115,19 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
                 buildid = list.get(arg2).getBuildid();
                 name = list.get(arg2).getName();
 
-                CBBean cb = new CBBean();
-                cb.setAreaId(areaId);
-                cb.setAreaName(areaName);
-                cb.setBuildid(buildid);
-                cb.setName(name);
+                KeyAddressBean keyAddressBean = new KeyAddressBean();
+                keyAddressBean.setProvice(provice);
+                keyAddressBean.setCity(city);
+                keyAddressBean.setArea(area);
+                keyAddressBean.setHouseId(houseid);
+                keyAddressBean.setHouseName(housename);
+                keyAddressBean.setBuildid(buildid);
+                keyAddressBean.setBuildname(name);
                 AppContext myApplicaton = (AppContext)getApplication();
-                myApplicaton.setcBBean(cb);
+                myApplicaton.setKeyAddressBean(keyAddressBean);
                 ExitApplication.getInstance().exitAddressActivity();
                 finish();
+
 
             }
         });
@@ -132,7 +141,6 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
 
     @Override
     public void onRefresh() {
-       // adapter.reAddList(getData());
         pageNumber = 0;
         list.clear();
         getData();
@@ -160,11 +168,11 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
         RequestParams params = new RequestParams();
         params.put("pageSize",pageSize);
         params.put("pageNumber",pageNumber);
-        HttpUtil.get(Constants.HOST + Constants.Block + "/"+ areaId, params, new AsyncHttpResponseHandler() {
+        HttpUtil.get(Constants.HOST + Constants.Block + "/"+ houseid, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
-                if(!NetUtil.checkNetInfo(CommunityBlockActivity.this)){
+                if(!NetUtil.checkNetInfo(KeyCommunityBlockActivity.this)){
 
                     showToast("当前网络不可用,请检查网络");
                     return;

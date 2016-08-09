@@ -60,6 +60,10 @@ public class Constants {
 	 */
 	public static final String  House = "/v0.1/place/house";
 	/**
+	 * 搜索小区
+	 */
+	public static final String  SearchHouse = "/v0.1/place/house";
+	/**
 	 * 楼栋列表
 	 */
 	public static final String  Block = "/v0.1/place/build";

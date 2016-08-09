@@ -187,7 +187,7 @@ public class CommunityActivity extends BaseAppCompatActivity implements View.OnC
 
                                 }else{
 
-                                    showToast("该县区目前还没有维护小区");
+                                   // showToast("该县区目前还没有维护小区");
                                 }
 
 

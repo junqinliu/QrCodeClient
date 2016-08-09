@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -17,6 +18,7 @@ import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.AddressBean;
 import com.android.model.CBBean;
+import com.android.model.KeyAddressBean;
 import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.qrcodeclient.R;
@@ -44,10 +46,12 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
     @Bind(R.id.title)
     TextView title;
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
+    @Bind(R.id.search_text)
+    EditText search_text;
+    @Bind(R.id.search_button)
+    ImageView search_button;
     @Bind(R.id.provice)
     EditText provice;
     @Bind(R.id.city)
@@ -77,7 +81,10 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
     AddressBean addressBean;
     CBBean cBBean;
+    KeyAddressBean keyAddressBean;
     AppContext myApplicaton;
+    String houseid = "";
+    String buildid = "";
 
     private String flag;
 
@@ -125,7 +132,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                 finish();
             }
         });
-
+        search_button.setOnClickListener(this);
         provice.setOnClickListener(this);
         xiaoqu.setOnClickListener(this);
         submit_apply_btn.setOnClickListener(this);
@@ -137,6 +144,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
         myApplicaton = (AppContext)getApplication();
         addressBean = myApplicaton.getAddressBean();
         if(addressBean != null ){
+
             provice.setText(addressBean.getProvinceName());
             city.setText(addressBean.getCityName());
             zone.setText(addressBean.getAreaName());
@@ -148,6 +156,21 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
             xiaoqu.setText(cBBean.getAreaName());
             block.setText(cBBean.getName());
+            houseid = cBBean.getAreaId();
+            buildid = cBBean.getBuildid();
+        }
+
+        keyAddressBean = myApplicaton.getKeyAddressBean();
+
+        if(keyAddressBean != null){
+
+            provice.setText(keyAddressBean.getProvice());
+            city.setText(keyAddressBean.getCity());
+            zone.setText(keyAddressBean.getArea());
+            xiaoqu.setText(keyAddressBean.getHouseName());
+            block.setText(keyAddressBean.getBuildname());
+            houseid = keyAddressBean.getHouseId();
+            buildid = keyAddressBean.getBuildid();
         }
     }
 
@@ -156,8 +179,10 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
         super.onDestroy();
          addressBean = null;
          cBBean = null;
+        keyAddressBean = null;
         myApplicaton.setAddressBean(addressBean);
         myApplicaton.setcBBean(cBBean);
+        myApplicaton.setKeyAddressBean(keyAddressBean);
 
     }
 
@@ -165,10 +190,34 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     public void onClick(View v) {
        switch (v.getId()){
 
+           //关键字查询
+           case R.id.search_button:
+
+               if(TextUtil.isEmpty(search_text.getText().toString())){
+
+                   showToast("请输入小区名称");
+                   return;
+               }
+
+               //清空上次所选的地址和小区楼栋
+               addressBean = null;
+               cBBean = null;
+               myApplicaton.setAddressBean(addressBean);
+               myApplicaton.setcBBean(cBBean);
+               Intent intent1 = new Intent(this,KeySearchCommunityActivity.class);
+               intent1.putExtra("queryword",search_text.getText().toString());
+               startActivity(intent1);
+               clearData();
+               break;
+
            //获取省份信息
            case R.id.provice:
 
-                 startActivity(new Intent(this,ProviceActivity.class));
+               //清空上次的关键字查询
+               keyAddressBean = null;
+               myApplicaton.setKeyAddressBean(keyAddressBean);
+               startActivity(new Intent(this,ProviceActivity.class));
+               clearData();
 
                break;
 
@@ -206,6 +255,14 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     private  void submit(){
 
 
+        if(TextUtil.isEmpty(houseid)){
+            showToast("请选择小区");
+            return;
+        }
+        if(TextUtil.isEmpty(buildid)){
+            showToast("请选择楼栋");
+            return;
+        }
         if(TextUtil.isEmpty(user_phone.getText().toString())){
 
             showToast("请输入手机");
@@ -224,8 +281,8 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("houseid",cBBean.getAreaId());
-            jsonObject.put("buildid",cBBean.getBuildid());
+            jsonObject.put("houseid",houseid);
+            jsonObject.put("buildid",buildid);
             jsonObject.put("name",user_name.getText().toString());
             jsonObject.put("sex","1");
             jsonObject.put("ownerphone",owner_phone_num_edit.getText().toString());
@@ -321,6 +378,15 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
         });
 
 
+    }
+
+    private void clearData(){
+
+        provice.setText("");
+        city.setText("");
+        zone.setText("");
+        xiaoqu.setText("");
+        block.setText("");
     }
 
 }

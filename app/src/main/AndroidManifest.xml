@@ -152,7 +152,9 @@
         <activity android:name=".Personal.CityActivity"></activity>
         <activity android:name=".Personal.AreaActivity"></activity>
         <activity android:name=".Personal.CommunityActivity"></activity>
+        <activity android:name=".Personal.KeySearchCommunityActivity"></activity>
         <activity android:name=".Personal.CommunityBlockActivity"></activity>
+        <activity android:name=".Personal.KeyCommunityBlockActivity"></activity>
 
 
         <service android:name="com.android.notify.PushService"
