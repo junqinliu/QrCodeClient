@@ -56,15 +56,14 @@ public class MessageAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.messageType.setText("系统通知");
+
         holder.time.setText(list.get(i).getTime());
-        holder.content.setText(list.get(i).getContent());
+        holder.content.setText(list.get(i).getTitle());
         return convertView;
     }
 
     static class ViewHolder {
-        @Bind(R.id.messageType)
-        TextView messageType;
+
         @Bind(R.id.time)
         TextView time;
         @Bind(R.id.content)

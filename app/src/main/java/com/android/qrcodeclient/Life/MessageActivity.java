@@ -55,7 +55,7 @@ public class MessageActivity extends BaseAppCompatActivity implements View.OnCli
 
     MessageAdapter adapter;
     int pageNumber = 0;
-    int pageSize = 10;
+    int pageSize = 20;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

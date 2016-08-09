@@ -9,15 +9,8 @@ public class MessageBean {
 
     private String time;
 
-    private String  content;
+    private String  title;
 
-    public MessageBean() {
-    }
-
-    public MessageBean(String time, String content) {
-        this.time = time;
-        this.content = content;
-    }
 
     public String getTime() {
         return time;
@@ -27,11 +20,11 @@ public class MessageBean {
         this.time = time;
     }
 
-    public String getContent() {
-        return content;
+    public String getTitle() {
+        return title;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
