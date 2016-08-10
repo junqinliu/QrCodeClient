@@ -146,6 +146,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             title.setText(buildname);//
             showToast(secret);
             binaryCode.setImageBitmap(Utils.createQRImage(this, secret, 500, 500));
+            getMyCard();
+
         } else {
 
             //从登陆界面进来 获取我的门禁列表(就是把上次二维码保存到share文件中再取出来用)
@@ -190,7 +192,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         card_layout.setOnClickListener(this);
         my_layout.setOnClickListener(this);
         add_img.setOnClickListener(this);
-        advert.setOnClickListener(this);
+
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,6 +221,20 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     @OnClick(R.id.binaryCode)
     public void onClick() {
 
+        if ("PASS".equals(userInfoBean.getAduitstatus())) {
+
+            getMyCard();
+
+        } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+
+            showToast("您所申请的微卡正在审核。。。");
+
+        } else {
+
+            //跳到门禁申请界面
+            startActivity(new Intent(this, ApplyActivity.class));
+        }
+
     }
 
 
@@ -233,24 +249,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     public void onClick(View view) {
 
         switch (view.getId()) {
-            //点击二维码
-            case R.id.advert:
 
-                if ("PASS".equals(userInfoBean.getAduitstatus())) {
-
-                    getMyCard();
-
-                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
-
-                    showToast("您所申请的微卡正在审核。。。");
-
-                } else {
-
-                    //跳到门禁申请界面
-                    startActivity(new Intent(this, ApplyActivity.class));
-                }
-
-                break;
 
             //生活
             case R.id.life_layout:
