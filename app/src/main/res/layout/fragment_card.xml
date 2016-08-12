@@ -41,8 +41,8 @@
 
 
         <LinearLayout
-            android:layout_width="608px"
-            android:layout_height="608px"
+            android:layout_width="708px"
+            android:layout_height="708px"
             android:background="@mipmap/codebg"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
@@ -51,8 +51,8 @@
 
             <com.android.view.SquareImageView
                 android:id="@+id/binaryCode"
-                android:layout_width="600px"
-                android:layout_height="600px"
+                android:layout_width="700px"
+                android:layout_height="700px"
 
                 />
 
