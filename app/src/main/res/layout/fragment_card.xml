@@ -31,13 +31,33 @@
         banner:bb_scale="0.5625" />
 
 
-    <com.android.view.SquareImageView
+   <!-- <com.android.view.SquareImageView
         android:id="@+id/binaryCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
         android:layout_marginRight="60dp"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="40dp" />-->
+
+
+        <LinearLayout
+            android:layout_width="608px"
+            android:layout_height="608px"
+            android:background="@mipmap/codebg"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:padding="4dp"
+            android:orientation="horizontal">
+
+            <com.android.view.SquareImageView
+                android:id="@+id/binaryCode"
+                android:layout_width="600px"
+                android:layout_height="600px"
+
+                />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

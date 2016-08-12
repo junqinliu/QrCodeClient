@@ -148,7 +148,13 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
         public void onClick(DialogInterface dialog, int which) {
 
            //调用退出登录接口
-            Logout();
+            //Logout();
+            showToast("退出登录成功");
+            //跳转到登录接口 并且把本地文件的数据清除掉
+            Intent intent = new Intent(PersonalActivity.this, LoginActivity.class);
+            startActivity(intent);
+            SharedPreferenceUtil.getInstance(PersonalActivity.this).deleteData();
+            ExitApplication.getInstance().exitActivity();
 
         }
     };

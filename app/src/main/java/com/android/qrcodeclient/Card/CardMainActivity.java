@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -38,10 +39,12 @@ import com.android.qrcodeclient.Personal.PersonalActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.DialogMessageUtil;
 import com.android.utils.HttpUtil;
+import com.android.utils.ImageOpera;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
 import com.android.utils.Utils;
+import com.android.utils.VoiceUtil;
 import com.android.view.SimpleImageBanner;
 import com.android.view.SquareImageView;
 import com.flyco.banner.anim.select.RotateEnter;
@@ -52,6 +55,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,13 +133,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         toolbar.setNavigationIcon(R.mipmap.qiehuan);
-        //title.setText(R.string.card_title);
 
-        //广告
-       /* advert.setSelectAnimClass(RotateEnter.class)
-                .setUnselectAnimClass(NoAnimExist.class)
-                .setSource(adBeanList)
-                .startScroll();*/
 
         //从我的模块中我的门禁列表中选中的值回填
         String secret = getIntent().getStringExtra("secret");
@@ -144,8 +142,9 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             buildname = getIntent().getStringExtra("buildname");
             buildid = getIntent().getStringExtra("buildid");
             title.setText(buildname);//
-            showToast(secret);
+            // showToast(secret);
             binaryCode.setImageBitmap(Utils.createQRImage(this, secret, 500, 500));
+            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this,secret, 500, 500), getOutputMediaFile(), "MicroCode.png");
             getMyCard();
 
         } else {
@@ -157,6 +156,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 buildname = EntranceBean.getBuildname();
                 buildid = EntranceBean.getBuildid();
                 binaryCode.setImageBitmap(Utils.createQRImage(this, EntranceBean.getSecret(), 500, 500));
+                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this,  EntranceBean.getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
 
             } else {
 
@@ -424,8 +424,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
      */
     private void showCalendarPopwindow(View v) {
 
-        if(list == null || list.size() ==0){
-            DialogMessageUtil.showDialog(CardMainActivity.this,"您还没有开门微卡，请联系小区管理员");
+        if (list == null || list.size() == 0) {
+            DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有开门微卡，请联系小区管理员");
             return;
         }
 
@@ -450,9 +450,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 if (!TextUtil.isEmpty(list.get(arg2).getSecret())) {
                     buildname = list.get(arg2).getBuildname();
                     buildid = list.get(arg2).getHouseid();
-                    showToast(list.get(arg2).getSecret());
+                    // showToast(list.get(arg2).getSecret());
                     title.setText(buildname);//ljf
                     binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), 500, 500));
+                    ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
                     popWindow.dismiss();
                     //把选中的楼栋的信息保存到本地，下次进来直接可以显示
                     String BeanStr = JSON.toJSONString(list.get(arg2));
@@ -479,7 +480,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             public void onStart() {
                 super.onStart();
 
-                if(!NetUtil.checkNetInfo(CardMainActivity.this)){
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
 
                     showToast("当前网络不可用,请检查网络");
                     return;
@@ -511,9 +512,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                             //表示上次选中的二维码，此时更新最新的二维码
                                             buildname = list.get(i).getBuildname();
                                             buildid = list.get(i).getBuildid();
-                                         //   showToast(buildname + "比较" + list.get(i).getBuildname());
+                                            //   showToast(buildname + "比较" + list.get(i).getBuildname());
                                             title.setText(buildname);//ljf
                                             binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500));
+                                            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
 
                                             //把选中的楼栋的信息保存到本地，下次进来直接可以显示
                                             String BeanStr = JSON.toJSONString(list.get(i));
@@ -525,25 +527,34 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 } else {
 
                                     //初始化二维码
-                                    if(list == null || list.size() <= 0){
+                                    if (list == null || list.size() <= 0) {
 
-                                        DialogMessageUtil.showDialog(CardMainActivity.this,"您还没有开门微卡，请联系小区管理员");
+                                        DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有开门微卡，请联系小区管理员");
                                         binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                                         return;
                                     }
                                     if (!TextUtil.isEmpty(list.get(0).getSecret())) {
                                         buildname = list.get(0).getBuildname();
                                         buildid = list.get(0).getBuildid();
-                                        showToast(list.get(0).getSecret());
                                         title.setText(buildname);//ljf
                                         binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), 500, 500));
-
+                                        ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
                                         //把选中的楼栋的信息保存到本地，下次进来直接可以显示
                                         String BeanStr = JSON.toJSONString(list.get(0));
                                         SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
                                     }
                                 }
+                                /**
+                                 * 给按钮添加音效
+                                 */
+                                try {
 
+                                    VoiceUtil.getInstance(CardMainActivity.this).startVoice();
+
+                                } catch (Exception e) {
+
+                                    e.printStackTrace();
+                                }
 
                             } else {
 
@@ -584,6 +595,22 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         });
 
+    }
+
+
+    /**
+     * 将图片保存到本地文件中
+     */
+    private String getOutputMediaFile() {
+
+
+        File picDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        if(!picDir.exists()){
+            picDir.mkdir();
+        }
+
+        String str = picDir.getPath() + File.separator;
+        return str;
     }
 
 

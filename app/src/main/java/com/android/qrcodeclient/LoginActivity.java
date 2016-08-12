@@ -66,7 +66,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
         if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""))) {
 
             UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
-            if (userInfoBean != null) {
+            if (userInfoBean != null && "PASS".equals(userInfoBean.getAduitstatus())) {
                 Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
                 startActivity(intent1);
                 finish();
