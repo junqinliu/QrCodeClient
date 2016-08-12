@@ -11,6 +11,7 @@ public class EntranceBean {
     private String secret; // 微卡秘钥二维码
     private String buildname;
     private String buildid;
+    private String model;
 
     public String getHouseid() {
         return houseid;
@@ -50,5 +51,13 @@ public class EntranceBean {
 
     public void setBuildid(String buildid) {
         this.buildid = buildid;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 }
