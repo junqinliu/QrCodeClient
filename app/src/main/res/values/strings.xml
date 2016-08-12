@@ -83,4 +83,9 @@
     <string name="forget_pwd_title">忘记密码</string>
     <string name="forget_pwd_title_next">下一步</string>
 
+     <string name="app_desc">畅顺微卡APP是一款智能门禁和智慧社区管理的服务类软件，
+         通过互联网把手机APP和云计算等信息技术完美结合，把钥匙和门禁卡的功能进行升华，
+         以社区服务为基础搭建物业和业主的沟通桥梁，
+         为社区住户和物业管理公司打造更加便捷高效的社区交流智能化平台。</string>
+
 </resources>
