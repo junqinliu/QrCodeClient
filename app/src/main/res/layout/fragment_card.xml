@@ -60,8 +60,8 @@
 
 
         <LinearLayout
-            android:layout_width="708px"
-            android:layout_height="708px"
+            android:layout_width="228dp"
+            android:layout_height="228dp"
             android:background="@mipmap/codebg"
             android:layout_gravity="center"
             android:padding="4dp"
@@ -69,8 +69,8 @@
 
             <com.android.view.SquareImageView
                 android:id="@+id/binaryCode"
-                android:layout_width="700px"
-                android:layout_height="700px"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
 
                 />
 
