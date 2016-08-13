@@ -91,10 +91,15 @@ public class PwdForgetNextActivity extends BaseAppCompatActivity implements View
                 return;
             }
 
+            if(mphone.getText().toString().length() < 6){
+
+                showToast("密码至少为6位数");
+
+                return;
+            }
+
             ForgetPassWord();
-         /* Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-          startActivity(intent);*/
-         /* finish();*/
+
           break;
         default:
           break;

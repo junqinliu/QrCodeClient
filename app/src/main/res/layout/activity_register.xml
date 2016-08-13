@@ -133,6 +133,15 @@
                 android:textSize="14sp" />
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/password_warn"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="14sp"
+            android:layout_margin="10dp"
+            android:text="* 密码设置至少6位数" />
+
 
         <Button
             android:id="@+id/btn_finsh"

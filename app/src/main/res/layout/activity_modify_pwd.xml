@@ -104,6 +104,16 @@
             android:id="@+id/comfirm_pwd_edt" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/password_warn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="14sp"
+        android:padding="5dp"
+        android:layout_marginLeft="30dp"
+        android:text="* 密码设置至少6位数" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -49,6 +49,7 @@
             android:text="18760372556"
             android:textSize="13sp" />
     </RelativeLayout>
+    <!--18760372556-->
 
     <ImageView
         android:layout_width="220dp"
@@ -78,7 +79,6 @@
             android:enabled="true"
             android:hint="密码"
             android:inputType="textPassword"
-            android:text="1"
             android:paddingLeft="15dp"
             android:textColor="@color/black_text"
             android:digits="@string/intput_psw"
@@ -101,7 +101,7 @@
             android:layout_marginTop="25dp"
             android:text="忘记密码?"
             android:textColor="#9C9EA3"
-            android:textSize="13sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tv_resiger"
@@ -113,7 +113,7 @@
             android:gravity="center_vertical"
             android:text="注册"
             android:textColor="#9C9EA3"
-            android:textSize="13sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btn_login"
@@ -122,7 +122,7 @@
             android:background="@drawable/bg_login"
             android:text="登录"
             android:textColor="#FFFFFF"
-            android:textSize="13sp" />
+            android:textSize="16sp" />
     </RelativeLayout>
 
 

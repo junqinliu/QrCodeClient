@@ -21,7 +21,8 @@
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="为了您的账户安全，我们将发送验证码到您的注册手机号码"
+            android:textColor="@android:color/holo_red_light"
+            android:text="*为了您的账户安全，我们将发送验证码到您的注册手机号码"
             android:textSize="11sp" />
 
         <LinearLayout

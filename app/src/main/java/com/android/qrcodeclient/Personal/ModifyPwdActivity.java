@@ -110,6 +110,12 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
                     return;
                 }
 
+                if(new_pwd_edt.getText().toString().length() < 6){
+
+                    showToast("设置密码至少6位数");
+                    return;
+                }
+
                 submit();
                 break;
         }

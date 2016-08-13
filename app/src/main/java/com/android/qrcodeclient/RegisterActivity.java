@@ -170,6 +170,12 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
                     showToast("请输入密码");
                     return;
                 }
+                if(mpassword.getText().toString().length() < 6){
+
+                    showToast("密码至少为6位数");
+
+                    return;
+                }
 
                 //先去提交验证到mob平台验证，其次在自己后台进行注册操作
                 SMSSDK.submitVerificationCode("86", userPhone, Code.getText().toString());//对验证码进行验证->回调函数
