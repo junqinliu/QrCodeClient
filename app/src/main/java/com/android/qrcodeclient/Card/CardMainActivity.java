@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -86,6 +87,9 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     @Bind(R.id.add_img)
     ImageView add_img;
 
+    @Bind(R.id.time_count_txt)
+    TextView time_count_txt;
+
 
     int pageNumber = 0;
     int pageSize = 30;
@@ -101,6 +105,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     public BlockAdapter blockAdapter;
     private UserInfoBean userInfoBean = new UserInfoBean();
     List<AdBean> adBeanList = new ArrayList<>();
+    TimeCount time;
+
 
 
     @Override
@@ -117,6 +123,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         ExitApplication.getInstance().addActivity(this);
         advert = (SimpleImageBanner) this.findViewById(R.id.advert);
         add_img.setVisibility(View.VISIBLE);
+        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
     }
 
     @Override
@@ -450,9 +457,22 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 if (!TextUtil.isEmpty(list.get(arg2).getSecret())) {
                     buildname = list.get(arg2).getBuildname();
                     buildid = list.get(arg2).getHouseid();
-                    // showToast(list.get(arg2).getSecret());
                     title.setText(buildname);//ljf
                     binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), 500, 500));
+                    //开启倒计时
+                    time.start();
+
+                    /**
+                     * 给按钮添加音效
+                     */
+                    try {
+
+                        VoiceUtil.getInstance(CardMainActivity.this).startVoice();
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+                    }
                     ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
                     popWindow.dismiss();
                     //把选中的楼栋的信息保存到本地，下次进来直接可以显示
@@ -512,7 +532,6 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                             //表示上次选中的二维码，此时更新最新的二维码
                                             buildname = list.get(i).getBuildname();
                                             buildid = list.get(i).getBuildid();
-                                            //   showToast(buildname + "比较" + list.get(i).getBuildname());
                                             title.setText(buildname);//ljf
                                             binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500));
                                             ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
@@ -544,6 +563,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                         SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
                                     }
                                 }
+
+                                //开启倒计时
+                                time.start();
+
                                 /**
                                  * 给按钮添加音效
                                  */
@@ -596,6 +619,35 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         });
 
     }
+
+
+    /* 定义一个倒计时的内部类 */
+    class TimeCount extends CountDownTimer {
+        public TimeCount(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
+        }
+
+        @Override
+        public void onFinish() {//计时完毕时触发
+
+            if(card_layout != null && time_count_txt != null && binaryCode != null ) {
+                time_count_txt.setText("扫描二维码开门(" + "0" + ")");
+                card_layout.setClickable(true);
+                binaryCode.setClickable(true);
+            }
+        }
+        @Override
+        public void onTick(long millisUntilFinished){//计时过程显示
+
+            if(card_layout != null && time_count_txt != null && binaryCode != null){
+
+                time_count_txt.setText("扫描二维码开门("+ --millisUntilFinished / 1000 + ")");
+                card_layout.setClickable(false);
+                binaryCode.setClickable(false);
+            }
+        }
+    }
+
 
 
     /**
