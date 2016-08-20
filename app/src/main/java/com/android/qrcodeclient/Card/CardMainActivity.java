@@ -107,6 +107,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     List<AdBean> adBeanList = new ArrayList<>();
     TimeCount time;
 
+    private String phone;
+
 
 
     @Override
@@ -123,7 +125,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         ExitApplication.getInstance().addActivity(this);
         advert = (SimpleImageBanner) this.findViewById(R.id.advert);
         add_img.setVisibility(View.VISIBLE);
-        time = new TimeCount(60000, 1000);//构造CountDownTimer对象
+        time = new TimeCount(30000, 1000);//构造CountDownTimer对象
     }
 
     @Override
@@ -188,6 +190,11 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         //获取图片路径
         getAdList();
 
+        phone = getIntent().getStringExtra("phone");
+        /**
+         * 获取用户信息
+         */
+        getUserInfo();
 
     }
 
@@ -621,6 +628,101 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
 
+    private void getUserInfo(){
+
+        RequestParams params = new RequestParams();
+
+
+        HttpUtil.get(Constants.HOST + Constants.getUserInfo,params,new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+                if(!NetUtil.checkNetInfo(CardMainActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if(jsonObject.getBoolean("success")){
+
+
+                                 userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(),UserInfoBean.class);
+                                if(!TextUtil.isEmpty(phone)){
+
+                                    userInfoBean.setPhone(phone);
+                                }
+                                String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
+                                SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("UserInfo", userInfoBeanStr);
+
+                                //配置请求接口全局token 和 userid
+                                if (userInfoBean != null) {
+
+                                    HttpUtil.getClient().addHeader("Token", userInfoBean.getToken());
+                                    HttpUtil.getClient().addHeader("Userid", userInfoBean.getUserid());
+
+                                }
+
+
+
+                            }else{
+
+                                showToast("请求接口失败，请联系管理员");
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if(responseBody != null){
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+    }
+
+
+
+
+
+
+
     /* 定义一个倒计时的内部类 */
     class TimeCount extends CountDownTimer {
         public TimeCount(long millisInFuture, long countDownInterval) {
@@ -634,6 +736,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 time_count_txt.setText("扫描二维码开门(" + "0" + ")");
                 card_layout.setClickable(true);
                 binaryCode.setClickable(true);
+                binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
             }
         }
         @Override

@@ -20,6 +20,13 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+        // 防止在发布的时候出现因MissingTranslation导致Build Failed!
+        disable 'MissingTranslation'
+    }
+
     useLibrary 'org.apache.http.legacy'
 }
 
@@ -58,7 +65,8 @@ dependencies {
     compile name: 'SMSSDK-2.1.0', ext: 'aar'
     compile name: 'SMSSDKGUI-2.1.0', ext: 'aar'
 
-
+    /*下载图片框架*/
+    compile files('libs/universal-image-loader-1.9.4-with-sources.jar')
     /*请求接口框架*/
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'cz.msebera.android:httpclient:4.4.1.1'

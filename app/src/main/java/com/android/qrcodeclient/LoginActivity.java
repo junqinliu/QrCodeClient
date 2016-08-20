@@ -66,10 +66,13 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
         if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""))) {
 
             UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
-            if (userInfoBean != null && "PASS".equals(userInfoBean.getAduitstatus())) {
+            if (userInfoBean != null && ("PASS".equals(userInfoBean.getAduitstatus()) || "AUDITING".equals(userInfoBean.getAduitstatus()))) {
                 Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
+                intent1.putExtra("phone",userInfoBean.getPhone());
                 startActivity(intent1);
                 finish();
+
+
             }
         }
 
@@ -189,6 +192,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
                                 SharedPreferenceUtil.getInstance(LoginActivity.this).putData("UserInfo", userInfoBeanStr);
 
                                 Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
+                                intent1.putExtra("phone",ed_account.getText().toString());
                                 startActivity(intent1);
                                 finish();
 

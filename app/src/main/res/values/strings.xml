@@ -12,6 +12,7 @@
 
     <!--tab title-->
     <string name="life_title">生活</string>
+    <string name="mall_title">社区商城</string>
     <string name="card_title">获取微卡</string>
     <string name="personal_title">我的</string>
 

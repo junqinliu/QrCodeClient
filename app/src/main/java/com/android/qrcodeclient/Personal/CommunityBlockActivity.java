@@ -186,7 +186,17 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
                                 JSONObject gg = new JSONObject(jsonObject.getString("data"));
                                 listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), CommunityBlockBean.class);
 
+
                                 if(listTemp != null && listTemp.size() > 0){
+
+                                    //去掉小区
+                                    for(int i = 0;i < listTemp.size();i++){
+
+                                        if("2".equals(listTemp.get(i).getBuildmodel())){
+
+                                            listTemp.remove(i);
+                                        }
+                                    }
 
                                     list.addAll(listTemp);
                                     adapter.notifyDataSetChanged();

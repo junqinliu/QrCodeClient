@@ -118,7 +118,7 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("title",user_address_edt.getText().toString());
+            jsonObject.put("title",repair_content_edt.getText().toString());
             jsonObject.put("propertytype","REPAIR");
             jsonObject.put("propertyphone",user_phone_edt.getText().toString());
             jsonObject.put("propertyaddress",user_address_edt.getText().toString());

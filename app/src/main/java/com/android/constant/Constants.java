@@ -16,6 +16,12 @@ public class Constants {
 	 * 登录接口
 	 */
 	public static final String Login = "/v0.1/user/login";
+
+	/**
+	 * 获取用户信息
+	 */
+	public static final String getUserInfo = "/v0.1/user";
+
 	/**
 	 * 广告列表接口
 	 */

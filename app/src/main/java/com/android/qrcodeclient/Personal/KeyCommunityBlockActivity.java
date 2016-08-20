@@ -196,6 +196,15 @@ public class KeyCommunityBlockActivity extends BaseAppCompatActivity implements 
 
                                 if(listTemp != null && listTemp.size() > 0){
 
+                                    //去掉小区
+                                    for(int i = 0;i < listTemp.size();i++){
+
+                                        if("2".equals(listTemp.get(i).getBuildmodel())){
+
+                                            listTemp.remove(i);
+                                        }
+                                    }
+
                                     list.addAll(listTemp);
                                     adapter.notifyDataSetChanged();
                                     if(listTemp.size() == 10){
