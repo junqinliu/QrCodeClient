@@ -10,6 +10,7 @@ import com.android.base.BaseAppCompatActivity;
 import com.android.qrcodeclient.Life.DevelopingActivity;
 import com.android.qrcodeclient.Life.MessageActivity;
 import com.android.qrcodeclient.Personal.Cell.Complaint.ComplaintActivity;
+import com.android.qrcodeclient.Personal.Cell.HomeService.HomeServiceActivity;
 import com.android.qrcodeclient.Personal.Cell.Warranty.WarrantyActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.TextUtil;
@@ -98,7 +99,7 @@ public class CellActivity extends BaseAppCompatActivity implements View.OnClickL
             //家政服务
             case R.id.home_service:
                 bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
-                goNext(DevelopingActivity.class, bundle);
+                goNext(HomeServiceActivity.class, bundle);
                 break;
 
             //社区服务

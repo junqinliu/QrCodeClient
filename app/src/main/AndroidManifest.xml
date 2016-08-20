@@ -111,6 +111,8 @@
         <activity
             android:name=".Life.LifeActivity"
             android:theme="@style/AppTheme" />
+        <activity android:name=".Life.LogActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Life.SendCardActivity"
             android:theme="@style/AppTheme" />
@@ -136,6 +138,8 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Personal.Cell.Complaint.ComplaintActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Personal.Cell.HomeService.HomeServiceActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Personal.Cell.Warranty.WarrantyActivity"
