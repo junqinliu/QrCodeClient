@@ -58,7 +58,7 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
         list.add(new LifeItemBean("百度", R.mipmap.baidu2, DevelopingActivity.class));
         list.add(new LifeItemBean("票务", R.mipmap.ticket, DevelopingActivity.class));
         list.add(new LifeItemBean("百度外卖", R.mipmap.baiduwaimai11, DevelopingActivity.class));
-        list.add(new LifeItemBean("社区商城", R.mipmap.zhaoaiche, ComunityMallActivity.class));
+        list.add(new LifeItemBean("社区商城", R.mipmap.shangcheng, ComunityMallActivity.class));
         list.add(new LifeItemBean("滴滴打车", R.mipmap.dididache, DevelopingActivity.class));
         list.add(new LifeItemBean("游戏   ", R.mipmap.youxi, DevelopingActivity.class));
         gridLife.setAdapter(new LifeAdapter(this, list));

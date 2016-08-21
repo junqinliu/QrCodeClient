@@ -52,15 +52,15 @@ public class ComunityMallActivity extends BaseAppCompatActivity implements View.
     @Override
     public void initData() {
         list = new ArrayList<>();
-        list.add(new LifeItemBean("社区商城", R.mipmap.fasongweika, SendCardActivity.class));
-        list.add(new LifeItemBean("社区商城", R.mipmap.rizhi, LogActivity.class));
-        list.add(new LifeItemBean("社区商城", R.mipmap.message, MessageActivity.class));
-        list.add(new LifeItemBean("社区商城", R.mipmap.baidu2, DevelopingActivity.class));
-        list.add(new LifeItemBean("社区商城", R.mipmap.ticket, DevelopingActivity.class));
-        list.add(new LifeItemBean("社区商城", R.mipmap.baiduwaimai11, DevelopingActivity.class));
-        list.add(new LifeItemBean("社区商城", R.mipmap.zhaoaiche, DevelopingActivity.class));
-        list.add(new LifeItemBean("社区商城", R.mipmap.dididache, DevelopingActivity.class));
-        list.add(new LifeItemBean("社区商城", R.mipmap.youxi, DevelopingActivity.class));
+        list.add(new LifeItemBean("微购", R.mipmap.weigou, SendCardActivity.class));
+        list.add(new LifeItemBean("逛街吧", R.mipmap.guangjieba, LogActivity.class));
+        list.add(new LifeItemBean("蘑菇街", R.mipmap.mogujie, MessageActivity.class));
+        list.add(new LifeItemBean("微卖", R.mipmap.weimai, DevelopingActivity.class));
+        list.add(new LifeItemBean("喵喵微店", R.mipmap.miaomiaoweidian, DevelopingActivity.class));
+        list.add(new LifeItemBean("拍拍小店", R.mipmap.paipai, DevelopingActivity.class));
+        list.add(new LifeItemBean("门店招商", R.mipmap.addshop, DevelopingActivity.class));
+        list.add(new LifeItemBean("门店招商", R.mipmap.addshop, DevelopingActivity.class));
+        list.add(new LifeItemBean("门店招商", R.mipmap.addshop, DevelopingActivity.class));
         gridLife.setAdapter(new LifeAdapter(this, list));
 
     }

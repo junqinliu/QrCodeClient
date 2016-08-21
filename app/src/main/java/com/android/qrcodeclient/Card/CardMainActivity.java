@@ -217,7 +217,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     showCalendarPopwindow(v);
                 } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
-                    showToast("您所申请的微卡正在审核。。。");
+                    showToast("还未通过审核");
 
                 } else {
                     //跳到门禁申请界面
@@ -241,7 +241,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
-            showToast("您所申请的微卡正在审核。。。");
+            showToast("还未通过审核");
 
         } else {
 
@@ -274,7 +274,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                 } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
-                    showToast("您所申请的微卡正在审核。。。");
+                    showToast("还未通过审核");
 
                 } else {
                     //跳到门禁申请界面
@@ -293,7 +293,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                 } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
-                    showToast("您所申请的微卡正在审核。。。");
+                    showToast("还未通过审核");
 
                 } else {
                     //跳到门禁申请界面
@@ -311,7 +311,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     startActivity(new Intent(this, PersonalActivity.class));
                 } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
-                    showToast("您所申请的微卡正在审核。。。");
+                    showToast("还未通过审核");
 
                 } else {
                     //跳到门禁申请界面
@@ -332,7 +332,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     startActivity(intent);
                 } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
-                    showToast("您所申请的微卡正在审核。。。");
+                    showToast("还未通过审核");
 
                 } else {
                     //跳到门禁申请界面
