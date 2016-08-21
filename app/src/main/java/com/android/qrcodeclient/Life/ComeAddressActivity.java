@@ -40,6 +40,7 @@ public class ComeAddressActivity extends BaseAppCompatActivity implements View.O
     @Bind(R.id.title)
     TextView title;
 
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
