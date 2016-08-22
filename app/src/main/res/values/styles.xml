@@ -14,6 +14,13 @@
         <item name="android:dropDownVerticalOffset">5dip</item>
     </style>
 
+    <!--设置透明Theme-->
+    <style name="Theme.AppStartLoadTranslucent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
     <!--toolbar 主题样式-->
     <style name="AppThemeToolbar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
