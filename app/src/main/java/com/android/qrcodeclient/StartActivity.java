@@ -17,6 +17,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
      */
     private static final long SPLASH_DELAY_MILLIS = 500;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
