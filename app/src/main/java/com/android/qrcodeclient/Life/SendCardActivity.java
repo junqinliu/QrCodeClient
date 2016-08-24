@@ -25,7 +25,9 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 import butterknife.Bind;
+import cn.sharesdk.framework.Platform;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
@@ -245,6 +247,21 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
     private void shareToPlatForm(){
 
         OnekeyShare oks = new OnekeyShare();
+        oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
+
+            @Override
+            public void onShare(Platform platform, Platform.ShareParams paramsToShare) {
+
+//                if(SinaWeibo.NAME.equals(platform.getName())) {
+//
+////                    paramsToShare.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg
+////
+////                            ");
+//
+//                }
+            }
+        });
+
         //关闭sso授权
         oks.disableSSOWhenAuthorize();
         oks.setTitle("微卡");
