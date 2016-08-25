@@ -247,25 +247,10 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
     private void shareToPlatForm(){
 
         OnekeyShare oks = new OnekeyShare();
-        oks.setShareContentCustomizeCallback(new ShareContentCustomizeCallback() {
-
-            @Override
-            public void onShare(Platform platform, Platform.ShareParams paramsToShare) {
-
-//                if(SinaWeibo.NAME.equals(platform.getName())) {
-//
-////                    paramsToShare.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg
-////
-////                            ");
-//
-//                }
-            }
-        });
-
         //关闭sso授权
         oks.disableSSOWhenAuthorize();
-        oks.setTitle("微卡");
-        oks.setText("微卡");
+        //  oks.setTitle("微卡");
+        // oks.setText("微卡");
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
         if(!TextUtil.isEmpty(getOutputMediaFile()+"MicroCode.png")){
             oks.setImagePath(getOutputMediaFile()+"MicroCode.png");//确保SDcard下面存在此张图片
