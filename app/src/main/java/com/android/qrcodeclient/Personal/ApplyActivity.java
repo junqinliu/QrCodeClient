@@ -321,19 +321,24 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
                             if (jsonObject.getBoolean("success")) {
 
-                                showToast("提交成功");
+                               // showToast("提交成功");
                                 //门卡申请提交成功后，改变本地文件userinfobean中的状态变为审核
                                 UserInfoBean   userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(ApplyActivity.this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
-                                userInfoBean.setAduitstatus("AUDITING");
+                               // userInfoBean.setAduitstatus("AUDITING");
+                                userInfoBean.setAduitstatus("PASS");
                                 String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
                                 SharedPreferenceUtil.getInstance(ApplyActivity.this).putData("UserInfo", userInfoBeanStr);
-                                if("register".equals(flag)){
-                                   Intent intent = new Intent(ApplyActivity.this, CardMainActivity.class);
-                                    startActivity(intent);
-                                    ExitApplication.getInstance().exitAll();
-                                }else{
-                                    finish();
-                                }
+
+                                //去调用微卡申请接口
+                                cardApply();
+
+//                                if("register".equals(flag)){
+//                                   Intent intent = new Intent(ApplyActivity.this, CardMainActivity.class);
+//                                    startActivity(intent);
+//                                    ExitApplication.getInstance().exitAll();
+//                                }else{
+//                                    finish();
+//                                }
 
 
                             } else {
@@ -387,6 +392,112 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
         zone.setText("");
         xiaoqu.setText("");
         block.setText("");
+    }
+
+
+    /**
+     * 微卡申请接口
+     */
+    private void cardApply(){
+
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+
+            jsonObject.put("buildid",buildid);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ByteArrayEntity entity = null;
+        try {
+            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
+
+        HttpUtil.post(ApplyActivity.this, Constants.HOST + Constants.submitCardApply, entity, "application/json", new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                if(!NetUtil.checkNetInfo(ApplyActivity.this)){
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+                                showToast("提交成功");
+                                //去调用微卡申请接口
+
+                                if("register".equals(flag)){
+                                    Intent intent = new Intent(ApplyActivity.this, CardMainActivity.class);
+                                    startActivity(intent);
+                                    ExitApplication.getInstance().exitAll();
+                                }else{
+                                    finish();
+                                }
+
+
+                            } else {
+
+                                showToast("请求接口失败，请联系管理员");
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
+
     }
 
 }

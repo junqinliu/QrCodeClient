@@ -8,9 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+
+import com.alibaba.fastjson.JSON;
 import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
+import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.LoginActivity;
 import com.android.qrcodeclient.Personal.Cell.CellActivity;
 import com.android.qrcodeclient.R;
@@ -98,7 +101,20 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
 
             //门禁申请
             case R.id.apply:
-                goNext(ApplyActivity.class,bundle);
+
+                UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+               if(userInfoBean != null){
+
+                   if("PASS".equals(userInfoBean.getAduitstatus())){
+
+                       goNext(ApplyOtherActivity.class,bundle);
+                   }else{
+
+                       goNext(ApplyActivity.class,bundle);
+                   }
+               }
+
+
                 break;
 
             //家属微卡

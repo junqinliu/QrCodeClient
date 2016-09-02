@@ -73,6 +73,10 @@ public class Constants {
 	 * 楼栋列表
 	 */
 	public static final String  Block = "/v0.1/place/build";
+	/**
+	 * 楼栋列表(多次楼栋列表)
+	 */
+	public static final String  OtherBlock = "/v0.1/place/build/owner";
 
 	/**
 	 * 往来日志
