@@ -420,7 +420,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
 
 
-        HttpUtil.post(ApplyActivity.this, Constants.HOST + Constants.submitCardApply, entity, "application/json", new AsyncHttpResponseHandler() {
+        HttpUtil.post(ApplyActivity.this, Constants.HOST + Constants.CardApply, entity, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

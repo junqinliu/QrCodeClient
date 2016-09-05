@@ -144,10 +144,10 @@ public class ApplyOtherActivity extends BaseAppCompatActivity implements View.On
     private  void submit(){
 
 
-        if(TextUtil.isEmpty(houseid)){
-            showToast("请选择小区");
-            return;
-        }
+//        if(TextUtil.isEmpty(houseid)){
+//            showToast("请选择小区");
+//            return;
+//        }
         if(TextUtil.isEmpty(buildid)){
             showToast("请选择楼栋");
             return;
@@ -200,7 +200,7 @@ public class ApplyOtherActivity extends BaseAppCompatActivity implements View.On
 
 
 
-        HttpUtil.post(ApplyOtherActivity.this, Constants.HOST + Constants.submitCardApply, entity, "application/json", new AsyncHttpResponseHandler() {
+        HttpUtil.post(ApplyOtherActivity.this, Constants.HOST + Constants.CardApply, entity, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

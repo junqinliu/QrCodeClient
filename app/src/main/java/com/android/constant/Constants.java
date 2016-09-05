@@ -100,4 +100,8 @@ public class Constants {
 	 * 申请微卡提交申请
 	 */
 	public static final String  submitCardApply = "/v0.1/user/audit/apply";
+	/**
+	 * 申请门禁卡提交申请
+	 */
+	public static final String  CardApply = "/v0.1/place/build/card/owner";
 }
