@@ -9,25 +9,25 @@
         android:id="@+id/layout"
         layout="@layout/header_toolbar" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical"
-        >
-        <ImageView
-            android:layout_marginTop="40dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/zhengzaikaifa"/>
-        <TextView
-            style="@style/developing_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/green_background"
-            android:layout_gravity="center"
-            android:text="@string/developing"/>
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--&gt;-->
+        <!--<ImageView-->
+            <!--android:layout_marginTop="40dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@mipmap/zhengzaikaifa"/>-->
+        <!--<TextView-->
+            <!--style="@style/developing_text"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/green_background"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:text="@string/developing"/>-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
 </LinearLayout>

@@ -55,12 +55,22 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
         list.add(new LifeItemBean("给亲友微卡", R.mipmap.fasongweika, SendCardActivity.class));
         list.add(new LifeItemBean("往来日志", R.mipmap.rizhi, LogActivity.class));
         list.add(new LifeItemBean("我的消息", R.mipmap.message, MessageActivity.class));
-        list.add(new LifeItemBean("百度", R.mipmap.baidu2, DevelopingActivity.class));
+
+       /* list.add(new LifeItemBean("百度", R.mipmap.baidu2, DevelopingActivity.class));
         list.add(new LifeItemBean("票务", R.mipmap.ticket, DevelopingActivity.class));
         list.add(new LifeItemBean("百度外卖", R.mipmap.baiduwaimai11, DevelopingActivity.class));
         list.add(new LifeItemBean("社区商城", R.mipmap.shangcheng, ComunityMallActivity.class));
         list.add(new LifeItemBean("滴滴打车", R.mipmap.dididache, DevelopingActivity.class));
-        list.add(new LifeItemBean("游戏   ", R.mipmap.youxi, DevelopingActivity.class));
+        list.add(new LifeItemBean("游戏   ", R.mipmap.youxi, DevelopingActivity.class));*/
+        list.add(new LifeItemBean("微购", R.mipmap.weigou, null));
+        list.add(new LifeItemBean("逛街吧", R.mipmap.guangjieba, null));
+        list.add(new LifeItemBean("蘑菇街", R.mipmap.mogujie, null));
+        list.add(new LifeItemBean("微卖", R.mipmap.weimai, null));
+        list.add(new LifeItemBean("喵喵微店", R.mipmap.miaomiaoweidian, null));
+        list.add(new LifeItemBean("拍拍小店", R.mipmap.paipai, null));
+        list.add(new LifeItemBean("门店招商", R.mipmap.addshop, null));
+        list.add(new LifeItemBean("门店招商", R.mipmap.addshop, null));
+        list.add(new LifeItemBean("门店招商", R.mipmap.addshop, null));
         gridLife.setAdapter(new LifeAdapter(this, list));
     }
 

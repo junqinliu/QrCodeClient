@@ -2,7 +2,6 @@ package com.android.qrcodeclient.Card;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -26,15 +25,9 @@ import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.AdBean;
-import com.android.model.BannerItemBean;
-import com.android.model.BlockBean;
 import com.android.model.EntranceBean;
-import com.android.model.ProviceBean;
 import com.android.model.UserInfoBean;
-import com.android.notify.PushService;
-import com.android.notify.ServiceUtil;
 import com.android.qrcodeclient.Life.LifeActivity;
-import com.android.qrcodeclient.Life.SendCardActivity;
 import com.android.qrcodeclient.Personal.ApplyActivity;
 import com.android.qrcodeclient.Personal.PersonalActivity;
 import com.android.qrcodeclient.R;
@@ -93,6 +86,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
     int pageNumber = 0;
     int pageSize = 30;
+    int QRsize = 500;
     List<EntranceBean> list = new ArrayList<>();
     List<EntranceBean> listTemp = new ArrayList<>();
     String buildname = "";//表示选中的楼栋名称 用来与 点击获取微卡获取的最新楼栋列表做比较 更新二维码
@@ -152,8 +146,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             buildid = getIntent().getStringExtra("buildid");
             title.setText(buildname);//
             // showToast(secret);
-            binaryCode.setImageBitmap(Utils.createQRImage(this, secret, 500, 500));
-            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this,secret, 500, 500), getOutputMediaFile(), "MicroCode.png");
+            binaryCode.setImageBitmap(Utils.createQRImage(this, secret, QRsize, QRsize));
+            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this,secret, QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
             getMyCard();
 
         } else {
@@ -164,14 +158,14 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 EntranceBean EntranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
                 buildname = EntranceBean.getBuildname();
                 buildid = EntranceBean.getBuildid();
-                binaryCode.setImageBitmap(Utils.createQRImage(this, EntranceBean.getSecret(), 500, 500));
-                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this,  EntranceBean.getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
+                binaryCode.setImageBitmap(Utils.createQRImage(this, EntranceBean.getSecret(), QRsize, QRsize));
+                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this,  EntranceBean.getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
 
             } else {
 
                 if ("PASS".equals(userInfoBean.getAduitstatus())) {
                     //已经审核通过
-                    binaryCode.setImageBitmap(Utils.createQRImage(this, "test", 500, 500));
+                    binaryCode.setImageBitmap(Utils.createQRImage(this, "test", QRsize, QRsize));
 
                 } else {
 
@@ -326,10 +320,11 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                 if ("PASS".equals(userInfoBean.getAduitstatus())) {
 
-                    Intent intent = new Intent(this, SendCardActivity.class);
+                   /* Intent intent = new Intent(this, SendCardActivity.class);
                     intent.putExtra("buildname", buildname);
                     intent.putExtra("buildid", buildid);
-                    startActivity(intent);
+                    startActivity(intent);*/
+                    shareToPlatForm();
                 } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
                     showToast("还未通过审核");
@@ -465,7 +460,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     buildname = list.get(arg2).getBuildname();
                     buildid = list.get(arg2).getHouseid();
                     title.setText(buildname);//ljf
-                    binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), 500, 500));
+                    binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), QRsize, QRsize));
                     //开启倒计时
                     time.start();
 
@@ -480,7 +475,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                         e.printStackTrace();
                     }
-                    ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
+                    ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
                     popWindow.dismiss();
                     //把选中的楼栋的信息保存到本地，下次进来直接可以显示
                     String BeanStr = JSON.toJSONString(list.get(arg2));
@@ -540,8 +535,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                             buildname = list.get(i).getBuildname();
                                             buildid = list.get(i).getBuildid();
                                             title.setText(buildname);//ljf
-                                            binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500));
-                                            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
+                                            binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), QRsize, QRsize));
+                                            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
 
                                             //把选中的楼栋的信息保存到本地，下次进来直接可以显示
                                             String BeanStr = JSON.toJSONString(list.get(i));
@@ -563,8 +558,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                         buildname = list.get(0).getBuildname();
                                         buildid = list.get(0).getBuildid();
                                         title.setText(buildname);//ljf
-                                        binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), 500, 500));
-                                        ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), 500, 500), getOutputMediaFile(), "MicroCode.png");
+                                        binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize));
+                                        ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
                                         //把选中的楼栋的信息保存到本地，下次进来直接可以显示
                                         String BeanStr = JSON.toJSONString(list.get(0));
                                         SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
@@ -768,5 +763,26 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         return str;
     }
 
+    /**
+     *  分享到qq 微信 短信
+     *
+     */
+
+    private void shareToPlatForm(){
+
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+        //  oks.setTitle("微卡");
+        // oks.setText("微卡");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        if(!TextUtil.isEmpty(getOutputMediaFile()+"MicroCode.png")){
+            oks.setImagePath(getOutputMediaFile()+"MicroCode.png");//确保SDcard下面存在此张图片
+        }
+
+        oks.show(this);
+
+
+    }
 
 }

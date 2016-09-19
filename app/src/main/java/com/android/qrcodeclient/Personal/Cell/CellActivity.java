@@ -12,6 +12,7 @@ import com.android.qrcodeclient.Life.MessageActivity;
 import com.android.qrcodeclient.Personal.Cell.Complaint.ComplaintActivity;
 import com.android.qrcodeclient.Personal.Cell.HomeService.HomeServiceActivity;
 import com.android.qrcodeclient.Personal.Cell.Warranty.WarrantyActivity;
+import com.android.qrcodeclient.Personal.ComunityMallActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.TextUtil;
 
@@ -43,6 +44,8 @@ public class CellActivity extends BaseAppCompatActivity implements View.OnClickL
 
     @Bind(R.id.service_complaint)
     TextView serviceComplaint;
+    @Bind(R.id.ComunityMall)
+    TextView comunityMall;
 
     Bundle bundle;
 
@@ -81,7 +84,7 @@ public class CellActivity extends BaseAppCompatActivity implements View.OnClickL
         finish();
     }
 
-    @OnClick({R.id.announcement, R.id.warranty, R.id.home_service, R.id.community_service, R.id.service_complaint})
+    @OnClick({R.id.announcement, R.id.warranty, R.id.home_service, R.id.community_service, R.id.service_complaint, R.id.ComunityMall})
     public void onClick(TextView view) {
         switch (view.getId()) {
             //信息公告
@@ -113,6 +116,13 @@ public class CellActivity extends BaseAppCompatActivity implements View.OnClickL
                 bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
                 goNext(ComplaintActivity.class, bundle);
                 break;
+
+            //社区商城
+            case R.id.ComunityMall:
+                bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
+               goNext(ComunityMallActivity.class,bundle);
+                break;
+
         }
     }
 }

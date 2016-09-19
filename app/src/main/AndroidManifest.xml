@@ -176,7 +176,7 @@
         <activity android:name=".Personal.KeyCommunityBlockActivity"></activity>
         <activity android:name=".Personal.ApplyOtherActivity"></activity>
         <activity android:name=".Personal.CommunityBlockOtherActivity"></activity>
-
+        <activity android:name=".Personal.ComunityMallActivity"></activity>
 
         <service android:name="com.android.notify.PushService"
             android:process=":push"/>

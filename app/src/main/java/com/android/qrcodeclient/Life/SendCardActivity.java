@@ -25,11 +25,8 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 import butterknife.Bind;
-import cn.sharesdk.framework.Platform;
 import cn.sharesdk.onekeyshare.OnekeyShare;
-import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
-import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
 
@@ -47,8 +44,8 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
     EditText address_edit;
     @Bind(R.id.name_edit)
     EditText name_edit;
-    @Bind(R.id.uesr_phone_edit)
-    EditText uesr_phone_edit;
+    //@Bind(R.id.uesr_phone_edit)
+   // EditText uesr_phone_edit;
     @Bind(R.id.submit_button)
     Button submit_button;
 
@@ -149,17 +146,18 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
             showToast("请输入名字");
             return;
         }
-        if(TextUtil.isEmpty(uesr_phone_edit.getText().toString())){
+        /*if(TextUtil.isEmpty(uesr_phone_edit.getText().toString())){
 
             showToast("请输入电话号码");
             return;
-        }
+        }*/
 
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("invitename",name_edit.getText().toString());
             jsonObject.put("buildid",buildid);
-            jsonObject.put("invitephone",uesr_phone_edit.getText().toString());
+            //jsonObject.put("invitephone",uesr_phone_edit.getText().toString());
+            jsonObject.put("invitephone"," ");
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -193,5 +193,32 @@
             android:textSize="17sp"
             android:text="@string/service_complaint" />
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/blue_line"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_stroke_gray_background">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@mipmap/shangcheng"/>
+        <TextView
+            android:id="@+id/ComunityMall"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black_text"
+            android:textSize="17sp"
+            android:text="@string/ComunityMall" />
+    </LinearLayout>
 
 </LinearLayout>
