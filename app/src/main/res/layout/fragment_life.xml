@@ -14,10 +14,112 @@
         android:background="@drawable/shape_stroke_gray"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/send_card_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/fasongweika"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitXY" />
+
+                <TextView
+
+                    style="@style/life_item_name"
+                    android:layout_below="@+id/item_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="给亲友微卡"
+                    android:layout_marginTop="10dp"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/log_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/rizhi"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitXY" />
+
+                <TextView
+
+                    style="@style/life_item_name"
+                    android:layout_below="@+id/item_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="往来日志"
+                    android:layout_marginTop="10dp"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/message_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/message"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitXY" />
+
+                <TextView
+
+                    style="@style/life_item_name"
+                    android:layout_below="@+id/item_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="我的消息"
+                    android:layout_marginTop="10dp"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
         <GridView
             android:id="@+id/grid_life"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_margin="1px"
             android:background="@color/gray_line"
             android:horizontalSpacing="1px"

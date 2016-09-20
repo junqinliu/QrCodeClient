@@ -1,11 +1,13 @@
 package com.android.qrcodeclient.Life;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.adapter.LifeAdapter;
@@ -33,6 +35,12 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
     TextView title;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.send_card_layout)
+    LinearLayout send_card_layout;
+    @Bind(R.id.log_layout)
+    LinearLayout log_layout;
+    @Bind(R.id.message_layout)
+    LinearLayout message_layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,9 +60,9 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
     @Override
     public void initData() {
         list = new ArrayList<>();
-        list.add(new LifeItemBean("给亲友微卡", R.mipmap.fasongweika, SendCardActivity.class));
+        /*list.add(new LifeItemBean("给亲友微卡", R.mipmap.fasongweika, SendCardActivity.class));
         list.add(new LifeItemBean("往来日志", R.mipmap.rizhi, LogActivity.class));
-        list.add(new LifeItemBean("我的消息", R.mipmap.message, MessageActivity.class));
+        list.add(new LifeItemBean("我的消息", R.mipmap.message, MessageActivity.class));*/
 
        /* list.add(new LifeItemBean("百度", R.mipmap.baidu2, DevelopingActivity.class));
         list.add(new LifeItemBean("票务", R.mipmap.ticket, DevelopingActivity.class));
@@ -77,7 +85,17 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
     @Override
     public void setListener() {
         gridLife.setOnItemClickListener(this);
-        toolbar.setNavigationOnClickListener(this);
+     //   toolbar.setNavigationOnClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        send_card_layout.setOnClickListener(this);
+        log_layout.setOnClickListener(this);
+        message_layout.setOnClickListener(this);
     }
 
     @Override
@@ -95,6 +113,26 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        finish();
+        switch (view.getId()){
+
+            case R.id.send_card_layout:
+
+                startActivity(new Intent(LifeActivity.this,SendCardActivity.class));
+
+                break;
+            case R.id.log_layout:
+
+                startActivity(new Intent(LifeActivity.this,LogActivity.class));
+
+                break;
+            case R.id.message_layout:
+
+                startActivity(new Intent(LifeActivity.this,MessageActivity.class));
+
+                break;
+
+        }
+
+       // finish();
     }
 }
