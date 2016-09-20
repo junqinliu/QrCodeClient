@@ -84,6 +84,7 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
 
     @Override
     public void setListener() {
+
         gridLife.setOnItemClickListener(this);
      //   toolbar.setNavigationOnClickListener(this);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
