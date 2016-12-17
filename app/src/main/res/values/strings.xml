@@ -36,11 +36,11 @@
     <string name="my_entrance_guard">我的门禁</string>
     <string name="access_control_application">门禁申请</string>
     <string name="family_micro_card">家属微卡</string>
-    <string name="problem_feedback">问题反馈</string>
+    <string name="problem_feedback">使用说明</string>
     <string name="about_micro_card">关于微卡</string>
     <string name="modify_password">修改密码</string>
     <string name="exit_login">退出登录</string>
-
+    <string name="app_login">畅顺微卡\n您安全的守护者</string>
 
     <string name="Information_announcement">信息公告</string>
     <string name="equipment_warranty">设备报修</string>
@@ -88,5 +88,32 @@
          通过互联网把手机APP和云计算等信息技术完美结合，把钥匙和门禁卡的功能进行升华，
          以社区服务为基础搭建物业和业主的沟通桥梁，
          为社区住户和物业管理公司打造更加便捷高效的社区交流智能化平台。</string>
+    <string name="app_manual1">业主您好：\n
+          为加强出入口管理，提高小区的安全等级，营造智慧、安全、和谐的居住环境，本小区将启用微卡出入口管理系统。业主注册申请使用微卡流程：
+    </string>
+    <string name="app_manual2">一、客户端下载\n
+1．安卓Android系统手机：到app应用商店搜索下载“微卡开门”或者用扫描工具（包括所有二维码扫描应用，微信扫一扫，qq扫一扫）扫描二维码下载“微卡开门”。
+    </string>
+    <string name="app_manual3">2.苹果IOS系统手机：到app  store搜索下载“微卡开门”或者用扫描工具（包括所有二维码扫描应用，微信扫一扫，qq扫一扫）扫描二维码下载“微卡开门”
+扫描二维码下载客户端。
+    </string>
+    <string name="app_manual4">二、客户端申请\n
+1．先要点击注册账户
+注册完毕后，再申请。
 
+2．在“申请微卡”界面登记小区：
+打开“微卡”,点击右下角“我的”，点开页面“门禁申请”，填写增加注册常驻小区的地址。等待物业系统审核
+    </string>
+    <string name="app_manual5">3．微卡启用后，业主可用手机扫描二维码自由进出小区。访客通过受访业主手机发送的电子临时微卡，手机扫码进出访问小区。保安对持有临时电子微卡的访客将不再进行人工登记或询问。</string>
+    <string name="app_manual6">三、使用操作\n
+1、当您有多张门禁后，点击红框部分，会按顺序依次切换门禁所属地址。
+依次点击主页“我的---我的门禁”可查询到您账号下所有门禁，点击我的门禁界面的任一门禁即可将该门禁设置为当前门禁。\n
+2、点击黄框按钮可将当前门禁二维码通过短信（彩信形式）、微信、QQ途径分享，二维码有效时间为二小时。\n
+3、点击紫框按钮可以显示当前门禁的二维码，该二维码可以开启小区大门及对应的楼栋门，将二维码对准门禁的识别口即可开门。
+</string>
+    <string name="app_manual7">4、点击依次点击主页“生活----给亲友微卡”，可到亲友二维码分享界面。
+ 当您有多张门禁时，点击红框部分按钮，会出现门禁选择界面，点击对应门禁，填写亲友名字就可将对应的门禁二维码通过短信（彩信形式）、微信、QQ途径分享给亲友，该界面分享产生的记录将会被记录在“生活-----往来日志界面”。（点击主页“我的----我的小区----设备报修”，该界面的小区地址点击后也会出现门禁选择界面）\n
+5．当忘记所属门禁密码时，可通过手机验证码获取新密码。
+</string>
+    <string name="app_manual8">\n  手机就是钥匙，串门就像主人。让我们一起营造智能安全和谐的智慧社区。\n\n\n</string>
 </resources>

@@ -40,7 +40,7 @@ public class FeedBackActivity extends BaseAppCompatActivity implements View.OnCl
         //设置标题
         String titleName = getIntent().getStringExtra(getResources().getString(R.string.develop_title));
         if (!TextUtil.isEmpty(titleName)) {
-            title.setText(titleName);
+            title.setText("畅顺微卡简易说明");
         }
     }
 

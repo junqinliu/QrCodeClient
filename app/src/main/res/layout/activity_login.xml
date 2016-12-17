@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F2F2F2"
+    android:background="#051431"
     android:paddingTop="50dp"
     android:orientation="vertical"
     tools:context=".MainActivity">
@@ -19,7 +19,16 @@
             android:id="@+id/head_pic"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginLeft="30dp"
             android:src="@mipmap/app" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:text="@string/app_login"/>
     </LinearLayout>
 
 
@@ -29,11 +38,14 @@
         android:layout_marginTop="40dp"
         android:gravity="center_horizontal" >
 
-        <ImageView
+        <TextView
             android:id="@+id/pic_account"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:src="@mipmap/login_user_pic" />
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:text="账户：" />
 
         <EditText
             android:id="@+id/ed_account"
@@ -42,10 +54,11 @@
             android:layout_toRightOf="@+id/pic_account"
             android:background="@null"
             android:enabled="true"
-            android:hint="手机号"
+            android:hint="请输入手机号"
+            android:textColorHint="#807d78"
             android:inputType="number"
             android:paddingLeft="15dp"
-            android:textColor="@color/black_text"
+            android:textColor="@color/white"
             android:textSize="13sp" />
     </RelativeLayout>
     <!--18760372556-->
@@ -63,11 +76,14 @@
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal" >
 
-        <ImageView
+        <TextView
             android:id="@+id/pic_password"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:src="@mipmap/login_password_pic" />
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:text="密码：" />
 
         <EditText
             android:id="@+id/ed_password"
@@ -76,14 +92,21 @@
             android:layout_toRightOf="@+id/pic_password"
             android:background="@null"
             android:enabled="true"
-            android:hint="密码"
+            android:hint="请输入密码"
+            android:textColorHint="#807d78"
             android:inputType="textPassword"
             android:paddingLeft="15dp"
-            android:textColor="@color/black_text"
+            android:textColor="@color/white"
             android:digits="@string/intput_psw"
             android:textSize="13sp" />
-    </RelativeLayout>
 
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="220dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="3dp"
+        android:background="#ECECEC" />
 
 
     <RelativeLayout
