@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="40dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -48,12 +48,13 @@
                     android:text="给亲友微卡"
                     android:layout_marginTop="10dp"/>
 
-
             </LinearLayout>
 
-
-
-
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_line"
+                ></View>
             <LinearLayout
                 android:id="@+id/log_layout"
                 android:layout_width="0dp"
@@ -83,7 +84,11 @@
 
             </LinearLayout>
 
-
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray_line"
+                ></View>
             <LinearLayout
                 android:id="@+id/message_layout"
                 android:layout_width="0dp"
