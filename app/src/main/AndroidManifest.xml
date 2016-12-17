@@ -177,7 +177,7 @@
         <activity android:name=".Personal.ApplyOtherActivity"></activity>
         <activity android:name=".Personal.CommunityBlockOtherActivity"></activity>
         <activity android:name=".Personal.ComunityMallActivity"></activity>
-
+        <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
         <service android:name="com.android.notify.PushService"
             android:process=":push"/>
 

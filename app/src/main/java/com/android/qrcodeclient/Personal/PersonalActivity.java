@@ -122,7 +122,7 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
                 goNext(MicroCardActivity.class,bundle);
                 break;
 
-            //问题反馈
+            //使用说明
             case R.id.problem:
                 goNext(FeedBackActivity.class,bundle);
                 break;

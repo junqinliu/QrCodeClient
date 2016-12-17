@@ -7,11 +7,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,7 +86,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     @Bind(R.id.time_count_txt)
     TextView time_count_txt;
 
-
+    int intScreenBrightness;
     int pageNumber = 0;
     int pageSize = 30;
     int QRsize = 500;
@@ -512,6 +515,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
 
+
                 if (responseBody != null) {
                     try {
                         String str = new String(responseBody);
@@ -580,7 +584,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                                     e.printStackTrace();
                                 }
-
+                                setWindowBrightness(250);
                             } else {
 
                                 showToast("请求接口失败，请联系管理员");
@@ -781,8 +785,38 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         oks.show(this);
-
-
+    }
+    private void screenBrightness_check()
+    {
+        //先关闭系统的亮度自动调节
+        try
+        {
+            if(android.provider.Settings.System.getInt(getContentResolver(),android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC)
+            {
+                android.provider.Settings.System.putInt(getContentResolver(),
+                        android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE,
+                        android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+            }
+        }
+        catch (Settings.SettingNotFoundException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        //获取当前亮度,获取失败则返回255
+        intScreenBrightness=(int)(android.provider.Settings.System.getInt(getContentResolver(),
+                android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                255));
+        //文本、进度条显示
+       // mSeekBar_light.setProgress(intScreenBrightness);
+       // mTextView_light.setText(""+intScreenBrightness*100/255);
+    }
+    //屏幕亮度
+    private void setWindowBrightness(int brightness) {
+        Window window = getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.screenBrightness = brightness / 255.0f;
+        window.setAttributes(lp);
     }
 
 }
