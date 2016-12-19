@@ -135,6 +135,7 @@ public class MessageActivity extends BaseAppCompatActivity implements View.OnCli
                     showToast("当前网络不可用,请检查网络");
                     return;
                 }
+                showLoadingDialog();
             }
 
             @Override
@@ -198,6 +199,7 @@ public class MessageActivity extends BaseAppCompatActivity implements View.OnCli
             public void onFinish() {
                 super.onFinish();
 
+                closeLoadDialog();
             }
 
 

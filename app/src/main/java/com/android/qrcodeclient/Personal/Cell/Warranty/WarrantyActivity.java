@@ -149,6 +149,7 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
                     showToast("当前网络不可用,请检查网络");
                     return;
                 }
+                showLoadingDialog();
             }
 
 
@@ -199,6 +200,7 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
             public void onFinish() {
                 super.onFinish();
 
+                closeLoadDialog();
             }
 
 

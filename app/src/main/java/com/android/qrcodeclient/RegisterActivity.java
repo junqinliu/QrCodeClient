@@ -311,6 +311,7 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
                     showToast("当前网络不可用,请检查网络");
                     return;
                 }
+                showLoadingDialog();
 
             }
 
@@ -373,7 +374,7 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onFinish() {
                 super.onFinish();
-
+                closeLoadDialog();
             }
 
 

@@ -307,6 +307,8 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                     showToast("当前网络不可用,请检查网络");
                     return;
                 }
+
+                showLoadingDialog();
             }
 
 
@@ -377,6 +379,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
             public void onFinish() {
                 super.onFinish();
 
+                closeLoadDialog();
             }
 
 

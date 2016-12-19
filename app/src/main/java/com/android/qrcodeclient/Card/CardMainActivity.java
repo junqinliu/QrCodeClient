@@ -89,7 +89,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     int intScreenBrightness;
     int pageNumber = 0;
     int pageSize = 30;
-    int QRsize = 500;
+        int QRsize = 500;
     List<EntranceBean> list = new ArrayList<>();
     List<EntranceBean> listTemp = new ArrayList<>();
     String buildname = "";//表示选中的楼栋名称 用来与 点击获取微卡获取的最新楼栋列表做比较 更新二维码
@@ -130,7 +130,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
 
-        //配置请求接口全局token 和 userid
+           //配置请求接口全局token 和 userid
         if (userInfoBean != null) {
 
             HttpUtil.getClient().addHeader("Token", userInfoBean.getToken());
@@ -510,6 +510,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     showToast("当前网络不可用,请检查网络");
                     return;
                 }
+
+                showLoadingDialog();
             }
 
             @Override
@@ -539,12 +541,21 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                             buildname = list.get(i).getBuildname();
                                             buildid = list.get(i).getBuildid();
                                             title.setText(buildname);//ljf
-                                            binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), QRsize, QRsize));
-                                            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
 
-                                            //把选中的楼栋的信息保存到本地，下次进来直接可以显示
-                                            String BeanStr = JSON.toJSONString(list.get(i));
-                                            SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+                                            try {
+
+                                                binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), QRsize, QRsize));
+                                                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+
+                                                //把选中的楼栋的信息保存到本地，下次进来直接可以显示
+                                                String BeanStr = JSON.toJSONString(list.get(i));
+                                                SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+
+                                            }catch (Exception e){
+                                                e.printStackTrace();
+                                            }
+
+
 
                                         }
                                     }
@@ -554,19 +565,36 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                     //初始化二维码
                                     if (list == null || list.size() <= 0) {
 
-                                        DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有开门微卡，请联系小区管理员");
-                                        binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                        try {
+
+                                            DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有开门微卡，请联系小区管理员");
+                                            binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+
+                                        }catch (Exception e){
+
+                                        }
+
                                         return;
                                     }
                                     if (!TextUtil.isEmpty(list.get(0).getSecret())) {
                                         buildname = list.get(0).getBuildname();
                                         buildid = list.get(0).getBuildid();
                                         title.setText(buildname);//ljf
-                                        binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize));
-                                        ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
-                                        //把选中的楼栋的信息保存到本地，下次进来直接可以显示
-                                        String BeanStr = JSON.toJSONString(list.get(0));
-                                        SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+
+                                        try {
+
+                                            binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize));
+                                            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+                                            //把选中的楼栋的信息保存到本地，下次进来直接可以显示
+                                            String BeanStr = JSON.toJSONString(list.get(0));
+                                            SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+
+                                        }catch (Exception e){
+
+
+                                        }
+
+
                                     }
                                 }
 
@@ -619,6 +647,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             public void onFinish() {
                 super.onFinish();
 
+                closeLoadDialog();
             }
 
 
@@ -627,17 +656,17 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
 
-    private void getUserInfo(){
+    private void getUserInfo() {
 
         RequestParams params = new RequestParams();
 
 
-        HttpUtil.get(Constants.HOST + Constants.getUserInfo,params,new AsyncHttpResponseHandler() {
+        HttpUtil.get(Constants.HOST + Constants.getUserInfo, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
 
-                if(!NetUtil.checkNetInfo(CardMainActivity.this)){
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
 
                     showToast("当前网络不可用,请检查网络");
                     return;
@@ -654,15 +683,15 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                         JSONObject jsonObject = new JSONObject(str);
                         if (jsonObject != null) {
 
-                            if(jsonObject.getBoolean("success")){
+                            if (jsonObject.getBoolean("success")) {
 
 
-                                 userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(),UserInfoBean.class);
-                                if(!TextUtil.isEmpty(phone)){
+                                userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
+                                if (!TextUtil.isEmpty(phone)) {
 
                                     userInfoBean.setPhone(phone);
                                 }
-                                String  userInfoBeanStr = JSON.toJSONString(userInfoBean);
+                                String userInfoBeanStr = JSON.toJSONString(userInfoBean);
                                 SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("UserInfo", userInfoBeanStr);
 
                                 //配置请求接口全局token 和 userid
@@ -674,8 +703,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 }
 
 
-
-                            }else{
+                            } else {
 
                                 showToast("请求接口失败，请联系管理员");
                             }
@@ -691,13 +719,13 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
 
-                if(responseBody != null){
+                if (responseBody != null) {
                     try {
                         String str1 = new String(responseBody);
                         JSONObject jsonObject1 = new JSONObject(str1);
                         showToast(jsonObject1.getString("msg"));
 
-                    }catch (JSONException e){
+                    } catch (JSONException e){
                         e.printStackTrace();
                     }
                 }

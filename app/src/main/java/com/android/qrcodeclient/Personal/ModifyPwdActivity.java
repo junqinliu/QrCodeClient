@@ -150,6 +150,7 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
                     showToast("当前网络不可用,请检查网络");
                     return;
                 }
+                showLoadingDialog();
             }
 
 
@@ -200,6 +201,7 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
             public void onFinish() {
                 super.onFinish();
 
+                closeLoadDialog();
             }
 
 

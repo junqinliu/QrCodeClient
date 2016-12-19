@@ -137,6 +137,8 @@ public class PwdForgetNextActivity extends BaseAppCompatActivity implements View
                     showToast("当前网络不可用,请检查网络");
                     return;
                 }
+
+                showLoadingDialog();
             }
 
 
@@ -186,6 +188,7 @@ public class PwdForgetNextActivity extends BaseAppCompatActivity implements View
             @Override
             public void onFinish() {
                 super.onFinish();
+                closeLoadDialog();
 
             }
 

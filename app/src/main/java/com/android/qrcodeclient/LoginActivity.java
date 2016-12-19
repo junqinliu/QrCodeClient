@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON;
 import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
+import com.android.download.UpdateManger;
 import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.utils.HttpUtil;
@@ -97,6 +98,8 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
             //登录按钮
             case R.id.btn_login:
+                //测试app下载更新
+              //  new UpdateManger(LoginActivity.this).checkUpdateInfo();
 
                 Login();
 
@@ -172,6 +175,8 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
                     return;
                 }
 
+                showLoadingDialog();
+
             }
 
 
@@ -186,15 +191,20 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
                             if (jsonObject.getBoolean("success")) {
 
-                                UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
-                                userInfoBean.setPhone(ed_account.getText().toString());
-                                String userInfoBeanStr = JSON.toJSONString(userInfoBean);
-                                SharedPreferenceUtil.getInstance(LoginActivity.this).putData("UserInfo", userInfoBeanStr);
+                                try {
 
-                                Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
-                                intent1.putExtra("phone",ed_account.getText().toString());
-                                startActivity(intent1);
-                                finish();
+                                    UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
+                                    userInfoBean.setPhone(ed_account.getText().toString());
+                                    String userInfoBeanStr = JSON.toJSONString(userInfoBean);
+                                    SharedPreferenceUtil.getInstance(LoginActivity.this).putData("UserInfo", userInfoBeanStr);
+
+                                    Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
+                                    intent1.putExtra("phone",ed_account.getText().toString());
+                                    startActivity(intent1);
+                                    finish();
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
 
                             } else {
 
@@ -232,7 +242,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
             @Override
             public void onFinish() {
                 super.onFinish();
-
+                closeLoadDialog();
             }
 
 
