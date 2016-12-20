@@ -63,6 +63,7 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
 
         if(familyMicroCardBean != null ){
 
+
             //初始化数据
             family_member_name_edit.setText(familyMicroCardBean.getFamilyName());
             family_member_phone_edit.setText(familyMicroCardBean.getFamilyPhone());
