@@ -119,7 +119,8 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
 
             //家属微卡
             case R.id.micro_card:
-                goNext(MicroCardActivity.class,bundle);
+                //goNext(MicroCardActivity.class,bundle);
+                goNext(FamilyMicroActivity.class,bundle);
                 break;
 
             //使用说明

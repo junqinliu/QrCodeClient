@@ -7,6 +7,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.MySSLSocketFactory;
 import com.loopj.android.http.RequestHandle;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
@@ -29,11 +30,12 @@ public class HttpUtil {
         //设置链接超时，如果不设置，默认为10s
         client.setMaxRetriesAndTimeout(MAX_RETRIE_TIMES, MY_TIME_OUT);
         client.setTimeout(MY_TIME_OUT);
-        client.addHeader("Charset","UTF-8");
+        client.addHeader("Charset", "UTF-8");
         client.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
         client.addHeader("Accept-Encoding", "gzip,deflate,sdch");
         client.addHeader("Content-Type", "application/json");
         client.setUserAgent("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36");
+
 
     }
 

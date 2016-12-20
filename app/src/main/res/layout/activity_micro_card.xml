@@ -9,4 +9,181 @@
         layout="@layout/header_toolbar"/>
 
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_stroke_radius_gray_one"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/family_member_name"
+                android:textColor="@color/black_text"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/family_member_name_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="8"
+                android:background="@drawable/shape_stroke_radius_gray"
+                android:padding="5dp"
+                android:inputType="phone"
+                android:textColor="@color/gray_text"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/family_member_phone"
+                android:textColor="@color/black_text"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/family_member_phone_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="8"
+                android:background="@drawable/shape_stroke_radius_gray"
+                android:padding="5dp"
+                android:textColor="@color/gray_text"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/family_member_pwd"
+                android:textColor="@color/black_text"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/family_member_pwd_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="8"
+                android:background="@drawable/shape_stroke_radius_gray"
+                android:padding="5dp"
+                android:textColor="@color/gray_text"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/family_member_start_time"
+                android:textColor="@color/black_text"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/family_member_start_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="8"
+                android:background="@drawable/shape_stroke_radius_gray"
+                android:padding="5dp"
+                android:textColor="@color/gray_text"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:text="@string/family_member_end_time"
+                android:textColor="@color/black_text"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/family_member_end_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="8"
+                android:background="@drawable/shape_stroke_radius_gray"
+                android:padding="5dp"
+                android:textColor="@color/gray_text"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:padding="10dp"
+            android:text="@string/preservation"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_finsh"
+            android:id="@+id/modify_btn" />
+
+
+    </LinearLayout>
+
+
 </LinearLayout>

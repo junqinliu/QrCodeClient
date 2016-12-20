@@ -78,6 +78,14 @@
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
 
+    <string name="family_member_name">家属名称:</string>
+    <string name="family_member_phone">手机号码:</string>
+    <string name="family_member_pwd">用户密码:</string>
+    <string name="family_member_start_time">开始时间:</string>
+    <string name="family_member_end_time">终止时间:</string>
+
+
+
     <!--login-->
     <string name="intput_psw">1234567890.,zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP</string>
     <string name="register_title">注册</string>
