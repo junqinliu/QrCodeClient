@@ -30,11 +30,11 @@ public class HttpUtil {
         //设置链接超时，如果不设置，默认为10s
         client.setMaxRetriesAndTimeout(MAX_RETRIE_TIMES, MY_TIME_OUT);
         client.setTimeout(MY_TIME_OUT);
+      //  client.addHeader("Content-Type", "application/json");
         client.addHeader("Charset", "UTF-8");
-        client.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-        client.addHeader("Accept-Encoding", "gzip,deflate,sdch");
-        client.addHeader("Content-Type", "application/json");
-        client.setUserAgent("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36");
+//        client.addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+//        client.addHeader("Accept-Encoding", "gzip,deflate,sdch");
+//        client.setUserAgent("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36");
 
 
     }

@@ -1,9 +1,11 @@
 package com.android.model;
 
+import java.io.Serializable;
+
 /**
  * Created by jisx on 2016/6/14.
  */
-public class EntranceBean {
+public class EntranceBean implements Serializable {
 
 
     private String houseid;

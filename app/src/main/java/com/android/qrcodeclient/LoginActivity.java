@@ -148,24 +148,27 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
             return;
         }
 
+        RequestParams params = new RequestParams();
+        params.put("phone", ed_account.getText().toString());
+        params.put("password", ed_password.getText().toString());
 
 
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("phone", ed_account.getText().toString());
-            jsonObject.put("password", ed_password.getText().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("phone", ed_account.getText().toString());
+//            jsonObject.put("password", ed_password.getText().toString());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        ByteArrayEntity entity = null;
+//        try {
+//            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+//            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        } catch (UnsupportedEncodingException e) {
+//        e.printStackTrace();
+//    }
 
-        HttpUtil.post(LoginActivity.this, Constants.HOST + Constants.Login, entity, "application/json", new AsyncHttpResponseHandler() {
+        HttpUtil.post( Constants.HOST + Constants.Login, params,  new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -208,7 +211,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
                         }
@@ -232,6 +235,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        showToast("连接不到服务器,请联系管理员");
                     }
                 }
 

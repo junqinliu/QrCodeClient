@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -24,11 +25,13 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.android.adapter.BlockAdapter;
+import com.android.adapter.HouseAdapter;
 import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.AdBean;
 import com.android.model.EntranceBean;
+import com.android.model.HouseBean;
 import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.Life.LifeActivity;
 import com.android.qrcodeclient.Personal.ApplyActivity;
@@ -53,7 +56,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -89,23 +94,34 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     int intScreenBrightness;
     int pageNumber = 0;
     int pageSize = 30;
-        int QRsize = 500;
+    int QRsize = 500;
+    //该用户的小区列表
+    List<HouseBean> houseList = new ArrayList<>();
+    List<HouseBean> houseListTemp = new ArrayList<>();
+    //当前小区下的微卡列表
     List<EntranceBean> list = new ArrayList<>();
     List<EntranceBean> listTemp = new ArrayList<>();
-    String buildname = "";//表示选中的楼栋名称 用来与 点击获取微卡获取的最新楼栋列表做比较 更新二维码
-    String buildid = "";
 
 
+    private boolean isInit = false;
     public String[] titles;
     public String[] urls;
 
     public BlockAdapter blockAdapter;
+    public HouseAdapter houseAdapter;
     private UserInfoBean userInfoBean = new UserInfoBean();
     List<AdBean> adBeanList = new ArrayList<>();
     TimeCount time;
-
     private String phone;
-
+    // //获取楼栋列表需要还原head中的houseid
+    private  static int needAddHead = 1;
+    //获取楼栋列表不需要还原head中的houseid
+    private  static int noAddHead = 0;
+    //houseid的临时变量
+    private  String houseidTemp;
+    //选中的houseid
+    String hasSelectHouseid = "";
+    String hasSelectHousename = "";
 
 
     @Override
@@ -128,13 +144,17 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void initData() {
 
+
+        //TODO 当一次注册登录后 也申请了门禁卡 但是物业后台还没审核 这时候 进入首页点击其他按钮 不应该再跳到门禁申请界面
+
         userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
 
-           //配置请求接口全局token 和 userid
+           //配置请求接口全局token 和 userid houseid
         if (userInfoBean != null) {
 
             HttpUtil.getClient().addHeader("Token", userInfoBean.getToken());
             HttpUtil.getClient().addHeader("Userid", userInfoBean.getUserid());
+            HttpUtil.getClient().addHeader("Houseid", userInfoBean.getHouseid());
 
         }
 
@@ -142,56 +162,57 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
         //从我的模块中我的门禁列表中选中的值回填
-        String secret = getIntent().getStringExtra("secret");
-        if (!TextUtil.isEmpty(secret)) {
+        EntranceBean entranceBean = (EntranceBean)getIntent().getSerializableExtra("FromEntranceActivity");
+
+        if(entranceBean != null){
+
             //从我的门禁列表进来
-            buildname = getIntent().getStringExtra("buildname");
-            buildid = getIntent().getStringExtra("buildid");
-            title.setText(buildname);//
-            // showToast(secret);
-            binaryCode.setImageBitmap(Utils.createQRImage(this, secret, QRsize, QRsize));
-            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this,secret, QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
-            getMyCard();
+            title.setText(entranceBean.getHousename()+"-"+entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+            //TODO 这个地方要替换为本地算法生成二维码的方法 暂时是采用从我的门禁选中带过来的秘钥
+            binaryCode.setImageBitmap(Utils.createQRImage(this, entranceBean.getSecret(), QRsize, QRsize));
+            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this,entranceBean.getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+            //保存EntranceBean 到本地文件
+            String BeanStr = JSON.toJSONString(entranceBean);
+            SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+            //实时调用后台生成二维码的接口
+            getQrCodeByBuildID(entranceBean.getBuildid());
+            //获取图片路径
+            getAdList();
 
         } else {
 
-            //从登陆界面进来 获取我的门禁列表(就是把上次二维码保存到share文件中再取出来用)
+            //从免登陆方式 获取我的门禁列表(就是把上次二维码保存到share文件中再取出来用)
             if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
                 EntranceBean EntranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
-                buildname = EntranceBean.getBuildname();
-                buildid = EntranceBean.getBuildid();
+                title.setText(EntranceBean.getHousename()+"-"+EntranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+                //TODO 同上
                 binaryCode.setImageBitmap(Utils.createQRImage(this, EntranceBean.getSecret(), QRsize, QRsize));
-                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this,  EntranceBean.getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, EntranceBean.getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
 
+                //实时调用后台生成二维码的接口
+                getQrCodeByBuildID(EntranceBean.getBuildid());
+               //获取图片路径
+                getAdList();
             } else {
 
-                if ("PASS".equals(userInfoBean.getAduitstatus())) {
-                    //已经审核通过
-                    binaryCode.setImageBitmap(Utils.createQRImage(this, "test", QRsize, QRsize));
-
-                } else {
-
-                    //表示用户还没审核通过 则显示默认的图片
-                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
-                }
+                //--------------------------------start--------------------------------------------
+                //首次登陆进来，先设置默认图片 再调用接口获取个人信息 将UserInfoBean保存到本地 同时addHeader
+                // 再去通过调用getMyCardList()接口默认第一条数据为开门二维码和获取广告列表
+                //保存默认的第一条数据EntranceBean 到本地文件
+                //--------------------------------end--------------------------------------------
+                binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                //获取个人用户信息
+                isInit = true;
+                getUserInfo();
             }
 
-            if ("PASS".equals(userInfoBean.getAduitstatus())) {
-                //已经审核通过 开始获取我的门禁
-                getMyCard();
-            }
+
 
         }
 
-        //获取图片路径
-        getAdList();
-
         phone = getIntent().getStringExtra("phone");
-        /**
-         * 获取用户信息
-         */
-        getUserInfo();
+
 
     }
 
@@ -204,22 +225,56 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         my_layout.setOnClickListener(this);
         add_img.setOnClickListener(this);
 
-
+        //切换小区按钮
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if ("PASS".equals(userInfoBean.getAduitstatus())) {
+                //---------------------start----------------------------------
+                //点击切换小区按钮时，调用获取小区列表的接口。
+                // 如果只有一个小区，就不会显示小区列表，只显示楼栋列表
+                //如果是多个小区，会显示小区列表，如果进行小区切换
+                // a:（同时把请求头部addhead一下 这里先不把houseid 更新到本地userInfoBean中的houseid 因为用户有可能不会去选择楼栋 ）
+                // b: 用一个临时变量houseidTemp 来保存在点击切换小区按钮之前的houseid   场景：如果不选择楼栋 关掉弹出框 则把临时变量houseidTemp 把请求头部addhead一下（可以在每次获取楼栋列表回调中操作）
+                //点击选择楼栋 （同时实时保存选中的哪一个楼栋保存到本地EntranceBean ,把houseid 更新到本地userInfoBean中的houseid和 housename，同时把请求头部addhead一下）再去调用生成二维码接口getQrcodeByBuildid()
+                //首页头部描述显示重置
+                //---------------------end------------------------------------
 
-                    showCalendarPopwindow(v);
-                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
-                    showToast("还未通过审核");
+              //  if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
+                    userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+                    houseidTemp = userInfoBean.getHouseid();
+                    //开始调用获取小区列表接口
+                    try{
 
-                } else {
-                    //跳到门禁申请界面
-                    startActivity(new Intent(CardMainActivity.this, ApplyActivity.class));
-                }
+                        getHouseList(v);
+                    }catch (Exception e){
+
+                        e.printStackTrace();
+                    }
+
+//                }else{
+//
+//                    //跳到门禁申请界面
+//                    startActivity(new Intent(CardMainActivity.this, ApplyActivity.class));
+//                }
+
+
+
+
+
+
+//                if ("PASS".equals(userInfoBean.getAduitstatus())) {
+//
+//                    showCalendarPopwindow(v);
+//                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+//
+//                    showToast("还未通过审核");
+//
+//                } else {
+//                    //跳到门禁申请界面
+//                    startActivity(new Intent(CardMainActivity.this, ApplyActivity.class));
+//                }
 
 
             }
@@ -232,15 +287,14 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     @OnClick(R.id.binaryCode)
     public void onClick() {
 
-        if ("PASS".equals(userInfoBean.getAduitstatus())) {
 
-            getMyCard();
+        if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
-        } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+            EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
+            //实时调用后台生成二维码的接口
+            getQrCodeByBuildID(entranceBean.getBuildid());
 
-            showToast("还未通过审核");
-
-        } else {
+        }else{
 
             //跳到门禁申请界面
             startActivity(new Intent(this, ApplyActivity.class));
@@ -254,6 +308,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         super.onResume();
 
         userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+        getAdList();
+
     }
 
     @Override
@@ -265,37 +321,34 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             //生活
             case R.id.life_layout:
 
-                if ("PASS".equals(userInfoBean.getAduitstatus())) {
+                if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
                     startActivity(new Intent(this, LifeActivity.class));
 
-                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+                }else{
 
-                    showToast("还未通过审核");
-
-                } else {
                     //跳到门禁申请界面
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
+
 
 
                 break;
             //获取微卡
             case R.id.card_layout:
 
+                if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
-                if ("PASS".equals(userInfoBean.getAduitstatus())) {
+                    EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
+                    //实时调用后台生成二维码的接口
+                    getQrCodeByBuildID(entranceBean.getBuildid());
 
-                    getMyCard();
+                }else{
 
-                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
-
-                    showToast("还未通过审核");
-
-                } else {
                     //跳到门禁申请界面
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
+
 
 
                 break;
@@ -303,39 +356,44 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             case R.id.my_layout:
 
 
-                if ("PASS".equals(userInfoBean.getAduitstatus())) {
+                if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
                     startActivity(new Intent(this, PersonalActivity.class));
-                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
-                    showToast("还未通过审核");
+                }else{
 
-                } else {
                     //跳到门禁申请界面
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
-
 
                 break;
 
             //分享
             case R.id.add_img:
 
-                if ("PASS".equals(userInfoBean.getAduitstatus())) {
 
-                   /* Intent intent = new Intent(this, SendCardActivity.class);
-                    intent.putExtra("buildname", buildname);
-                    intent.putExtra("buildid", buildid);
-                    startActivity(intent);*/
+                if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
+
                     shareToPlatForm();
-                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
 
-                    showToast("还未通过审核");
+                }else{
 
-                } else {
                     //跳到门禁申请界面
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
+
+//                if ("PASS".equals(userInfoBean.getAduitstatus())) {
+//
+//
+//                    shareToPlatForm();
+//                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
+//
+//                    showToast("还未通过审核");
+//
+//                } else {
+//                    //跳到门禁申请界面
+//                    startActivity(new Intent(this, ApplyActivity.class));
+//                }
 
 
                 break;
@@ -380,6 +438,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 adBeanList = JSON.parseArray(gg.getJSONArray("items").toString(), AdBean.class);
                                 if (adBeanList != null && adBeanList.size() > 0) {
 
+                                    for(int i = 0; i< adBeanList.size();i++){
+
+                                        adBeanList.get(i).setPicurl(Constants.HOST+adBeanList.get(i).getPicurl());
+                                    }
                                     advert.setSelectAnimClass(RotateEnter.class)
                                             .setUnselectAnimClass(NoAnimExist.class)
                                             .setSource(adBeanList)
@@ -388,7 +450,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
                         }
@@ -436,226 +498,97 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
      */
     private void showCalendarPopwindow(View v) {
 
-        if (list == null || list.size() == 0) {
-            DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有开门微卡，请联系小区管理员");
-            return;
-        }
+
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View vPopWindow = inflater.inflate(R.layout.block_popwindow, null, false);
-        ListView list_view = (ListView) vPopWindow.findViewById(R.id.list_view);
-        blockAdapter = new BlockAdapter(this, list);
-        list_view.setAdapter(blockAdapter);
-        blockAdapter.notifyDataSetChanged();
+        final ListView build_list_view = (ListView) vPopWindow.findViewById(R.id.build_list_view);
+        ListView house_list_view = (ListView) vPopWindow.findViewById(R.id.house_list_view);
+        LinearLayout house_layout = (LinearLayout) vPopWindow.findViewById(R.id.house_layout);
+        LinearLayout build_layout = (LinearLayout) vPopWindow.findViewById(R.id.build_layout);
+
+        // 只有一个小区 则显示楼栋列表
+        if(houseList != null && houseList.size() == 1){
+
+            if (list != null && list.size() > 0){
+                house_list_view.setVisibility(View.GONE);
+                house_layout.setVisibility(View.GONE);
+                blockAdapter = new BlockAdapter(this, list);
+                build_list_view.setAdapter(blockAdapter);
+                blockAdapter.notifyDataSetChanged();
+            }
+        }else{
+            //多个小区 则显示小区列表
+            //build_layout.setVisibility(View.GONE);
+            build_list_view.setVisibility(View.GONE);
+            houseAdapter = new HouseAdapter(this,houseList);
+            house_list_view.setAdapter(houseAdapter);
+
+            houseAdapter.notifyDataSetChanged();
+        }
+
         final PopupWindow popWindow = new PopupWindow(vPopWindow, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
         popWindow.setBackgroundDrawable(new BitmapDrawable());
         popWindow.setOutsideTouchable(true);
         popWindow.showAsDropDown(v);
 
-
-        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //小区列表item点击事件
+        house_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                //选中的楼栋二维码
-                if (!TextUtil.isEmpty(list.get(arg2).getSecret())) {
-                    buildname = list.get(arg2).getBuildname();
-                    buildid = list.get(arg2).getHouseid();
-                    title.setText(buildname);//ljf
-                    binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), QRsize, QRsize));
-                    //开启倒计时
-                    time.start();
 
-                    /**
-                     * 给按钮添加音效
-                     */
-                    try {
-
-                        VoiceUtil.getInstance(CardMainActivity.this).startVoice();
-
-                    } catch (Exception e) {
-
-                        e.printStackTrace();
-                    }
-                    ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(arg2).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
-                    popWindow.dismiss();
-                    //把选中的楼栋的信息保存到本地，下次进来直接可以显示
-                    String BeanStr = JSON.toJSONString(list.get(arg2));
-                    SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
-                }
+                //实时更新head中的houseid
+                HttpUtil.getClient().addHeader("Houseid", houseList.get(arg2).getHouseid());
+                hasSelectHouseid = houseList.get(arg2).getHouseid();
+                hasSelectHousename = houseList.get(arg2).getName();
+                build_list_view.setVisibility(View.GONE);
+                houseAdapter.setSelectItem(arg2);
+                houseAdapter.notifyDataSetChanged();
+                getMyCardList(build_list_view, needAddHead);
 
             }
         });
 
 
+        //楼栋列表的点击事件
+        build_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                //如果是多个小区 把head中的houseid更新一下，同时保存houseid 和 housename到userinfobean中，同时保存EntranceBean到本地文件
+                //如果是一个小区 直接调用生成微卡接口
+                //这个时候可能没网 但是上面的步骤已经完成了，不处理数据会有问题的 所以在获取微卡时在onStart()中没网 自己去生成微卡
+                if(!TextUtil.isEmpty(hasSelectHouseid) && !TextUtil.isEmpty(hasSelectHousename)){
+
+                    HttpUtil.getClient().addHeader("Houseid",hasSelectHouseid);
+                    userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+                    userInfoBean.setHouseid(hasSelectHouseid);
+                    userInfoBean.setHousename(hasSelectHousename);
+                    String userInfoBeanStr = JSON.toJSONString(userInfoBean);
+                    SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("UserInfo", userInfoBeanStr);
+                    String BeanStr = JSON.toJSONString(list.get(arg2));
+                    SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+                    getQrCodeByBuildID(list.get(arg2).getBuildid());
+                }else{
+
+                    String BeanStr = JSON.toJSONString(list.get(arg2));
+                    SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+                    getQrCodeByBuildID(list.get(arg2).getBuildid());
+                }
+                popWindow.dismiss();
+
+            }
+        });
+
     }
+
 
 
     /**
-     * 我的门禁列表
+     * 获取用户个人信息
      */
-    private void getMyCard() {
-
-        RequestParams params = new RequestParams();
-        params.put("pageSize", pageSize);
-        params.put("pageNumber", pageNumber);
-        HttpUtil.get(Constants.HOST + Constants.MyCardList, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-
-                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
-
-                    showToast("当前网络不可用,请检查网络");
-                    return;
-                }
-
-                showLoadingDialog();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
-
-
-                if (responseBody != null) {
-                    try {
-                        String str = new String(responseBody);
-                        JSONObject jsonObject = new JSONObject(str);
-                        if (jsonObject != null) {
-
-                            if (jsonObject.getBoolean("success")) {
-                                list.clear();
-                                JSONObject gg = new JSONObject(jsonObject.getString("data"));
-                                listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), EntranceBean.class);
-                                list.addAll(listTemp);
-
-
-                                if (!TextUtil.isEmpty(buildname)) {
-
-                                    for (int i = 0; i < list.size(); i++) {
-
-                                        if (buildname.equals(list.get(i).getBuildname())) {
-
-                                            //表示上次选中的二维码，此时更新最新的二维码
-                                            buildname = list.get(i).getBuildname();
-                                            buildid = list.get(i).getBuildid();
-                                            title.setText(buildname);//ljf
-
-                                            try {
-
-                                                binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), QRsize, QRsize));
-                                                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(i).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
-
-                                                //把选中的楼栋的信息保存到本地，下次进来直接可以显示
-                                                String BeanStr = JSON.toJSONString(list.get(i));
-                                                SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
-
-                                            }catch (Exception e){
-                                                e.printStackTrace();
-                                            }
-
-
-
-                                        }
-                                    }
-
-                                } else {
-
-                                    //初始化二维码
-                                    if (list == null || list.size() <= 0) {
-
-                                        try {
-
-                                            DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有开门微卡，请联系小区管理员");
-                                            binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
-
-                                        }catch (Exception e){
-
-                                        }
-
-                                        return;
-                                    }
-                                    if (!TextUtil.isEmpty(list.get(0).getSecret())) {
-                                        buildname = list.get(0).getBuildname();
-                                        buildid = list.get(0).getBuildid();
-                                        title.setText(buildname);//ljf
-
-                                        try {
-
-                                            binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize));
-                                            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
-                                            //把选中的楼栋的信息保存到本地，下次进来直接可以显示
-                                            String BeanStr = JSON.toJSONString(list.get(0));
-                                            SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
-
-                                        }catch (Exception e){
-
-
-                                        }
-
-
-                                    }
-                                }
-
-                                //开启倒计时
-                                time.start();
-
-                                /**
-                                 * 给按钮添加音效
-                                 */
-                                try {
-
-                                    VoiceUtil.getInstance(CardMainActivity.this).startVoice();
-
-                                } catch (Exception e) {
-
-                                    e.printStackTrace();
-                                }
-                                setWindowBrightness(250);
-                            } else {
-
-                                showToast("请求接口失败，请联系管理员");
-                            }
-
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
-
-                if (responseBody != null) {
-                    try {
-                        String str1 = new String(responseBody);
-                        JSONObject jsonObject1 = new JSONObject(str1);
-                        showToast(jsonObject1.getString("msg"));
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-
-                closeLoadDialog();
-            }
-
-
-        });
-
-    }
-
-
     private void getUserInfo() {
 
         RequestParams params = new RequestParams();
@@ -694,18 +627,25 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 String userInfoBeanStr = JSON.toJSONString(userInfoBean);
                                 SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("UserInfo", userInfoBeanStr);
 
-                                //配置请求接口全局token 和 userid
+                                //配置请求接口全局token 和 userid houseid
                                 if (userInfoBean != null) {
 
                                     HttpUtil.getClient().addHeader("Token", userInfoBean.getToken());
                                     HttpUtil.getClient().addHeader("Userid", userInfoBean.getUserid());
+                                    HttpUtil.getClient().addHeader("Houseid", userInfoBean.getHouseid());
 
                                 }
 
 
+                                //实时调用门禁列表接口 默认第一条数据为开门二维码
+                                getMyCardList(add_img,noAddHead);
+                                //获取图片路径
+                                getAdList();
+
+
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
                         }
@@ -725,7 +665,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                         JSONObject jsonObject1 = new JSONObject(str1);
                         showToast(jsonObject1.getString("msg"));
 
-                    } catch (JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
@@ -746,6 +686,393 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
 
+
+
+    /**
+     * 获取用户的小区列表
+     */
+    public void getHouseList(final View v){
+
+        RequestParams params = new RequestParams();
+
+        HttpUtil.get(Constants.HOST + Constants.MyHouseList, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
+
+                URI uri = this.getRequestURI();
+
+                showLoadingDialog();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+
+                                houseList.clear();
+                                JSONObject gg = new JSONObject(jsonObject.getString("data"));
+                                houseListTemp = JSON.parseArray(gg.getJSONArray("items").toString(), HouseBean.class);
+                                houseList.addAll(houseListTemp);
+
+                                if (houseList != null && houseList.size() > 0) {
+
+                                    //如果只有一个小区 则只显示楼栋列表
+                                    if (houseList.size() == 1) {
+                                        //再去调用楼栋列表
+                                        getMyCardList(v, noAddHead);
+
+                                    } else {
+
+                                        showCalendarPopwindow(v);
+                                    }
+
+                                } else {
+
+                                    DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有小区，请门禁申请或联系物业");
+                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                }
+                            } else {
+
+                                showToast(jsonObject.getString("msg"));
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+                closeLoadDialog();
+            }
+
+
+        });
+
+
+    }
+
+    /**
+     * 我的门禁列表
+     */
+    private void getMyCardList(final View v, final int flag) {
+        //三种场景调用这个接口
+        //flag:0 表示不需要还原head中的houseid，场景：首次登陆调用或者是只有一个小区时调用
+        //flag:1 表示需要还原head中的houseid, 场景：在切花小区时会把head中的houseid改了 如果用户不去点击楼栋 关闭弹出框 那应该把houseid 还原
+        RequestParams params = new RequestParams();
+        params.put("pageSize", pageSize);
+        params.put("pageNumber", pageNumber);
+        HttpUtil.get(Constants.HOST + Constants.MyCardList, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
+
+                showLoadingDialog();
+                URI uri = this.getRequestURI();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+                                list.clear();
+                                JSONObject gg = new JSONObject(jsonObject.getString("data"));
+                                listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), EntranceBean.class);
+                                list.addAll(listTemp);
+                                // TODO 黑名单 和 超时机制还没写逻辑
+
+                                if (list != null && list.size() > 0 ) {
+
+                                    if(isInit){
+                                        //表示第一次登录进来
+                                        binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize));
+                                        ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, list.get(0).getSecret(), QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+
+                                        String BeanStr = JSON.toJSONString(list.get(0));
+                                        SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+                                        title.setText(list.get(0).getHousename() + "-" + list.get(0).getBuildname());//在头部描述当前小区以及楼栋名称
+                                        isInit = false;
+                                    }else{
+                                        //点击切换小区出来的楼栋列表
+                                        //获取到houseid的临时变量 先做还原houseid
+                                        if(flag == 1){
+                                            //多个小区
+                                            HttpUtil.getClient().addHeader("Houseid", houseidTemp);
+                                            v.setVisibility(View.VISIBLE);
+                                            blockAdapter = new BlockAdapter(CardMainActivity.this, list);
+                                            ((ListView)v).setAdapter(blockAdapter);
+                                            blockAdapter.notifyDataSetChanged();
+
+                                        }else{
+                                           //只有一个小区
+                                            showCalendarPopwindow(v);
+                                        }
+
+                                    }
+
+                                }else{
+
+                                    try {
+
+                                        if(flag == 1){
+                                            //多个小区
+                                            HttpUtil.getClient().addHeader("Houseid", houseidTemp);
+
+                                        }
+
+                                        DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有楼栋列表，请门禁申请或联系物业");
+                                        binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+
+                                    } catch (Exception e) {
+
+                                    }
+
+
+                                }
+
+
+                            } else {
+                                if(flag == 1){
+                                    //多个小区
+                                    HttpUtil.getClient().addHeader("Houseid", houseidTemp);
+
+                                }
+
+                                showToast(jsonObject.getString("msg"));
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        if(flag == 1){
+                            //多个小区
+                            HttpUtil.getClient().addHeader("Houseid", houseidTemp);
+
+                        }
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+                        if(flag == 1){
+                            //多个小区
+                            HttpUtil.getClient().addHeader("Houseid", houseidTemp);
+
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+                closeLoadDialog();
+            }
+
+
+        });
+
+    }
+
+    /**
+     *t通过buildid来获取二维码
+     */
+
+    public void getQrCodeByBuildID(String buildId){
+
+
+
+        RequestParams params = new RequestParams();
+
+
+
+        HttpUtil.get(Constants.HOST + Constants.GetQrCodeByBuild + "/"+buildId +"/card", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                // TODO采用本地算法生成二维码
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+                    showToast("当前网络不可用,请检查网络");
+
+                    if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
+
+                        EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
+                        title.setText(entranceBean.getHousename()+"-"+entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+
+                        binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, "test", QRsize, QRsize));
+                        ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, "test", QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+
+                        //开启倒计时
+                       time.start();
+                        //给按钮添加声音
+                        try {
+
+                        VoiceUtil.getInstance(CardMainActivity.this).startVoice();
+
+                        } catch (Exception e) {
+
+                        e.printStackTrace();
+                       }
+
+                      }
+
+
+
+                    return;
+                }
+
+                URI uri = this.getRequestURI();
+                showLoadingDialog();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+
+                                if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
+
+                                    EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
+                                    title.setText(entranceBean.getHousename()+"-"+entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+
+                                }
+
+
+                                //展示二维码和将二维码保存到sd卡用来做分享
+                                String qrCode = jsonObject.getString("data");
+                                binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, qrCode, QRsize, QRsize));
+                                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, qrCode, QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+                                //开启倒计时
+                                time.start();
+                                //给按钮添加声音
+                                try {
+
+                                    VoiceUtil.getInstance(CardMainActivity.this).startVoice();
+
+                                } catch (Exception e) {
+
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+                closeLoadDialog();
+            }
+
+
+        });
+
+
+    }
 
 
 

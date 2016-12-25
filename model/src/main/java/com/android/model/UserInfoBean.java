@@ -9,7 +9,7 @@ public class UserInfoBean {
     private  String name;
     private  String userid;
     private  String aduitstatus;//状态（枚举注册，通过、拒绝、审核中）REGISTER/ PASS/REFUSE/AUDITING
-    private String  authority;   //权限（枚举管理员、物业、业主、成员） ADMIN/PROPERTY/OWNER/USER
+    private String  authority;   //权限 ROLE_OWNER ，ROLE_FAMILY（业主 家属）
     private String phone;
     private String houseid;
     private String housename;

@@ -6,7 +6,9 @@ public class Constants {
 	/**
 	 * url地址
 	 */
-	public static final String HOST = "http://120.76.202.60:8080/microcard";
+	//public static final String HOST = "http://120.76.202.60:8080/microcard";
+	public static final String HOST = "http://dev.2173888.com:9999";
+	//public static final String HOST = "https://dev.2173888.com:8443";
 
 	/**
 	 * 注册接口
@@ -25,7 +27,8 @@ public class Constants {
 	/**
 	 * 广告列表接口
 	 */
-	public static final String AdList = "/v0.1/ad";
+	//public static final String AdList = "/v0.1/ad";
+	public static final String AdList = "/v0.1/ad/carouselFigure";
 
 	/**
 	 * 我的信息 服务投诉 设备报修接口
@@ -90,11 +93,18 @@ public class Constants {
 	 * 邀请
 	 */
 	public static final String  Invite = "/v0.1/user/invite";
-
+	/**
+	 * 用户的小区列表
+	 */
+	public static final String  MyHouseList = "/v0.1/place/myhouses";
 	/**
 	 * 我的门禁列表
 	 */
 	public static final String  MyCardList = "/v0.1/place/build/card";
+	/**
+	 * 单个门禁对应的二维码
+	 */
+	public static final String  GetQrCodeByBuild = "/v0.1/place/build";
 
 	/**
 	 * 申请微卡提交申请

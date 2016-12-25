@@ -15,6 +15,7 @@ import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.EntranceBean;
+import com.android.model.FamilyMicroCardBean;
 import com.android.model.LogBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.qrcodeclient.R;
@@ -96,9 +97,16 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
 
                 ExitApplication.getInstance().exitActivity();
                 Intent intent = new Intent(EntranceActivity.this, CardMainActivity.class);
-                intent.putExtra("secret",list.get(arg2).getSecret());
-                intent.putExtra("buildname",list.get(arg2).getBuildname());
-                intent.putExtra("buildid",list.get(arg2).getBuildid());
+//                intent.putExtra("secret",list.get(arg2).getSecret());
+//                intent.putExtra("buildname",list.get(arg2).getBuildname());
+//                intent.putExtra("buildid",list.get(arg2).getBuildid());
+//                intent.putExtra("houseid",list.get(arg2).getHouseid());
+//                intent.putExtra("housename",list.get(arg2).getHousename());
+//                intent.putExtra("model",list.get(arg2).getModel());
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("FromEntranceActivity",(EntranceBean)list.get(arg2));
+                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
 
