@@ -114,4 +114,23 @@ public class Constants {
 	 * 申请门禁卡提交申请
 	 */
 	public static final String  CardApply = "/v0.1/place/build/card/owner";
+
+
+	/**
+	 * 家属微卡列表
+	 */
+	public static final String  FamilyCardList = "/v0.1/user/getFamilyMembers";
+
+	/**
+	 * 添加家属
+	 */
+	public static final String  AddFamilyMember = "/v0.1/user/addFamilyMember";
+	/**
+	 * 编辑家属
+	 */
+	public static final String  EditFamilyMember = "/v0.1/user/updateFamilyMember";
+	/**
+	 * 删除家属
+	 */
+	public static final String  DeleteFamilyMember = "/v0.1/user/delFamilyMember";
 }

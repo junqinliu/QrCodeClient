@@ -12,19 +12,30 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.android.base.BaseAppCompatActivity;
+import com.android.constant.Constants;
 import com.android.model.FamilyMicroCardBean;
 import com.android.qrcodeclient.R;
 import com.android.timeselect.wheelview.DateUtils;
 import com.android.timeselect.wheelview.JudgeDate;
 import com.android.timeselect.wheelview.ScreenInfo;
 import com.android.timeselect.wheelview.WheelMain;
+import com.android.utils.DateUtil;
+import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,9 +71,13 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
     @Bind(R.id.family_member_pwd_layout)
     LinearLayout family_member_pwd_layout;
 
+    @Bind(R.id.modify_btn)
+    Button modify_btn;
+
     private WheelMain wheelMainDate;
     private String beginTime;
     FamilyMicroCardBean familyMicroCardBean = null;
+    private String flag = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,18 +99,18 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
             title.setText(titleName);
         }
 
+        flag = getIntent().getStringExtra("flag");
         familyMicroCardBean = (FamilyMicroCardBean)getIntent().getSerializableExtra("FamilyMicroCardBean");
 
         if(familyMicroCardBean != null ){
 
 
             //初始化数据
-            title.setText("编辑家属");
-            family_member_name_edit.setText(familyMicroCardBean.getFamilyName());
-            family_member_phone_edit.setText(familyMicroCardBean.getFamilyPhone());
-            family_member_pwd_edit.setText(familyMicroCardBean.getFamilyPwd());
-            family_member_start_edit.setText(familyMicroCardBean.getFamilyStart());
-            family_member_end_edit.setText(familyMicroCardBean.getFamilyEnd());
+            family_member_name_edit.setText(familyMicroCardBean.getSurname());
+            family_member_phone_edit.setText(familyMicroCardBean.getTel());
+          //  family_member_pwd_edit.setText(familyMicroCardBean.getFamilyPwd());
+            family_member_start_edit.setText(familyMicroCardBean.getValidStartTime());
+            family_member_end_edit.setText(familyMicroCardBean.getValidEndTime());
 
             family_member_phone_edit.setFocusable(false);
             family_member_pwd_layout.setVisibility(View.GONE);
@@ -110,6 +125,7 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
         toolbar.setNavigationOnClickListener(this);
         family_member_start_edit.setOnClickListener(this);
         family_member_end_edit.setOnClickListener(this);
+        modify_btn.setOnClickListener(this);
 
     }
 
@@ -125,6 +141,54 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
             case R.id.family_member_end_edit:
 
                 showBottoPopupWindow(family_member_end_edit);
+                break;
+
+            case R.id.modify_btn:
+
+                if(TextUtil.isEmpty(family_member_name_edit.getText().toString())){
+
+                    showToast("家属名称不能为空");
+                    return;
+                }
+                if(TextUtil.isEmpty(family_member_phone_edit.getText().toString())){
+
+                    showToast("手机号码不能为空");
+                    return;
+                }
+                if(TextUtil.isEmpty(family_member_start_edit.getText().toString())){
+
+                    showToast("开始时间不能为空");
+                    return;
+                }
+                if(TextUtil.isEmpty(family_member_end_edit.getText().toString())){
+
+                    showToast("终止时间不能为空");
+                    return;
+                }
+
+
+               if( DateUtil.strFormatToDate(family_member_start_edit.getText().toString()+":00").after(DateUtil.strFormatToDate(family_member_end_edit.getText().toString()+":00"))){
+                   showToast("开始时间不能大与结束时间");
+                   return;
+               }
+
+
+
+                if("add".equals(flag)){
+                    //添加家属
+                    addFamilyMember(family_member_name_edit.getText().toString(),
+                            family_member_phone_edit.getText().toString(),
+                            family_member_start_edit.getText().toString()+":00",
+                            family_member_end_edit.getText().toString()+":00");
+
+                }else{
+                //编辑家属
+                updateFamilyMember(familyMicroCardBean.getId(),
+                        family_member_start_edit.getText().toString(),
+                        family_member_end_edit.getText().toString(),
+                        family_member_name_edit.getText().toString());
+            }
+
                 break;
 
             default:
@@ -209,5 +273,169 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
         }
 
     }
+
+
+
+    /**
+     * 添加家属
+     */
+    private void addFamilyMember(String surname,String tel,String valStartTime,String valEndTime){
+
+        RequestParams params = new RequestParams();
+        params.put("surname",surname);
+        params.put("tel",tel);
+        params.put("valStartTime",valStartTime);
+        params.put("valEndTime",valEndTime);
+
+
+        HttpUtil.get(Constants.HOST + Constants.AddFamilyMember, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (!NetUtil.checkNetInfo(MicroCardActivity.this)) {
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
+
+                showLoadingDialog();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+                                showToast("添加成功");
+                                finish();
+                            } else {
+
+                                showToast(jsonObject.getString("msg"));
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+                closeLoadDialog();
+            }
+
+
+        });
+
+    }
+
+
+    /**
+     * 编辑家属
+     */
+    private void updateFamilyMember(String id,String valStartTime,String valEndTime,String surname){
+
+        RequestParams params = new RequestParams();
+        params.put("id",id);
+        params.put("valStartTime",valStartTime);
+        params.put("valEndTime",valEndTime);
+        params.put("surname",surname);
+
+        HttpUtil.get(Constants.HOST + Constants.EditFamilyMember, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (!NetUtil.checkNetInfo(MicroCardActivity.this)) {
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
+
+                showLoadingDialog();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+                                showToast("编辑成功");
+                                finish();
+                            } else {
+
+                                showToast(jsonObject.getString("msg"));
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+                closeLoadDialog();
+            }
+
+
+        });
+
+    }
+
+
 
 }

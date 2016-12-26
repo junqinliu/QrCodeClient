@@ -33,6 +33,12 @@ public class DateUtil {
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateType.getType());
         return dateFormat.format(now);
     }
+    public static String simpleformat(String str) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        return dateFormat.format(str);
+    }
 
     /**
      * 日期转换成字符串
@@ -64,6 +70,20 @@ public class DateUtil {
      */
     public static Date strToDate(@NonNull String str) {
         return strToDate(DateType.N_YMdHm.getType());
+    }
+    public static Date strToDatem(@NonNull String str) {
+        return strToDate(DateType.N_YMdHms.getType());
+    }
+
+    public static Date strFormatToDate(String str) {
+        Date date = null;
+        SimpleDateFormat format4 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            date = format4.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     /**

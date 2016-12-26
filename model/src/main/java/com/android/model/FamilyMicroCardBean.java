@@ -5,60 +5,53 @@ import java.io.Serializable;
 /**
  * Created by liujunqin on 2016/7/24.
  */
-public class FamilyMicroCardBean implements Serializable{
+public class FamilyMicroCardBean implements Serializable {
 
-   private String familyName;
-   private String familyPhone;
-   private String familyPwd;
-   private String familyStart;
-   private String familyEnd;
 
-    public FamilyMicroCardBean(String familyName, String familyPhone, String familyPwd, String familyStart, String familyEnd) {
-        this.familyName = familyName;
-        this.familyPhone = familyPhone;
-        this.familyPwd = familyPwd;
-        this.familyStart = familyStart;
-        this.familyEnd = familyEnd;
+    private String id;
+    private String surname;
+    private String tel;
+    private String validStartTime;
+    private String validEndTime;
+
+
+    public String getId() {
+        return id;
     }
 
-
-    public String getFamilyName() {
-        return familyName;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setFamilyName(String familyName) {
-        this.familyName = familyName;
+    public String getSurname() {
+        return surname;
     }
 
-    public String getFamilyPhone() {
-        return familyPhone;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    public void setFamilyPhone(String familyPhone) {
-        this.familyPhone = familyPhone;
+    public String getTel() {
+        return tel;
     }
 
-    public String getFamilyPwd() {
-        return familyPwd;
+    public void setTel(String tel) {
+        this.tel = tel;
     }
 
-    public void setFamilyPwd(String familyPwd) {
-        this.familyPwd = familyPwd;
+    public String getValidStartTime() {
+        return validStartTime;
     }
 
-    public String getFamilyStart() {
-        return familyStart;
+    public void setValidStartTime(String validStartTime) {
+        this.validStartTime = validStartTime;
     }
 
-    public void setFamilyStart(String familyStart) {
-        this.familyStart = familyStart;
+    public String getValidEndTime() {
+        return validEndTime;
     }
 
-    public String getFamilyEnd() {
-        return familyEnd;
-    }
-
-    public void setFamilyEnd(String familyEnd) {
-        this.familyEnd = familyEnd;
+    public void setValidEndTime(String validEndTime) {
+        this.validEndTime = validEndTime;
     }
 }

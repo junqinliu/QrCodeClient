@@ -57,9 +57,9 @@ public class FamilyMicroAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.family_member_name_txt.setText(list.get(i).getFamilyName());
-        holder.family_member_phone_txt.setText(list.get(i).getFamilyPhone());
-        holder.time_point.setText("有效时间:"+list.get(i).getFamilyStart()+" 至 "+list.get(i).getFamilyEnd());
+        holder.family_member_name_txt.setText(list.get(i).getSurname());
+        holder.family_member_phone_txt.setText(list.get(i).getTel());
+        holder.time_point.setText("有效时间:"+list.get(i).getValidStartTime()+" 至 "+list.get(i).getValidEndTime());
         return convertView;
     }
 
