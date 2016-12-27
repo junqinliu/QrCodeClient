@@ -9,6 +9,7 @@ public class CommunityBlockBean {
     private String buildcode;
     private String buildid;
     private String buildmodel;
+    private String buildfloor;
     private String description;
     private String houseid;
     private String name;
@@ -68,5 +69,13 @@ public class CommunityBlockBean {
 
     public void setOpenstatus(String openstatus) {
         this.openstatus = openstatus;
+    }
+
+    public String getBuildfloor() {
+        return buildfloor;
+    }
+
+    public void setBuildfloor(String buildfloor) {
+        this.buildfloor = buildfloor;
     }
 }

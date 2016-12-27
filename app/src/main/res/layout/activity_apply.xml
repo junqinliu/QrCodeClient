@@ -263,16 +263,15 @@
 
                 </LinearLayout>
 
-               <!-- <View
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="@color/gray_line" />
--->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="gone"
+
                     android:padding="10dp">
 
                     <TextView
@@ -292,7 +291,8 @@
                         android:padding="5dp"
                         android:textColor="@color/gray_text"
                         android:textSize="15sp"
-                        android:id="@+id/unit" />
+                        android:focusable="false"
+                        android:id="@+id/floor" />
 
                 </LinearLayout>
 

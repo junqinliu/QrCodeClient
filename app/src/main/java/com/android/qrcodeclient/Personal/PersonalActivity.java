@@ -102,17 +102,19 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
             //门禁申请
             case R.id.apply:
 
-                UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
-               if(userInfoBean != null){
+                goNext(ApplyActivity.class,bundle);
 
-                   if("PASS".equals(userInfoBean.getAduitstatus())){
-
-                       goNext(ApplyOtherActivity.class,bundle);
-                   }else{
-
-                       goNext(ApplyActivity.class,bundle);
-                   }
-               }
+//                UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+//               if(userInfoBean != null){
+//
+//                   if("PASS".equals(userInfoBean.getAduitstatus())){
+//
+//                       goNext(ApplyOtherActivity.class,bundle);
+//                   }else{
+//
+//                       goNext(ApplyActivity.class,bundle);
+//                   }
+//               }
 
 
                 break;

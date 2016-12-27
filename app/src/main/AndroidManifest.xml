@@ -178,6 +178,7 @@
         <activity android:name=".Personal.CommunityBlockOtherActivity"></activity>
         <activity android:name=".Personal.ComunityMallActivity"></activity>
         <activity android:name=".Personal.FamilyMicroActivity"></activity>
+        <activity android:name=".Personal.BuildFloorActivity"></activity>
 
 
         <uses-permission android:name="android.permission.WRITE_SETTINGS"/>

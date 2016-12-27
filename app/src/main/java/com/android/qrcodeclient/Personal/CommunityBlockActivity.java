@@ -114,6 +114,7 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
                 cb.setAreaId(areaId);
                 cb.setAreaName(areaName);
                 cb.setBuildid(buildid);
+                cb.setBuildfloor(list.get(arg2).getBuildfloor());
                 cb.setName(name);
                 AppContext myApplicaton = (AppContext)getApplication();
                 myApplicaton.setcBBean(cb);
@@ -213,7 +214,7 @@ public class CommunityBlockActivity extends BaseAppCompatActivity implements Vie
 
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
                         }

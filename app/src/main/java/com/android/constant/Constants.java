@@ -107,7 +107,7 @@ public class Constants {
 	public static final String  GetQrCodeByBuild = "/v0.1/place/build";
 
 	/**
-	 * 申请微卡提交申请
+	 * 申请微卡提交申请(需求变更 这个接口没用了)
 	 */
 	public static final String  submitCardApply = "/v0.1/user/audit/apply";
 	/**

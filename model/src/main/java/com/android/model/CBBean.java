@@ -9,6 +9,7 @@ public class CBBean {
     private String areaName;
     private String buildid;
     private String name;
+    private String buildfloor;
 
     public String getAreaId() {
         return areaId;
@@ -40,5 +41,13 @@ public class CBBean {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBuildfloor() {
+        return buildfloor;
+    }
+
+    public void setBuildfloor(String buildfloor) {
+        this.buildfloor = buildfloor;
     }
 }

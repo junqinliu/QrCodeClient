@@ -27,6 +27,7 @@ import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,8 +65,8 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     EditText xiaoqu;
     @Bind(R.id.block)
     EditText block;
-    @Bind(R.id.unit)
-    EditText unit;
+    @Bind(R.id.floor)
+    EditText floor;
     @Bind(R.id.house_num)
     EditText house_num;
     @Bind(R.id.user_phone)
@@ -85,6 +86,8 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     AppContext myApplicaton;
     String houseid = "";
     String buildid = "";
+    String buildfloor = "";
+    String hasSelectBuildfloor = "";
 
     private String flag;
 
@@ -135,6 +138,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
         search_button.setOnClickListener(this);
         provice.setOnClickListener(this);
         xiaoqu.setOnClickListener(this);
+        floor.setOnClickListener(this);
         submit_apply_btn.setOnClickListener(this);
     }
 
@@ -158,6 +162,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
             block.setText(cBBean.getName());
             houseid = cBBean.getAreaId();
             buildid = cBBean.getBuildid();
+            buildfloor = cBBean.getBuildfloor();
         }
 
         keyAddressBean = myApplicaton.getKeyAddressBean();
@@ -235,11 +240,52 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                startActivity(intent);
                break;
 
+           //获取楼层号列表
+           case R.id.floor:
+
+               if(!TextUtil.isEmpty(buildfloor)){
+
+                   Intent intent2 = new Intent(this,BuildFloorActivity.class);
+                   intent2.putExtra("buildfloor",buildfloor);
+                   startActivityForResult(intent2,2000);
+
+               }else{
+
+                   showToast("没有楼层号，不能申请门禁");
+
+               }
+
+               break;
+
            //提交申请
            case R.id.submit_apply_btn:
 
-               submit();
+              // submit();
+               if(TextUtil.isEmpty(houseid)){
+                   showToast("请选择小区");
+                   return;
+               }
+               if(TextUtil.isEmpty(buildid)){
+                   showToast("请选择楼栋");
+                   return;
+               }
+               if(TextUtil.isEmpty(user_phone.getText().toString())){
 
+                   showToast("请输入手机");
+                   return;
+               }
+               if(TextUtil.isEmpty(user_name.getText().toString())){
+
+                   showToast("请输入姓名");
+                   return;
+               }
+               if(TextUtil.isEmpty(owner_phone_num_edit.getText().toString())){
+
+                   showToast("请输入业主号码");
+                   return;
+               }
+
+               cardApply( buildid, hasSelectBuildfloor);
                break;
 
            default:
@@ -332,7 +378,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                                 SharedPreferenceUtil.getInstance(ApplyActivity.this).putData("UserInfo", userInfoBeanStr);
 
                                 //去调用微卡申请接口
-                                cardApply();
+                                //cardApply();
 
 //                                if("register".equals(flag)){
 //                                   Intent intent = new Intent(ApplyActivity.this, CardMainActivity.class);
@@ -395,39 +441,44 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
         zone.setText("");
         xiaoqu.setText("");
         block.setText("");
+        floor.setText("");
     }
 
 
     /**
      * 微卡申请接口
      */
-    private void cardApply(){
+    private void cardApply(String buildid,String floor){
 
 
-        JSONObject jsonObject = new JSONObject();
-        try {
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//
+//            jsonObject.put("buildid",buildid);
+//            jsonObject.put("floor",floor);
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        ByteArrayEntity entity = null;
+//        try {
+//            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+//            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
-            jsonObject.put("buildid",buildid);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        RequestParams params = new RequestParams();
+        params.put("buildid",buildid);
+        params.put("floor",floor);
 
 
-
-        HttpUtil.post(ApplyActivity.this, Constants.HOST + Constants.CardApply, entity, "application/json", new AsyncHttpResponseHandler() {
+        HttpUtil.post(Constants.HOST + Constants.CardApply, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
-                if(!NetUtil.checkNetInfo(ApplyActivity.this)){
+                if (!NetUtil.checkNetInfo(ApplyActivity.this)) {
 
                     showToast("当前网络不可用,请检查网络");
                     return;
@@ -449,18 +500,18 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                                 showToast("提交成功");
                                 //去调用微卡申请接口
 
-                                if("register".equals(flag)){
+                                if ("register".equals(flag)) {
                                     Intent intent = new Intent(ApplyActivity.this, CardMainActivity.class);
                                     startActivity(intent);
                                     ExitApplication.getInstance().exitAll();
-                                }else{
+                                } else {
                                     finish();
                                 }
 
 
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
                         }
@@ -479,7 +530,6 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                         String str1 = new String(responseBody);
                         JSONObject jsonObject1 = new JSONObject(str1);
                         showToast(jsonObject1.getString("msg"));
-
 
 
                     } catch (JSONException e) {
@@ -503,4 +553,19 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 2000){
+
+            if(resultCode == 1000){
+
+                hasSelectBuildfloor = data.getExtras().getString("hasSelectFloor");
+                floor.setText(hasSelectBuildfloor);
+            }
+        }
+
+    }
 }

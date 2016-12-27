@@ -61,12 +61,13 @@
     <string name="street">街道：</string>
     <string name="village">小区：</string>
     <string name="building_no">栋号：</string>
-    <string name="unit">单元：</string>
+    <string name="unit">楼层：</string>
     <string name="room_number">房号：</string>
     <string name="mobile_phone">手机：</string>
     <string name="full_name">姓名：</string>
     <string name="community_name">请选择小区</string>
     <string name="block_name">请选择楼栋</string>
+    <string name="floor_name">请选择楼层</string>
     <string name="owner_phone">业主号码:</string>
 
     <string name="upload_apply">提交申请</string>
