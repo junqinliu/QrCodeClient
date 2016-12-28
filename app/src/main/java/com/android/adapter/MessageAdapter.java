@@ -58,7 +58,7 @@ public class MessageAdapter extends BaseAdapter {
         }
 
         holder.time.setText(list.get(i).getTime());
-        holder.content.setText(list.get(i).getTitle());
+        holder.content.setText(list.get(i).getContent());
         return convertView;
     }
 

@@ -31,6 +31,16 @@ public class Constants {
 	public static final String AdList = "/v0.1/ad/carouselFigure";
 
 	/**
+	 * 生活板块九宫格接口
+	 */
+	public static final String LifeAd = "/v0.1/ad/lifePlate";
+
+	/**
+	 * 社区商城九宫格接口
+	 */
+	public static final String CommunityMallsAd = "/v0.1/ad/communityMalls";
+
+	/**
 	 * 我的信息 服务投诉 设备报修接口
 	 */
 	public static final String Property = "/v0.1/property";
@@ -86,7 +96,7 @@ public class Constants {
 	 */
 	public static final String  InviteLog = "/v0.1/user/invite";
 	/**
-	 * 我的消息
+	 * 我的消息/家政服务
 	 */
 	public static final String  Message = "/v0.1/property";
 	/**
@@ -133,4 +143,6 @@ public class Constants {
 	 * 删除家属
 	 */
 	public static final String  DeleteFamilyMember = "/v0.1/user/delFamilyMember";
+
+
 }

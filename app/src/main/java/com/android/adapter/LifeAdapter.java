@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.model.ComunityMallBean;
 import com.android.model.LifeItemBean;
 import com.android.qrcodeclient.R;
 import com.bumptech.glide.Glide;
@@ -21,9 +22,9 @@ import butterknife.ButterKnife;
 public class LifeAdapter extends BaseAdapter {
 
     Context context;
-    List<LifeItemBean> list;
+    List<ComunityMallBean> list;
 
-    public LifeAdapter(Context context, List<LifeItemBean> list) {
+    public LifeAdapter(Context context, List<ComunityMallBean> list) {
         this.context = context;
         this.list = list;
     }
@@ -58,8 +59,8 @@ public class LifeAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        Glide.with(context).load(list.get(i).getItemIcon()).into(holder.itemIcon);
-        holder.itemName.setText(list.get(i).getItemName());
+        Glide.with(context).load(list.get(i).getPicurl()).into(holder.itemIcon);
+        holder.itemName.setText(list.get(i).getTitle());
         return convertView;
     }
 

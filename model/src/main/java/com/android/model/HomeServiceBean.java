@@ -11,10 +11,9 @@ public class HomeServiceBean {
 
     private String  title;
 
-    public HomeServiceBean(String time, String title) {
-        this.time = time;
-        this.title = title;
-    }
+    private String content;
+
+
 
     public String getTime() {
         return time;
@@ -30,5 +29,13 @@ public class HomeServiceBean {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

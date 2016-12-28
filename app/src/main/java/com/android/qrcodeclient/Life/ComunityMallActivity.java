@@ -61,7 +61,7 @@ public class ComunityMallActivity extends BaseAppCompatActivity implements View.
         list.add(new LifeItemBean("门店招商", R.mipmap.addshop, DevelopingActivity.class));
         list.add(new LifeItemBean("门店招商", R.mipmap.addshop, DevelopingActivity.class));
         list.add(new LifeItemBean("门店招商", R.mipmap.addshop, DevelopingActivity.class));
-        gridLife.setAdapter(new LifeAdapter(this, list));
+      //  gridLife.setAdapter(new LifeAdapter(this, list));
 
     }
 

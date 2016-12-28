@@ -11,6 +11,7 @@ public class MessageBean {
 
     private String  title;
 
+    private String content;
 
     public String getTime() {
         return time;
@@ -26,5 +27,13 @@ public class MessageBean {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
