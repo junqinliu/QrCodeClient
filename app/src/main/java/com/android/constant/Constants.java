@@ -145,4 +145,9 @@ public class Constants {
 	public static final String  DeleteFamilyMember = "/v0.1/user/delFamilyMember";
 
 
+	/**
+	 * 提交错误日志
+	 */
+
+	public static final String  ErrorReport = "/v0.1/exception/report";
 }

@@ -12,6 +12,19 @@ import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.android.constant.Constants;
+import com.android.model.UserInfoBean;
+import com.android.utils.HttpUtil;
+import com.android.utils.NetUtil;
+import com.android.utils.SharedPreferenceUtil;
+import com.android.utils.TextUtil;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 
@@ -108,6 +121,16 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		// 执行
 		final String msg = msg1;
 		Log.e(TAG, "Error : ", ex);
+
+
+		new Thread() {
+
+			@Override
+			public void run() {
+				submitInfo(msg);
+			}
+		}.start();
+
 		// 使用Toast来显示异常信息
 		new Thread() {
 
@@ -122,6 +145,71 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		// 保存错误报告信息
 		return true;
 	}
+
+
+	/**
+	 * 提交错误日志
+	 */
+	private  void submitInfo(String msg){
+
+
+		UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(mContext).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+
+		RequestParams params = new RequestParams();
+		params.put("type",android.os.Build.BRAND);
+		params.put("content",msg);
+		if(userInfoBean != null){
+
+			params.put("userId", userInfoBean.getUserid());
+		}
+
+
+		HttpUtil.post(Constants.HOST + Constants.ErrorReport, params, new AsyncHttpResponseHandler() {
+			@Override
+			public void onStart() {
+				super.onStart();
+
+
+			}
+
+
+			@Override
+			public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+				if (responseBody != null) {
+					try {
+						String str = new String(responseBody);
+						JSONObject jsonObject = new JSONObject(str);
+						if (jsonObject != null) {
+
+
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+
+			}
+
+			@Override
+			public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+
+
+			}
+
+
+			@Override
+			public void onFinish() {
+				super.onFinish();
+			}
+
+
+		});
+	}
+
+
+
 
 	/**
 	 * 自定义弹出toast

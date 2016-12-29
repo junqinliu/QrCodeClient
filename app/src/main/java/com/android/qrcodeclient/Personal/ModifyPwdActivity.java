@@ -147,7 +147,7 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
         params.put("newpassword",new_pwd_edt.getText().toString());
 
 
-        HttpUtil.put(Constants.HOST + Constants.ModifyPwd, params, new AsyncHttpResponseHandler() {
+        HttpUtil.post(Constants.HOST + Constants.ModifyPwd, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

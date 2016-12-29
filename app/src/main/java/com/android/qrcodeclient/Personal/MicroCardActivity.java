@@ -288,7 +288,7 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
         params.put("valEndTime",valEndTime);
 
 
-        HttpUtil.get(Constants.HOST + Constants.AddFamilyMember, params, new AsyncHttpResponseHandler() {
+        HttpUtil.post(Constants.HOST + Constants.AddFamilyMember, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -368,7 +368,7 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
         params.put("valEndTime",valEndTime);
         params.put("surname",surname);
 
-        HttpUtil.get(Constants.HOST + Constants.EditFamilyMember, params, new AsyncHttpResponseHandler() {
+        HttpUtil.post(Constants.HOST + Constants.EditFamilyMember, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
