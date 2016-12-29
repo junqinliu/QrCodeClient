@@ -17,6 +17,7 @@ import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -146,31 +147,34 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
             showToast("请输入名字");
             return;
         }
-        /*if(TextUtil.isEmpty(uesr_phone_edit.getText().toString())){
 
-            showToast("请输入电话号码");
-            return;
-        }*/
 
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("invitename",name_edit.getText().toString());
-            jsonObject.put("buildid",buildid);
-            //jsonObject.put("invitephone",uesr_phone_edit.getText().toString());
-            jsonObject.put("invitephone"," ");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("invitename",name_edit.getText().toString());
+//            jsonObject.put("buildid",buildid);
+//            //jsonObject.put("invitephone",uesr_phone_edit.getText().toString());
+//            jsonObject.put("invitephone"," ");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        ByteArrayEntity entity = null;
+//        try {
+//            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+//            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
-        ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
-        HttpUtil.post(SendCardActivity.this, Constants.HOST + Constants.Invite, entity, "application/json", new AsyncHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        params.put("invitename",name_edit.getText().toString());
+        params.put("buildid",buildid);
+        params.put("invitephone","");
+
+
+        HttpUtil.post(Constants.HOST + Constants.Invite, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -179,6 +183,8 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
                     showToast("当前网络不可用,请检查网络");
                     return;
                 }
+
+                showLoadingDialog();
             }
 
 
@@ -195,10 +201,10 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
 
                                 showToast("提交成功");
                                 shareToPlatForm();
-                                // finish();
+
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
                         }
@@ -230,6 +236,7 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
             public void onFinish() {
                 super.onFinish();
 
+                closeLoadDialog();
             }
 
 

@@ -126,22 +126,28 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
      */
     private void submit(){
 
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("password",old_pwd_edt.getText().toString());
-            jsonObject.put("newpassword",new_pwd_edt.getText().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        StringEntity entity = null;
-        try {
-            entity = new StringEntity(jsonObject.toString());
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("password",old_pwd_edt.getText().toString());
+//            jsonObject.put("newpassword",new_pwd_edt.getText().toString());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        StringEntity entity = null;
+//        try {
+//            entity = new StringEntity(jsonObject.toString());
+//
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
-        HttpUtil.put(ModifyPwdActivity.this, Constants.HOST + Constants.ModifyPwd, entity, "application/json", new AsyncHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        params.put("password",old_pwd_edt.getText().toString());
+        params.put("newpassword",new_pwd_edt.getText().toString());
+
+
+        HttpUtil.put(Constants.HOST + Constants.ModifyPwd, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();

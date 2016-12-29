@@ -15,6 +15,8 @@ import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
@@ -116,31 +118,31 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
      */
     private  void submitRepairContent(){
 
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("title",repair_content_edt.getText().toString());
-            jsonObject.put("propertytype","REPAIR");
-            jsonObject.put("propertyphone",user_phone_edt.getText().toString());
-            jsonObject.put("propertyaddress",user_address_edt.getText().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-       /* StringEntity entity = null;
-        try {
-            entity = new StringEntity(jsonObject.toString());
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("title",repair_content_edt.getText().toString());
+//            jsonObject.put("propertytype","REPAIR");
+//            jsonObject.put("propertyphone",user_phone_edt.getText().toString());
+//            jsonObject.put("propertyaddress",user_address_edt.getText().toString());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        ByteArrayEntity entity = null;
+//        try {
+//            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+//            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }*/
-        ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        RequestParams params = new RequestParams();
+        params.put("title",repair_content_edt.getText().toString());
+        params.put("propertytype","REPAIR");
+        params.put("propertyphone",user_phone_edt.getText().toString());
+        params.put("propertyaddress",user_address_edt.getText().toString());
 
-        HttpUtil.post(WarrantyActivity.this,Constants.HOST + Constants.Property, entity,"application/json", new AsyncHttpResponseHandler() {
+        HttpUtil.post(Constants.HOST + Constants.Property, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -168,7 +170,7 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
                                 finish();
                             }else{
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
                         }
