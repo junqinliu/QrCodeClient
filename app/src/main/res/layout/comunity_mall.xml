@@ -20,11 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1px"
-            android:background="@color/white"
             android:horizontalSpacing="1px"
             android:listSelector="@color/gray_background"
             android:numColumns="3"
-            android:verticalSpacing="1px" />
+            android:verticalSpacing="1dp" />
 
     </LinearLayout>
 

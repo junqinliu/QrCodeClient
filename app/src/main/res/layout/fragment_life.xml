@@ -127,13 +127,10 @@
             android:id="@+id/grid_life"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_margin="1px"
-            android:background="@color/gray_line"
-            android:horizontalSpacing="1px"
-            android:listSelector="@color/gray_background"
+            android:horizontalSpacing="1dp"
             android:numColumns="3"
-            android:verticalSpacing="1px" />
+            android:verticalSpacing="1dp" />
 
     </LinearLayout>
 
