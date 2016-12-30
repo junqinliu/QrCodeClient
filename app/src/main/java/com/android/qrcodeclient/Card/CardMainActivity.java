@@ -826,11 +826,30 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                         if (jsonObject != null) {
 
                             if (jsonObject.getBoolean("success")) {
+
+                                //获取图片路径
+                                getAdList();
+
                                 list.clear();
+                                // TODO 黑名单 和 超时机制还没写逻辑  0 表示正常 1 表示 黑名单 2表示超时
+                                if("1".equals(jsonObject.getString("userStatus"))){
+
+                                    title.setText("处于黑名单");
+                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+
+                                    return;
+                                }
+                                if("2".equals(jsonObject.getString("userStatus"))){
+
+                                    title.setText("处于超时中");
+                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+
+                                    return;
+                                }
+
                                 JSONObject gg = new JSONObject(jsonObject.getString("data"));
                                 listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), EntranceBean.class);
                                 list.addAll(listTemp);
-                                // TODO 黑名单 和 超时机制还没写逻辑
 
                                 if (list != null && list.size() > 0 ) {
 
@@ -1006,30 +1025,46 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                             if (jsonObject.getBoolean("success")) {
 
+                                // 0 表示正常 1 表示 黑名单 2表示超时
+//                                if("1".equals(jsonObject.getString("userStatus"))){
+//
+//                                    title.setText("处于黑名单");
+//                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+//                                    return;
+//
+//                                   }
+//                                if("2".equals(jsonObject.getString("userStatus"))){
+//
+//                                    title.setText("处于超时中");
+//                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+//                                    return;
+//
+//                                   }
 
+                                //下面是userStatus为0
                                 if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
 
-                                    EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
-                                    title.setText(entranceBean.getHousename()+"-"+entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+                                        EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
+                                        title.setText(entranceBean.getHousename() + "-" + entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
 
-                                }
+                                    }
 
 
-                                //展示二维码和将二维码保存到sd卡用来做分享
-                                String qrCode = jsonObject.getString("data");
-                                binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, qrCode, QRsize, QRsize));
-                                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, qrCode, QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
-                                //开启倒计时
-                                time.start();
-                                //给按钮添加声音
-                                try {
+                                    //展示二维码和将二维码保存到sd卡用来做分享
+                                    String qrCode = jsonObject.getString("data");
+                                    binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, qrCode, QRsize, QRsize));
+                                    ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, qrCode, QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+                                    //开启倒计时
+                                    time.start();
+                                    //给按钮添加声音
+                                    try {
 
-                                    VoiceUtil.getInstance(CardMainActivity.this).startVoice();
+                                        VoiceUtil.getInstance(CardMainActivity.this).startVoice();
 
-                                } catch (Exception e) {
+                                    } catch (Exception e) {
 
-                                    e.printStackTrace();
-                                }
+                                        e.printStackTrace();
+                                    }
 
 
                             }

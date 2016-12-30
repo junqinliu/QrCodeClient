@@ -13,7 +13,9 @@ public class EntranceBean implements Serializable {
     private String secret; // 微卡秘钥二维码
     private String buildname;
     private String buildid;
+    private String buildcode;
     private String model;
+    private String housecode;
 
     public String getHouseid() {
         return houseid;
@@ -61,5 +63,22 @@ public class EntranceBean implements Serializable {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+
+    public String getBuildcode() {
+        return buildcode;
+    }
+
+    public void setBuildcode(String buildcode) {
+        this.buildcode = buildcode;
+    }
+
+    public String getHousecode() {
+        return housecode;
+    }
+
+    public void setHousecode(String housecode) {
+        this.housecode = housecode;
     }
 }

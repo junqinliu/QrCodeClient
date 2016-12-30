@@ -7,6 +7,7 @@ public class HouseBean {
 
 
     private String houseid;
+    private String housecode;
     private String name;
     private String description;
 
@@ -32,5 +33,13 @@ public class HouseBean {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getHousecode() {
+        return housecode;
+    }
+
+    public void setHousecode(String housecode) {
+        this.housecode = housecode;
     }
 }
