@@ -284,25 +284,28 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
      */
     private void registerUser(){
 
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("phone",userPhone);
-            jsonObject.put("password",mpassword.getText().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        ByteArrayEntity entity = null;
-        try {
-            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("phone",userPhone);
+//            jsonObject.put("password",mpassword.getText().toString());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        ByteArrayEntity entity = null;
+//        try {
+//            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
+//            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
 
+        RequestParams params = new RequestParams();
+        params.put("phone",userPhone);
+        params.put("password",mpassword.getText().toString());
 
 
-        HttpUtil.post(RegisterActivity.this,Constants.HOST + Constants.Register, entity,"application/json", new AsyncHttpResponseHandler() {
+        HttpUtil.post(Constants.HOST + Constants.Register, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
@@ -342,7 +345,7 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
 
                             }else{
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
 

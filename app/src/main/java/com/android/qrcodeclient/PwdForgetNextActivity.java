@@ -14,6 +14,7 @@ import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -113,26 +114,32 @@ public class PwdForgetNextActivity extends BaseAppCompatActivity implements View
      */
     private void ForgetPassWord(){
 
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("phone",phone);
-            jsonObject.put("password",mphone.getText().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        StringEntity entity = null;
-        try {
-            entity = new StringEntity(jsonObject.toString());
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("phone",phone);
+//            jsonObject.put("password",mphone.getText().toString());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        StringEntity entity = null;
+//        try {
+//            entity = new StringEntity(jsonObject.toString());
+//
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
 
-        HttpUtil.put(PwdForgetNextActivity.this, Constants.HOST + Constants.ForgetPassword, entity, "application/json", new AsyncHttpResponseHandler() {
+        RequestParams params = new RequestParams();
+        params.put("phone",phone);
+        params.put("password",mphone.getText().toString());
+
+
+        HttpUtil.post(Constants.HOST + Constants.ForgetPassword, params,new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 super.onStart();
-                if(!NetUtil.checkNetInfo(PwdForgetNextActivity.this)){
+                if (!NetUtil.checkNetInfo(PwdForgetNextActivity.this)) {
 
                     showToast("当前网络不可用,请检查网络");
                     return;
@@ -159,7 +166,7 @@ public class PwdForgetNextActivity extends BaseAppCompatActivity implements View
                                 finish();
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
                         }
@@ -185,6 +192,7 @@ public class PwdForgetNextActivity extends BaseAppCompatActivity implements View
                 }
 
             }
+
             @Override
             public void onFinish() {
                 super.onFinish();
