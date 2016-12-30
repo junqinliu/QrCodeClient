@@ -58,7 +58,7 @@ public class BlockAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.block_txt.setText(list.get(i).getHousename()+list.get(i).getBuildname());
+        holder.block_txt.setText(list.get(i).getBuildname());
 
         return convertView;
     }

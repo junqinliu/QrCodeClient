@@ -167,7 +167,7 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
 
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                showToast(jsonObject.getString("msg"));
                             }
 
                         }

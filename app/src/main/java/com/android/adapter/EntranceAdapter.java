@@ -56,7 +56,7 @@ public class EntranceAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.entrance.setText(list.get(i).getHousename() + list.get(i).getBuildname());
+        holder.entrance.setText(list.get(i).getBuildname());
         return convertView;
     }
 
