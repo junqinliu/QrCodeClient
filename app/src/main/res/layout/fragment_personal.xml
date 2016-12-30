@@ -171,6 +171,36 @@
         android:text="@string/about_micro_card" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_stroke_gray_background">
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@mipmap/guanyuweika"/>
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/black_text"
+        android:textSize="17sp"
+        android:text="@string/tel" />
+    <TextView
+        android:id="@+id/tel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/black_text"
+        android:textSize="17sp"
+        android:layout_marginLeft="10dp"
+        android:text="15522503900" />
+    </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

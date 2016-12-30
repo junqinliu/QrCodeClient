@@ -3,6 +3,7 @@ package com.android.qrcodeclient.Personal;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,8 @@ import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
 import com.android.view.ExitHintDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import butterknife.Bind;
@@ -46,6 +49,8 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
     TextView problem;
     @Bind(R.id.about)
     TextView about;
+    @Bind(R.id.tel)
+    TextView tel;
     @Bind(R.id.modify_pwd)
     TextView modifyPwd;
     @Bind(R.id.loginout)
@@ -77,6 +82,8 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void initData() {
         bundle = new Bundle();
+       //获取电话号码
+        getPhone();
     }
 
     @Override
@@ -84,7 +91,7 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
         toolbar.setNavigationOnClickListener(this);
     }
 
-    @OnClick({R.id.cell, R.id.entrance, R.id.apply, R.id.micro_card, R.id.problem, R.id.about, R.id.modify_pwd, R.id.loginout})
+    @OnClick({R.id.cell, R.id.entrance, R.id.apply, R.id.micro_card, R.id.problem, R.id.about,R.id.tel, R.id.modify_pwd, R.id.loginout})
     public void onClick(TextView view) {
         bundle.putString(getResources().getString(R.string.develop_title), view.getText().toString());
         switch (view.getId()) {
@@ -134,6 +141,14 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
             case R.id.about:
                 goNext(AboutActivity.class,bundle);
                 break;
+            case R.id.tel:
+
+                new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT).setTitle("提示")
+                        .setMessage("确定拨打？")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确定", phonedialogListener).create().show();
+
+                break;
 
             //修改密码
             case R.id.modify_pwd:
@@ -177,7 +192,96 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
 
         }
     };
+    // 拨打电话提示框按钮监听
+    android.content.DialogInterface.OnClickListener phonedialogListener = new android.content.DialogInterface.OnClickListener() {
 
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+            //用intent启动拨打电话
+            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "15522503900"));
+           startActivity(intent1);
+
+        }
+    };
+
+
+    /**
+     * 获取电话号码
+     */
+
+    public void getPhone(){
+
+
+        RequestParams params = new RequestParams();
+
+
+        HttpUtil.get(Constants.HOST + Constants.GetPhone, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (!NetUtil.checkNetInfo(PersonalActivity.this)) {
+
+                    showToast("当前网络不可用,请检查网络");
+                    return;
+                }
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+
+                            } else {
+
+                                showToast(jsonObject.getString("msg"));
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
+
+    }
 
     /**
      * 注销方法

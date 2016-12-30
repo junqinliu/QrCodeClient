@@ -146,6 +146,11 @@ public class Constants {
 
 
 	/**
+	 * 获取客户电话号码
+	 */
+
+	public static final String  GetPhone = "/v0.1/exception/report";
+	/**
 	 * 提交错误日志
 	 */
 

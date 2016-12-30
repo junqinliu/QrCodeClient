@@ -38,6 +38,7 @@
     <string name="family_micro_card">家属微卡</string>
     <string name="problem_feedback">使用说明</string>
     <string name="about_micro_card">关于微卡</string>
+    <string name="tel">客服电话</string>
     <string name="modify_password">修改密码</string>
     <string name="exit_login">退出登录</string>
     <string name="app_login">畅顺微卡\n您安全的守护者</string>
