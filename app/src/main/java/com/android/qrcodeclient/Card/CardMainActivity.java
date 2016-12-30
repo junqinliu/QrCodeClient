@@ -563,6 +563,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 if(!TextUtil.isEmpty(hasSelectHouseid) && !TextUtil.isEmpty(hasSelectHousename)){
 
                     HttpUtil.getClient().addHeader("Houseid",hasSelectHouseid);
+
+                    //获取图片路径 实时更新当前小区的广告轮播图片
+                    getAdList();
+
                     userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
                     userInfoBean.setHouseid(hasSelectHouseid);
                     userInfoBean.setHousename(hasSelectHousename);
@@ -827,8 +831,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                             if (jsonObject.getBoolean("success")) {
 
-                                //获取图片路径
-                                getAdList();
+
 
                                 list.clear();
                                 // TODO 黑名单 和 超时机制还没写逻辑  0 表示正常 1 表示 黑名单 2表示超时
@@ -890,7 +893,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                                         }
 
-                                        DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有楼栋列表，请门禁申请或联系物业");
+                                        DialogMessageUtil.showDialog(CardMainActivity.this, "您当前小区还没有楼栋列表，请门禁申请或联系物业");
                                         binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
 
                                     } catch (Exception e) {
