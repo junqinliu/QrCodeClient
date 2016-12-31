@@ -874,6 +874,19 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                         SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
                                         title.setText(list.get(0).getHousename() + "-" + list.get(0).getBuildname());//在头部描述当前小区以及楼栋名称
                                         isInit = false;
+                                        //开启倒计时
+                                        time.start();
+                                        //给按钮添加声音
+                                        try {
+
+                                            VoiceUtil.getInstance(CardMainActivity.this).startVoice();
+
+                                        } catch (Exception e) {
+
+                                            e.printStackTrace();
+                                        }
+
+
                                     }else{
                                         //点击切换小区出来的楼栋列表
                                         //获取到houseid的临时变量 先做还原houseid

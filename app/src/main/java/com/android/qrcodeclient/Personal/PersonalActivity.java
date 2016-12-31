@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -65,7 +66,12 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
     TextView title;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.apply_layout)
+    LinearLayout apply_layout;
+    @Bind(R.id.card_family_layout)
+    LinearLayout card_family_layout;
 
+     UserInfoBean userInfoBean = new UserInfoBean();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +91,19 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
     @Override
     public void initData() {
         bundle = new Bundle();
-       //获取电话号码
+        userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+        if(userInfoBean != null){
+
+            //是家属身份  没有门禁申请和家属微卡的权限
+            if("ROLE_FAMILY".equals(userInfoBean.getAuthority())){
+
+                apply_layout.setVisibility(View.GONE);
+                card_family_layout.setVisibility(View.GONE);
+            }
+
+        }
+
+        //获取电话号码
         getPhone();
     }
 
@@ -124,11 +142,11 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
 
             //使用说明
             case R.id.problem:
-              //  goNext(FeedBackActivity.class,bundle);
+                goNext(FeedBackActivity.class,bundle);
 
-
-                List<String> list = null;
-                showToast(list.get(0));
+//测试崩溃异常报文提交
+//                List<String> list = null;
+//                showToast(list.get(0));
 
 
                 break;
