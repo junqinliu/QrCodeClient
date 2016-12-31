@@ -131,6 +131,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
     PopupWindow popWindow;
 
+    int  showTitle = 1000; //0 表示 提示去门禁申请或联系物业 1表示 黑白名单 或者 超时
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -269,23 +271,6 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 //                }
 
 
-
-
-
-
-//                if ("PASS".equals(userInfoBean.getAduitstatus())) {
-//
-//                    showCalendarPopwindow(v);
-//                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
-//
-//                    showToast("还未通过审核");
-//
-//                } else {
-//                    //跳到门禁申请界面
-//                    startActivity(new Intent(CardMainActivity.this, ApplyActivity.class));
-//                }
-
-
             }
         });
 
@@ -305,7 +290,14 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         }else{
 
-           showToast("处于黑名单或超时中");
+            if(showTitle == 1){
+
+                showToast("处于黑名单或超时中");
+            }else{
+
+                DialogMessageUtil.showDialog(CardMainActivity.this, "暂无微卡");
+            }
+
         }
 
     }
@@ -317,6 +309,12 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
         getAdList();
+
+        //刚注册登录
+        if(showTitle == 0){
+
+            getUserInfo();
+        }
 
         //检查app版本是否有更新
         UpdateAPPVersion();
@@ -334,13 +332,17 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
   //              if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
-                    startActivity(new Intent(this, LifeActivity.class));
+               if(showTitle == 0){
 
-//                }else{
-//
-//                    //跳到门禁申请界面
-//                    startActivity(new Intent(this, ApplyActivity.class));
-//                }
+                    //跳到门禁申请界面
+                    startActivity(new Intent(this, ApplyActivity.class));
+
+               }else{
+
+                   startActivity(new Intent(this, LifeActivity.class));
+               }
+
+
 
 
 
@@ -358,7 +360,14 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                 }else{
 
-                    showToast("处于黑名单或超时中");
+                    if(showTitle == 1){
+
+                        showToast("处于黑名单或超时中");
+                    }else{
+
+                        DialogMessageUtil.showDialog(CardMainActivity.this, "暂无微卡");
+                    }
+
                 }
 
 
@@ -369,14 +378,17 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
               //  if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
+                if(showTitle == 0){
+
+                    //跳到门禁申请界面
+                    startActivity(new Intent(this, ApplyActivity.class));
+
+                }else{
 
                     startActivity(new Intent(this, PersonalActivity.class));
+                }
 
-//                }else{
-//
-//                    //跳到门禁申请界面
-//                    startActivity(new Intent(this, ApplyActivity.class));
-//                }
+
 
                 break;
 
@@ -394,18 +406,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     startActivity(new Intent(this, ApplyActivity.class));
                 }
 
-//                if ("PASS".equals(userInfoBean.getAduitstatus())) {
-//
-//
-//                    shareToPlatForm();
-//                } else if ("AUDITING".equals(userInfoBean.getAduitstatus())) {
-//
-//                    showToast("还未通过审核");
-//
-//                } else {
-//                    //跳到门禁申请界面
-//                    startActivity(new Intent(this, ApplyActivity.class));
-//                }
+
 
 
                 break;
@@ -949,6 +950,12 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 }
 
                                 showToast(jsonObject.getString("msg"));
+                                //这种场景是刚注册登录进来 还没门禁申请 时去点击获取微卡
+                                if("小区无该用户".equals(jsonObject.getString("msg"))){
+                                    showTitle = 0;
+
+                                }
+
                             }
 
                         }
@@ -1076,6 +1083,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                     }
                                    // binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                                     getQrcodeAdv();
+
+                                    showTitle = 1;
                                     return;
 
                                    }
@@ -1089,6 +1098,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                                   //  binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                                     getQrcodeAdv();
+
+                                    showTitle = 1;
                                     return;
 
                                    }
