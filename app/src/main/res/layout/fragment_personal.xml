@@ -198,7 +198,7 @@
         android:textColor="@color/black_text"
         android:textSize="17sp"
         android:layout_marginLeft="10dp"
-        android:text="15522503900" />
+        android:text="" />
     </LinearLayout>
 
 

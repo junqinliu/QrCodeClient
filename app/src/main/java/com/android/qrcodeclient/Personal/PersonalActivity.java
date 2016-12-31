@@ -234,8 +234,7 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
                         if (jsonObject != null) {
 
                             if (jsonObject.getBoolean("success")) {
-
-
+                                tel.setText( "null".equals(jsonObject.getString("data")) || jsonObject.getString("data") == null? "":jsonObject.getString("data"));
                             } else {
 
                                 showToast(jsonObject.getString("msg"));

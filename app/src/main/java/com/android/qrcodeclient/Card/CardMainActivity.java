@@ -30,6 +30,7 @@ import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.model.AdBean;
+import com.android.model.ComunityMallBean;
 import com.android.model.EntranceBean;
 import com.android.model.HouseBean;
 import com.android.model.UserInfoBean;
@@ -47,6 +48,7 @@ import com.android.utils.Utils;
 import com.android.utils.VoiceUtil;
 import com.android.view.SimpleImageBanner;
 import com.android.view.SquareImageView;
+import com.bumptech.glide.Glide;
 import com.flyco.banner.anim.select.RotateEnter;
 import com.flyco.banner.anim.unselect.NoAnimExist;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -122,6 +124,9 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     //选中的houseid
     String hasSelectHouseid = "";
     String hasSelectHousename = "";
+
+   //二号广告位
+    List<ComunityMallBean> qrcodeAd  = new ArrayList<>();
 
 
     @Override
@@ -201,7 +206,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 // 再去通过调用getMyCardList()接口默认第一条数据为开门二维码和获取广告列表
                 //保存默认的第一条数据EntranceBean 到本地文件
                 //--------------------------------end--------------------------------------------
-                binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                //binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                getQrcodeAdv();
                 //获取个人用户信息
                 isInit = true;
                 getUserInfo();
@@ -748,7 +754,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 } else {
 
                                     DialogMessageUtil.showDialog(CardMainActivity.this, "您还没有小区，请门禁申请或联系物业");
-                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                  //  binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                    getQrcodeAdv();
                                 }
                             } else {
 
@@ -838,14 +845,16 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 if("1".equals(jsonObject.getString("userStatus"))){
 
                                     title.setText("处于黑名单");
-                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                   // binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                    getQrcodeAdv();
 
                                     return;
                                 }
                                 if("2".equals(jsonObject.getString("userStatus"))){
 
                                     title.setText("处于超时中");
-                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                    //binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                    getQrcodeAdv();
 
                                     return;
                                 }
@@ -894,7 +903,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                         }
 
                                         DialogMessageUtil.showDialog(CardMainActivity.this, "您当前小区还没有楼栋列表，请门禁申请或联系物业");
-                                        binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                     //   binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                        getQrcodeAdv();
 
                                     } catch (Exception e) {
 
@@ -1032,14 +1042,16 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 if("1".equals(jsonObject.getString("userStatus"))){
 
                                     title.setText("处于黑名单");
-                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                   // binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                    getQrcodeAdv();
                                     return;
 
                                    }
                                 if("2".equals(jsonObject.getString("userStatus"))){
 
                                     title.setText("处于超时中");
-                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                  //  binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                    getQrcodeAdv();
                                     return;
 
                                    }
@@ -1117,6 +1129,89 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
      * 获取2号为广告接口
      */
 
+    public void getQrcodeAdv(){
+
+        RequestParams params = new RequestParams();
+
+        HttpUtil.get(Constants.HOST + Constants.QrcodeAdv, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+                   // showToast("当前网络不可用,请检查网络");
+
+                    return;
+                }
+
+
+                showLoadingDialog();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                qrcodeAd.clear();
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+                                JSONObject gg = new JSONObject(jsonObject.getString("data"));
+                                qrcodeAd = JSON.parseArray(gg.getJSONArray("items").toString(), ComunityMallBean.class);
+                               if(qrcodeAd != null && qrcodeAd.size() > 0){
+
+                                   Glide.with(CardMainActivity.this).load(Constants.HOST + qrcodeAd.get(0).getPicurl()).into(binaryCode);
+
+                               }
+
+                            }else{
+
+                                showToast(jsonObject.getString("msg"));
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+                closeLoadDialog();
+            }
+
+
+        });
+
+
+    }
 
 
 
@@ -1133,7 +1228,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 time_count_txt.setText("扫描二维码开门(" + "0" + ")");
                 card_layout.setClickable(true);
                 binaryCode.setClickable(true);
-                binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                //binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                getQrcodeAdv();
             }
         }
         @Override
