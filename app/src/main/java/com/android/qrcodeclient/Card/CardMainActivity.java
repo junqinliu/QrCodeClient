@@ -1029,20 +1029,20 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                             if (jsonObject.getBoolean("success")) {
 
                                 // 0 表示正常 1 表示 黑名单 2表示超时
-//                                if("1".equals(jsonObject.getString("userStatus"))){
-//
-//                                    title.setText("处于黑名单");
-//                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
-//                                    return;
-//
-//                                   }
-//                                if("2".equals(jsonObject.getString("userStatus"))){
-//
-//                                    title.setText("处于超时中");
-//                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
-//                                    return;
-//
-//                                   }
+                                if("1".equals(jsonObject.getString("userStatus"))){
+
+                                    title.setText("处于黑名单");
+                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                    return;
+
+                                   }
+                                if("2".equals(jsonObject.getString("userStatus"))){
+
+                                    title.setText("处于超时中");
+                                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                    return;
+
+                                   }
 
                                 //下面是userStatus为0
                                 if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
@@ -1111,6 +1111,11 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
     }
+
+
+    /**
+     * 获取2号为广告接口
+     */
 
 
 

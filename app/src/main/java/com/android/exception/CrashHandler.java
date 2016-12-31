@@ -83,7 +83,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 				Log.e(TAG, "Error : ", e);
 			}
 			// 全局推出
-			//AppContext.getInstance().exit();
+
 			android.os.Process.killProcess(android.os.Process.myPid());
 			System.exit(0);
 		}
@@ -95,11 +95,13 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	 * @param ex
 	 * @return true:如果处理了该异常信息;否则返回false
 	 */
+	 String msg;
+	String msg1;
 	private boolean handleException(Throwable ex) {
 		if (ex == null) {
-			return true;
+			return false;
 		}
-		String msg1 = "";
+		 msg1 = "";
 		if (ex.getStackTrace() != null) {
 			msg1 += "异常信息:[";
 			int kk = ex.getStackTrace().length;
@@ -116,20 +118,15 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		}
 		msg1 += "捕获异常:[" + ex.toString() + " .]" + "\r\n";
 		// 收集设备信息
-		msg1 += "\r\n" + collectCrashDeviceInfo(mContext);
+		//msg1 += "\r\n" + collectCrashDeviceInfo(mContext);
 		System.out.println(msg1);
 		// 执行
-		final String msg = msg1;
+		msg = msg1;
 		Log.e(TAG, "Error : ", ex);
 
+		submitInfo(collectCrashDeviceInfo(mContext),msg1);
 
-		new Thread() {
 
-			@Override
-			public void run() {
-				submitInfo(msg);
-			}
-		}.start();
 
 		// 使用Toast来显示异常信息
 		new Thread() {
@@ -137,8 +134,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			@Override
 			public void run() {
 				// 方案1 Toast 显示需要出现在一个线程的消息队列中
+
+
 				Looper.prepare();
-				showToast(msg);
+				showToast("很抱歉,程序出现异常,即将退出");
 				Looper.loop();
 			}
 		}.start();
@@ -150,13 +149,13 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	/**
 	 * 提交错误日志
 	 */
-	private  void submitInfo(String msg){
+	private  void submitInfo(String brand,String msg){
 
 
 		UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(mContext).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
 
 		RequestParams params = new RequestParams();
-		params.put("type",android.os.Build.BRAND);
+		params.put("type", brand);
 		params.put("content",msg);
 		if(userInfoBean != null){
 

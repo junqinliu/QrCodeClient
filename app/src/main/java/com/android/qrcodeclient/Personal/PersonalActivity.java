@@ -27,6 +27,9 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.OnClick;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
@@ -111,19 +114,6 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
 
                 goNext(ApplyActivity.class,bundle);
 
-//                UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
-//               if(userInfoBean != null){
-//
-//                   if("PASS".equals(userInfoBean.getAduitstatus())){
-//
-//                       goNext(ApplyOtherActivity.class,bundle);
-//                   }else{
-//
-//                       goNext(ApplyActivity.class,bundle);
-//                   }
-//               }
-
-
                 break;
 
             //家属微卡
@@ -134,7 +124,13 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
 
             //使用说明
             case R.id.problem:
-                goNext(FeedBackActivity.class,bundle);
+              //  goNext(FeedBackActivity.class,bundle);
+
+
+                List<String> list = null;
+                showToast(list.get(0));
+
+
                 break;
 
             //关于微卡

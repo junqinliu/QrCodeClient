@@ -25,10 +25,15 @@ public class Constants {
 	public static final String getUserInfo = "/v0.1/user";
 
 	/**
-	 * 广告列表接口
+	 * 轮播广告列表接口
 	 */
-	//public static final String AdList = "/v0.1/ad";
+
 	public static final String AdList = "/v0.1/ad/carouselFigure";
+	/**
+	 * 2号广告接口
+	 */
+
+	public static final String QrcodeAdv = "/v0.1/ad/qrcodeAdv";
 
 	/**
 	 * 生活板块九宫格接口
