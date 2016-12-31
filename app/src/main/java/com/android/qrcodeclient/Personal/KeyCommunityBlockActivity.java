@@ -123,6 +123,7 @@ public class KeyCommunityBlockActivity extends BaseAppCompatActivity implements 
                 keyAddressBean.setHouseName(housename);
                 keyAddressBean.setBuildid(buildid);
                 keyAddressBean.setBuildname(name);
+                keyAddressBean.setBuildfloor(list.get(arg2).getBuildfloor());
                 AppContext myApplicaton = (AppContext)getApplication();
                 myApplicaton.setKeyAddressBean(keyAddressBean);
                 ExitApplication.getInstance().exitAddressActivity();

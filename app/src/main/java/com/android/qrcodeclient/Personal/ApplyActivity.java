@@ -176,6 +176,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
             block.setText(keyAddressBean.getBuildname());
             houseid = keyAddressBean.getHouseId();
             buildid = keyAddressBean.getBuildid();
+            buildfloor = keyAddressBean.getBuildfloor();
         }
     }
 

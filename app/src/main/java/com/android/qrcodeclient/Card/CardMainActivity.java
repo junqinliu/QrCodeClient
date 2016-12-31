@@ -305,8 +305,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         }else{
 
-            //跳到门禁申请界面
-            startActivity(new Intent(this, ApplyActivity.class));
+           showToast("处于黑名单或超时中");
         }
 
     }
@@ -355,13 +354,12 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     //实时调用后台生成二维码的接口
                     getQrCodeByBuildID(entranceBean.getBuildid());
 
-                }
 
-//                }else{
-//
-//                    //跳到门禁申请界面
-//                    startActivity(new Intent(this, ApplyActivity.class));
-//                }
+
+                }else{
+
+                    showToast("处于黑名单或超时中");
+                }
 
 
 

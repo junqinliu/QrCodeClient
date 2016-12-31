@@ -13,6 +13,7 @@ public class KeyAddressBean {
     String houseName;
     String buildid;
     String buildname;
+    String buildfloor;
 
     public String getProvice() {
         return provice;
@@ -68,5 +69,13 @@ public class KeyAddressBean {
 
     public void setBuildname(String buildname) {
         this.buildname = buildname;
+    }
+
+    public String getBuildfloor() {
+        return buildfloor;
+    }
+
+    public void setBuildfloor(String buildfloor) {
+        this.buildfloor = buildfloor;
     }
 }
