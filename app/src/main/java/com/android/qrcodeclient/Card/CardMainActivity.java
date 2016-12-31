@@ -29,6 +29,7 @@ import com.android.adapter.HouseAdapter;
 import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
+import com.android.download.UpdateManger;
 import com.android.model.AdBean;
 import com.android.model.ComunityMallBean;
 import com.android.model.EntranceBean;
@@ -127,6 +128,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
    //二号广告位
     List<ComunityMallBean> qrcodeAd  = new ArrayList<>();
+
+    PopupWindow popWindow;
 
 
     @Override
@@ -316,6 +319,9 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
         getAdList();
 
+        //检查app版本是否有更新
+        UpdateAPPVersion();
+
     }
 
     @Override
@@ -327,15 +333,15 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             //生活
             case R.id.life_layout:
 
-                if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
+  //              if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
                     startActivity(new Intent(this, LifeActivity.class));
 
-                }else{
-
-                    //跳到门禁申请界面
-                    startActivity(new Intent(this, ApplyActivity.class));
-                }
+//                }else{
+//
+//                    //跳到门禁申请界面
+//                    startActivity(new Intent(this, ApplyActivity.class));
+//                }
 
 
 
@@ -349,11 +355,13 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     //实时调用后台生成二维码的接口
                     getQrCodeByBuildID(entranceBean.getBuildid());
 
-                }else{
-
-                    //跳到门禁申请界面
-                    startActivity(new Intent(this, ApplyActivity.class));
                 }
+
+//                }else{
+//
+//                    //跳到门禁申请界面
+//                    startActivity(new Intent(this, ApplyActivity.class));
+//                }
 
 
 
@@ -362,15 +370,15 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             case R.id.my_layout:
 
 
-                if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
+              //  if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
                     startActivity(new Intent(this, PersonalActivity.class));
 
-                }else{
-
-                    //跳到门禁申请界面
-                    startActivity(new Intent(this, ApplyActivity.class));
-                }
+//                }else{
+//
+//                    //跳到门禁申请界面
+//                    startActivity(new Intent(this, ApplyActivity.class));
+//                }
 
                 break;
 
@@ -533,7 +541,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             houseAdapter.notifyDataSetChanged();
         }
 
-        final PopupWindow popWindow = new PopupWindow(vPopWindow, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popWindow = new PopupWindow(vPopWindow, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
         popWindow.setBackgroundDrawable(new BitmapDrawable());
         popWindow.setOutsideTouchable(true);
@@ -845,7 +853,11 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 if("1".equals(jsonObject.getString("userStatus"))){
 
                                     title.setText("处于黑名单");
-                                   // binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                                    showToast("处于黑名单状态中");
+                                    if(popWindow != null) {
+                                        popWindow.dismiss();
+                                    }
+                                    // binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                                     getQrcodeAdv();
 
                                     return;
@@ -853,9 +865,13 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 if("2".equals(jsonObject.getString("userStatus"))){
 
                                     title.setText("处于超时中");
+                                    if(popWindow != null) {
+                                        popWindow.dismiss();
+                                    }
                                     //binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                                     getQrcodeAdv();
 
+                                    showToast("处于超时状态中");
                                     return;
                                 }
 
@@ -1055,6 +1071,11 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 if("1".equals(jsonObject.getString("userStatus"))){
 
                                     title.setText("处于黑名单");
+                                    showToast("处于黑名单状态中");
+                                    if(popWindow != null){
+
+                                        popWindow.dismiss();
+                                    }
                                    // binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                                     getQrcodeAdv();
                                     return;
@@ -1063,6 +1084,11 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 if("2".equals(jsonObject.getString("userStatus"))){
 
                                     title.setText("处于超时中");
+                                    showToast("处于超时状态中");
+                                    if(popWindow != null) {
+                                        popWindow.dismiss();
+                                    }
+
                                   //  binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                                     getQrcodeAdv();
                                     return;
@@ -1159,7 +1185,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 }
 
 
-                showLoadingDialog();
+
             }
 
             @Override
@@ -1217,7 +1243,95 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             public void onFinish() {
                 super.onFinish();
 
-                closeLoadDialog();
+
+            }
+
+
+        });
+
+
+    }
+    /**
+     * 查询app是否有新版本
+     */
+
+    public void UpdateAPPVersion(){
+
+        RequestParams params = new RequestParams();
+
+        HttpUtil.get(Constants.HOST + Constants.UpdateAPPVersion, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+                   // showToast("当前网络不可用,请检查网络");
+
+                    return;
+                }
+
+
+
+            }
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+
+                               String updateExplain = jsonObject.getString("updateExplain");
+                               String updateTime = jsonObject.getString("updateTime");
+                               String forceUpdate = jsonObject.getString("forceUpdate");
+                               String downLoadURL = jsonObject.getString("downLoadURL");
+                               String versionName = jsonObject.getString("version");
+                               String localVersionName =Utils.getVersionName(CardMainActivity.this);
+                                if(Float.parseFloat(localVersionName) < Float.parseFloat(versionName)){
+
+                                    //需要版本升级
+                                    new UpdateManger(CardMainActivity.this).checkUpdateInfo(downLoadURL);
+                                }
+
+
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+
             }
 
 

@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.qrcodeclient.R;
+import com.android.utils.TextUtil;
 
 public class UpdateManger {
 
@@ -40,8 +41,8 @@ public class UpdateManger {
 
 	// 下载安装包的网络路径
 
-	private String apkUrl = "http://115.28.6.127:8090/app/1462785029964BirdStore20150929V131.apk";
-	//private String apkUrl = "http://192.168.0.162:8080/emm/upload/apps/android/69608976960897.apk";
+	//private String apkUrl = "http://115.28.6.127:8090/app/1462785029964BirdStore20150929V131.apk";
+	private String apkUrl = "";
 
 	private Dialog noticeDialog;// 提示有软件更新的对话框
 
@@ -125,9 +126,12 @@ public class UpdateManger {
 
 	// 显示更新程序对话框，供主程序调用
 
-	public  void checkUpdateInfo() {
+	public  void checkUpdateInfo(String apkUrlTemp) {
+		apkUrl = apkUrlTemp;
+		if(!TextUtil.isEmpty(apkUrl)){
 
-		showNoticeDialog();
+			showNoticeDialog();
+		}
 
 	}
 

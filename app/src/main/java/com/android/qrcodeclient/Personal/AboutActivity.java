@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.android.base.BaseAppCompatActivity;
 import com.android.qrcodeclient.R;
 import com.android.utils.TextUtil;
+import com.android.utils.Utils;
 
 import butterknife.Bind;
 
@@ -19,6 +20,8 @@ public class AboutActivity extends BaseAppCompatActivity implements View.OnClick
 
     @Bind(R.id.title)
     TextView title;
+    @Bind(R.id.version)
+    TextView version;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -42,6 +45,8 @@ public class AboutActivity extends BaseAppCompatActivity implements View.OnClick
         if (!TextUtil.isEmpty(titleName)) {
             title.setText(titleName);
         }
+        String localVersionName = Utils.getVersionName(AboutActivity.this);
+        version.setText("当前版本号"+localVersionName);
     }
 
     @Override
