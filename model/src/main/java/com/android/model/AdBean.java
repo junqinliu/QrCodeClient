@@ -9,6 +9,14 @@ public class AdBean {
     private String title;
     private String picurl;
 
+    public AdBean() {
+    }
+
+    public AdBean(String adid, String title, String picurl) {
+        this.adid = adid;
+        this.title = title;
+        this.picurl = picurl;
+    }
 
     public String getAdid() {
         return adid;

@@ -61,7 +61,9 @@ public class SimpleImageBanner extends BaseIndicatorBanner<AdBean, SimpleImageBa
                     .placeholder(colorDrawable)
                     .into(iv);
         } else {
-            iv.setImageDrawable(colorDrawable);
+           // iv.setImageDrawable(colorDrawable); modify by liujq 做无网络处理
+
+            iv.setImageResource(R.mipmap.addefault);
         }
 
         return inflate;

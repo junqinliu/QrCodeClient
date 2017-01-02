@@ -45,6 +45,7 @@ import com.android.utils.ImageOpera;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
 import com.android.utils.TextUtil;
+import com.android.utils.Tools;
 import com.android.utils.Utils;
 import com.android.utils.VoiceUtil;
 import com.android.view.SimpleImageBanner;
@@ -431,6 +432,12 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
 
                     showToast("当前网络不可用,请检查网络");
+                    List ad = new ArrayList<AdBean>();
+                    ad.add(new AdBean("","",""));
+                    advert.setSelectAnimClass(RotateEnter.class)
+                            .setUnselectAnimClass(NoAnimExist.class)
+                            .setSource(ad)
+                            .startScroll();
                     return;
                 }
 
@@ -458,6 +465,15 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                     advert.setSelectAnimClass(RotateEnter.class)
                                             .setUnselectAnimClass(NoAnimExist.class)
                                             .setSource(adBeanList)
+                                            .startScroll();
+                                }else{
+
+                                    //查不到数据给一张本地的默认图
+                                    List ad = new ArrayList<AdBean>();
+                                    ad.add(new AdBean("","",""));
+                                    advert.setSelectAnimClass(RotateEnter.class)
+                                            .setUnselectAnimClass(NoAnimExist.class)
+                                            .setSource(ad)
                                             .startScroll();
                                 }
 
@@ -1032,22 +1048,36 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
 
                         EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
-                        title.setText(entranceBean.getHousename()+"-"+entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+                        title.setText(entranceBean.getHousename() + "-" + entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+                        String code = "";
+                        // TODO: 2017/1/2 当获取微卡没网的时候，采用本地的算法来生成微卡
+                        if("-1".equals(entranceBean.getBuildid())){
+                            //表示全开
+                            code =  Tools.createQrCodeStr(Integer.parseInt(entranceBean.getBuildcode()),Integer.parseInt(entranceBean.getHousecode()),"4");
+                        }else{
 
-                        binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, "test", QRsize, QRsize));
-                        ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, "test", QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+                            code = Tools.createQrCodeStr(Integer.parseInt(entranceBean.getBuildcode()),Integer.parseInt(entranceBean.getHousecode()),"0");
+                        }
 
-                        //开启倒计时
-                       time.start();
-                        //给按钮添加声音
-                        try {
+                        if(!TextUtil.isEmpty(code)){
 
-                        VoiceUtil.getInstance(CardMainActivity.this).startVoice();
 
-                        } catch (Exception e) {
+                            binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, code, QRsize, QRsize));
+                            ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, code, QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
 
-                        e.printStackTrace();
-                       }
+                            //开启倒计时
+                            time.start();
+                            //给按钮添加声音
+                            try {
+
+                                VoiceUtil.getInstance(CardMainActivity.this).startVoice();
+
+                            } catch (Exception e) {
+
+                                e.printStackTrace();
+                            }
+                        }
+
 
                       }
 
@@ -1189,7 +1219,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
 
                    // showToast("当前网络不可用,请检查网络");
-
+                    binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                     return;
                 }
 

@@ -134,6 +134,7 @@ public class ProviceActivity extends BaseAppCompatActivity implements View.OnCli
                     showToast("当前网络不可用,请检查网络");
                     return;
                 }
+
             }
 
 
