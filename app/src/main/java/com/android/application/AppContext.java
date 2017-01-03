@@ -7,6 +7,7 @@ import com.android.model.AddressBean;
 import com.android.model.CBBean;
 import com.android.model.KeyAddressBean;
 
+import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.framework.ShareSDK;
 import cn.smssdk.SMSSDK;
 
@@ -40,9 +41,12 @@ public class AppContext extends Application {
 
 		}
 
-
 		//SMMSDK初始化
 		SMSSDK.initSDK(this, "146d57ebbef52", "8a6b993fb9b85a0998a51729374ea4c1");
+
+		//极光推送
+		JPushInterface.setDebugMode(true);
+		JPushInterface.init(this);
 
 		
 	}

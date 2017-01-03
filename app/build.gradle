@@ -13,6 +13,16 @@ android {
 
 
     }
+
+    /*极光推送*/
+    sourceSets {
+        main {
+
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+
     buildTypes {
         release {
             minifyEnabled false

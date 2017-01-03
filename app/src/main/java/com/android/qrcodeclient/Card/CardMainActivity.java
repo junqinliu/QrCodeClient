@@ -312,7 +312,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         getAdList();
 
         //刚注册登录
-        if(showTitle == 0){
+        if(TextUtil.isEmpty(userInfoBean.getHouseid())){
 
             getUserInfo();
         }
@@ -331,20 +331,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             //生活
             case R.id.life_layout:
 
-  //              if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
-               if(showTitle == 0){
-
-                    //跳到门禁申请界面
-                    startActivity(new Intent(this, ApplyActivity.class));
-
-               }else{
-
-                   startActivity(new Intent(this, LifeActivity.class));
-               }
-
-
-
+                startActivity(new Intent(this, LifeActivity.class));
 
 
                 break;
@@ -377,18 +365,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             //我的
             case R.id.my_layout:
 
-
-              //  if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
-                if(showTitle == 0){
-
-                    //跳到门禁申请界面
-                    startActivity(new Intent(this, ApplyActivity.class));
-
-                }else{
-
-                    startActivity(new Intent(this, PersonalActivity.class));
-                }
-
+                startActivity(new Intent(this, PersonalActivity.class));
 
 
                 break;
@@ -864,7 +841,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
                                 list.clear();
-                                // TODO 黑名单 和 超时机制还没写逻辑  0 表示正常 1 表示 黑名单 2表示超时
+                                // TODO 黑名单 和 超时机制还没写逻辑  0 表示正常 1 表示 黑名单 2表示超时 （已写）
                                 if("1".equals(jsonObject.getString("userStatus"))){
 
                                     title.setText("处于黑名单");
@@ -889,6 +866,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                     showToast("处于超时状态中");
                                     return;
                                 }
+
+                                showTitle = 1000;
 
                                 JSONObject gg = new JSONObject(jsonObject.getString("data"));
                                 listTemp = JSON.parseArray(gg.getJSONArray("items").toString(), EntranceBean.class);
@@ -1050,7 +1029,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                         EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
                         title.setText(entranceBean.getHousename() + "-" + entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
                         String code = "";
-                        // TODO: 2017/1/2 当获取微卡没网的时候，采用本地的算法来生成微卡
+                        // TODO: 2017/1/2 当获取微卡没网的时候，采用本地的算法来生成微卡  （已写）
                         if("-1".equals(entranceBean.getBuildid())){
                             //表示全开
                             code =  Tools.createQrCodeStr(Integer.parseInt(entranceBean.getBuildcode()),Integer.parseInt(entranceBean.getHousecode()),"4");
@@ -1133,6 +1112,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                     return;
 
                                    }
+
+                                showTitle = 1000;
 
                                 //下面是userStatus为0
                                 if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
@@ -1249,6 +1230,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                             }else{
 
                                 showToast(jsonObject.getString("msg"));
+                                binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
                             }
                         }
 
@@ -1267,7 +1249,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                         String str1 = new String(responseBody);
                         JSONObject jsonObject1 = new JSONObject(str1);
                         showToast(jsonObject1.getString("msg"));
-
+                        binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
 
 
                     } catch (JSONException e) {
