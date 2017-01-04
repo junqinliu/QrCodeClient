@@ -165,4 +165,11 @@ public class Constants {
 	 */
 
 	public static final String  UpdateAPPVersion = "/v0.1/version/checkUpdate";
+	/**
+	 * 离线功能接口
+	 */
+
+	public static final String  OfflineData = "/v0.1/place/offline/mycards";
+
+
 }

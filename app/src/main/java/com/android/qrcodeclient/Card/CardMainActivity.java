@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.android.adapter.BlockAdapter;
 import com.android.adapter.HouseAdapter;
+import com.android.adapter.HouseOffLineAdapter;
 import com.android.application.ExitApplication;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
@@ -34,6 +35,7 @@ import com.android.model.AdBean;
 import com.android.model.ComunityMallBean;
 import com.android.model.EntranceBean;
 import com.android.model.HouseBean;
+import com.android.model.OfflineData;
 import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.Life.LifeActivity;
 import com.android.qrcodeclient.Personal.ApplyActivity;
@@ -105,14 +107,15 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     //当前小区下的微卡列表
     List<EntranceBean> list = new ArrayList<>();
     List<EntranceBean> listTemp = new ArrayList<>();
-
-
+    //当前小区离线下的微卡列表
+    List<EntranceBean> offEntrancelist;
     private boolean isInit = false;
     public String[] titles;
     public String[] urls;
 
     public BlockAdapter blockAdapter;
     public HouseAdapter houseAdapter;
+    public HouseOffLineAdapter houseofflineAdapter;
     private UserInfoBean userInfoBean = new UserInfoBean();
     List<AdBean> adBeanList = new ArrayList<>();
     TimeCount time;
@@ -242,6 +245,22 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void onClick(View v) {
 
+                // 断网了 或者在地下室 信息不好 ，则进行缓存加载
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+                     showToast("当前网络不可用,将加载本地缓存数据");
+
+                    if(!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("OfflineData", ""))){
+
+                        String  offlineDataStr = SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("OfflineData", "");
+                        List<OfflineData>  offdataList = JSON.parseArray(offlineDataStr, OfflineData.class);
+                       showOffLineCalendarPopwindow(v,offdataList);
+
+                    }
+
+                    return;
+                }
+
                 //---------------------start----------------------------------
                 //点击切换小区按钮时，调用获取小区列表的接口。
                 // 如果只有一个小区，就不会显示小区列表，只显示楼栋列表
@@ -252,8 +271,6 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 //首页头部描述显示重置
                 //---------------------end------------------------------------
 
-
-              //  if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
                     userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
                     houseidTemp = userInfoBean.getHouseid();
                     //开始调用获取小区列表接口
@@ -264,13 +281,6 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                         e.printStackTrace();
                     }
-
-//                }else{
-//
-//                    //跳到门禁申请界面
-//                    startActivity(new Intent(CardMainActivity.this, ApplyActivity.class));
-//                }
-
 
             }
         });
@@ -319,6 +329,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         //检查app版本是否有更新
         UpdateAPPVersion();
+        //获取离线数据
+        getOfflineData();
 
     }
 
@@ -498,7 +510,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
     /**
-     * 切换门禁卡弹出框
+     * 在线切换门禁卡弹出框
      *
      * @param v
      */
@@ -586,6 +598,102 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     String BeanStr = JSON.toJSONString(list.get(arg2));
                     SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
                     getQrCodeByBuildID(list.get(arg2).getBuildid());
+                }
+                popWindow.dismiss();
+
+            }
+        });
+
+    }
+
+    /**
+     * 离线切换门禁卡弹出框
+     *
+     * @param v
+     */
+    private void showOffLineCalendarPopwindow(final View v, final List<OfflineData> offlist) {
+
+
+        offEntrancelist = new ArrayList<>();
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View vPopWindow = inflater.inflate(R.layout.block_popwindow, null, false);
+        final ListView build_list_view = (ListView) vPopWindow.findViewById(R.id.build_list_view);
+        ListView house_list_view = (ListView) vPopWindow.findViewById(R.id.house_list_view);
+        LinearLayout house_layout = (LinearLayout) vPopWindow.findViewById(R.id.house_layout);
+        LinearLayout build_layout = (LinearLayout) vPopWindow.findViewById(R.id.build_layout);
+
+        // 只有一个小区 则显示楼栋列表
+        if(offlist != null && offlist.size() == 1){
+
+            if (offlist.get(0).getCardMap().getItems() != null && offlist.get(0).getCardMap().getItems().size() > 0){
+                house_list_view.setVisibility(View.GONE);
+                house_layout.setVisibility(View.GONE);
+                offEntrancelist = offlist.get(0).getCardMap().getItems();
+                blockAdapter = new BlockAdapter(this, offEntrancelist);
+                build_list_view.setAdapter(blockAdapter);
+                blockAdapter.notifyDataSetChanged();
+            }
+        }else{
+            //多个小区 则显示小区列表
+
+            build_list_view.setVisibility(View.GONE);
+            houseofflineAdapter = new HouseOffLineAdapter(this,offlist);
+            house_list_view.setAdapter(houseofflineAdapter);
+            houseofflineAdapter.notifyDataSetChanged();
+        }
+
+        popWindow = new PopupWindow(vPopWindow, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+        popWindow.setBackgroundDrawable(new BitmapDrawable());
+        popWindow.setOutsideTouchable(true);
+        popWindow.showAsDropDown(v);
+
+        //小区列表item点击事件
+        house_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+
+                hasSelectHouseid = offlist.get(arg2).getHouseid();
+                hasSelectHousename = offlist.get(arg2).getName();
+                houseofflineAdapter.setSelectItem(arg2);
+                houseofflineAdapter.notifyDataSetChanged();
+                build_list_view.setVisibility(View.VISIBLE);
+                offEntrancelist = offlist.get(arg2).getCardMap().getItems();
+                blockAdapter = new BlockAdapter(CardMainActivity.this,offEntrancelist );
+                build_list_view.setAdapter(blockAdapter);
+                blockAdapter.notifyDataSetChanged();
+
+            }
+        });
+
+
+        //楼栋列表的点击事件
+        build_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+
+                if(!TextUtil.isEmpty(hasSelectHouseid) && !TextUtil.isEmpty(hasSelectHousename)){
+
+                    HttpUtil.getClient().addHeader("Houseid",hasSelectHouseid);
+                    userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+                    userInfoBean.setHouseid(hasSelectHouseid);
+                    userInfoBean.setHousename(hasSelectHousename);
+                    String userInfoBeanStr = JSON.toJSONString(userInfoBean);
+                    SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("UserInfo", userInfoBeanStr);
+                    String BeanStr = JSON.toJSONString(offEntrancelist.get(arg2));
+                    SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+                    getQrCodeByBuildID(offEntrancelist.get(arg2).getBuildid());
+
+
+
+                }else{
+
+                    String BeanStr = JSON.toJSONString(offEntrancelist.get(arg2));
+                    SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
+                    getQrCodeByBuildID(offEntrancelist.get(arg2).getBuildid());
                 }
                 popWindow.dismiss();
 
@@ -1022,7 +1130,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 // TODO采用本地算法生成二维码
                 if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
 
-                    showToast("当前网络不可用,请检查网络");
+
 
                     if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
 
@@ -1360,6 +1468,92 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
     }
+
+
+
+
+    /**
+     * 获取离线数据方法
+     */
+
+    private void getOfflineData() {
+
+        RequestParams params = new RequestParams();
+        HttpUtil.get(Constants.HOST + Constants.OfflineData, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+
+                    return;
+                }
+
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+                                List<OfflineData>  list  = JSON.parseArray(jsonObject.getJSONArray("data").toString(), OfflineData.class);
+
+                                String offlineDataStr = JSON.toJSONString(list);
+                                SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("OfflineData", offlineDataStr);
+
+                                //List<OfflineData>  list1 = JSON.parseArray(offlineDataStr, OfflineData.class);
+
+
+                            } else {
+
+                                showToast(jsonObject.getString("msg"));
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                        showToast(jsonObject1.getString("msg"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+
+    }
+
+
 
 
 
