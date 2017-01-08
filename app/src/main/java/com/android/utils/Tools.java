@@ -7,7 +7,7 @@ public class Tools {
 	 * @return
 	 */
 	public static long getCurrentTimeStamp10() {
-		long time1 = Long.parseLong(String.valueOf(System.currentTimeMillis()).toString().substring(0, 10));
+		long time1 = Long.parseLong(String.valueOf(System.currentTimeMillis()).toString().substring(0, 12));
 		return time1;
 	}
 	
