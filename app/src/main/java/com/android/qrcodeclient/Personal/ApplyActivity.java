@@ -119,6 +119,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
                 HttpUtil.getClient().addHeader("Token", userInfoBean.getToken());
                 HttpUtil.getClient().addHeader("Userid", userInfoBean.getUserid());
+                //HttpUtil.getClient().addHeader("Houseid","1");
 
             }
         }
@@ -236,9 +237,12 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                    return;
                }
 
-               Intent intent = new Intent(this,CommunityActivity.class);
-               intent.putExtra("areacode",addressBean.getAreaCode());
-               startActivity(intent);
+               if(!TextUtil.isEmpty(addressBean) && !TextUtil.isEmpty(addressBean.getAreaCode())){
+
+                   Intent intent = new Intent(this,CommunityActivity.class);
+                   intent.putExtra("areacode",addressBean.getAreaCode());
+                   startActivity(intent);
+               }
                break;
 
            //获取楼层号列表
@@ -296,7 +300,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
 
     /**
-     * 提交申请
+     * 提交申请  (废弃掉 已经不用这个接口)
      */
 
     private  void submit(){
@@ -452,27 +456,35 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
     private void cardApply(String buildid,String floor){
 
 
-//        JSONObject jsonObject = new JSONObject();
-//        try {
-//
-//            jsonObject.put("buildid",buildid);
-//            jsonObject.put("floor",floor);
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        ByteArrayEntity entity = null;
-//        try {
-//            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-//            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
+        if(TextUtil.isEmpty(houseid)){
+            showToast("请选择小区");
+            return;
+        }
+        if(TextUtil.isEmpty(buildid)){
+            showToast("请选择楼栋");
+            return;
+        }
+        if(TextUtil.isEmpty(user_phone.getText().toString())){
+
+            showToast("请输入手机");
+            return;
+        }
+        if(TextUtil.isEmpty(user_name.getText().toString())){
+
+            showToast("请输入姓名");
+            return;
+        }
+        if(TextUtil.isEmpty(owner_phone_num_edit.getText().toString())){
+
+            showToast("请输入业主号码");
+            return;
+        }
 
         RequestParams params = new RequestParams();
         params.put("buildid",buildid);
         params.put("floor",floor);
+        params.put("surname",user_name.getText().toString());
+
 
 
         HttpUtil.post(Constants.HOST + Constants.CardApply, params, new AsyncHttpResponseHandler() {

@@ -138,7 +138,7 @@ public class RegisterActivity extends BaseAppCompatActivity implements View.OnCl
                     return;
                 }
 
-                new AlertDialog.Builder(RegisterActivity.this)
+                new AlertDialog.Builder(RegisterActivity.this,AlertDialog.THEME_HOLO_LIGHT)
                         .setTitle("发送短信")
                         .setMessage("我们将把验证码发送到以下号码:\n" + "+86:" + userPhone)
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
