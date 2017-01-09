@@ -216,7 +216,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 //保存默认的第一条数据EntranceBean 到本地文件
                 //--------------------------------end--------------------------------------------
                 //binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
-                getQrcodeAdv();
+               // getQrcodeAdv();
                 //获取个人用户信息
                 isInit = true;
                 getUserInfo();
@@ -256,6 +256,9 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                         List<OfflineData>  offdataList = JSON.parseArray(offlineDataStr, OfflineData.class);
                        showOffLineCalendarPopwindow(v,offdataList);
 
+                    }else{
+
+                        DialogMessageUtil.showDialog(CardMainActivity.this, "暂无微卡");
                     }
 
                     return;
@@ -1058,6 +1061,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                     showTitle = 0;
 
                                 }
+
+
+
+                                getQrcodeAdv();
 
                             }
 

@@ -153,20 +153,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
         params.put("password", ed_password.getText().toString());
 
 
-//        JSONObject jsonObject = new JSONObject();
-//        try {
-//            jsonObject.put("phone", ed_account.getText().toString());
-//            jsonObject.put("password", ed_password.getText().toString());
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        ByteArrayEntity entity = null;
-//        try {
-//            entity = new ByteArrayEntity(jsonObject.toString().getBytes("UTF-8"));
-//            entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-//        } catch (UnsupportedEncodingException e) {
-//        e.printStackTrace();
-//    }
+
 
         HttpUtil.post( Constants.HOST + Constants.Login, params,  new AsyncHttpResponseHandler() {
             @Override
@@ -179,6 +166,8 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
                 }
 
                 showLoadingDialog();
+
+
 
             }
 
