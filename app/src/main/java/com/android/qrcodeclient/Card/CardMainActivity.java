@@ -519,7 +519,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
      */
     private void showCalendarPopwindow(View v) {
 
+        if(popWindow != null && popWindow.isShowing()){
 
+            popWindow.dismiss();
+        }
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View vPopWindow = inflater.inflate(R.layout.block_popwindow, null, false);
@@ -615,6 +618,11 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
      * @param v
      */
     private void showOffLineCalendarPopwindow(final View v, final List<OfflineData> offlist) {
+
+        if(popWindow != null && popWindow.isShowing()){
+
+            popWindow.dismiss();
+        }
 
 
         offEntrancelist = new ArrayList<>();
