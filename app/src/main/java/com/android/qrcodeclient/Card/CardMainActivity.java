@@ -1187,8 +1187,6 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                     return;
                 }
-
-                URI uri = this.getRequestURI();
                 showLoadingDialog();
             }
 
@@ -1207,7 +1205,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 // 0 表示正常 1 表示 黑名单 2表示超时
                                 if("1".equals(jsonObject.getString("userStatus"))){
 
-                                    title.setText("处于黑名单");
+                                    if(title != null){
+
+                                        title.setText("处于黑名单");
+                                    }
                                     showToast("处于黑名单状态中");
                                     if(popWindow != null){
 
@@ -1222,7 +1223,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                    }
                                 if("2".equals(jsonObject.getString("userStatus"))){
 
-                                    title.setText("处于超时中");
+                                    if(title != null){
+
+                                        title.setText("处于超时中");
+                                    }
                                     showToast("处于超时状态中");
                                     if(popWindow != null) {
                                         popWindow.dismiss();
@@ -1241,10 +1245,21 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 //下面是userStatus为0
                                 if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
 
+                                    try {
+
                                         EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
-                                        title.setText(entranceBean.getHousename() + "-" + entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+
+                                        if(title != null){
+
+                                            title.setText(entranceBean.getHousename() + "-" + entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+                                        }
+
+                                    }catch (Exception e){
 
                                     }
+
+
+                                }
 
 
                                     //展示二维码和将二维码保存到sd卡用来做分享
@@ -1582,23 +1597,39 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         @Override
         public void onFinish() {//计时完毕时触发
 
-            if(card_layout != null && time_count_txt != null && binaryCode != null ) {
-                time_count_txt.setText("扫描二维码开门(" + "0" + ")");
-                card_layout.setClickable(true);
-                binaryCode.setClickable(true);
-                //binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
-                getQrcodeAdv();
+            try{
+
+                if(card_layout != null && time_count_txt != null && binaryCode != null ) {
+                    time_count_txt.setText("扫描二维码开门(" + "0" + ")");
+                    card_layout.setClickable(true);
+                    binaryCode.setClickable(true);
+                    //binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
+                    getQrcodeAdv();
+                }
+
+            }catch (Exception e){
+
             }
+
+
+
         }
         @Override
         public void onTick(long millisUntilFinished){//计时过程显示
 
-            if(card_layout != null && time_count_txt != null && binaryCode != null){
+            try{
 
-                time_count_txt.setText("扫描二维码开门("+ --millisUntilFinished / 1000 + ")");
-                card_layout.setClickable(false);
-                binaryCode.setClickable(false);
+                if(card_layout != null && time_count_txt != null && binaryCode != null){
+
+                    time_count_txt.setText("扫描二维码开门("+ --millisUntilFinished / 1000 + ")");
+                    card_layout.setClickable(false);
+                    binaryCode.setClickable(false);
+                }
+
+            }catch (Exception e){
+
             }
+
         }
     }
 
@@ -1626,17 +1657,25 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
     private void shareToPlatForm(){
 
-        OnekeyShare oks = new OnekeyShare();
-        //关闭sso授权
-        oks.disableSSOWhenAuthorize();
-        //  oks.setTitle("微卡");
-        // oks.setText("微卡");
-        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-        if(!TextUtil.isEmpty(getOutputMediaFile()+"MicroCode.png")){
-            oks.setImagePath(getOutputMediaFile()+"MicroCode.png");//确保SDcard下面存在此张图片
+        try {
+
+            OnekeyShare oks = new OnekeyShare();
+            //关闭sso授权
+            oks.disableSSOWhenAuthorize();
+            //  oks.setTitle("微卡");
+            // oks.setText("微卡");
+            // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+            if(!TextUtil.isEmpty(getOutputMediaFile()+"MicroCode.png")){
+                oks.setImagePath(getOutputMediaFile()+"MicroCode.png");//确保SDcard下面存在此张图片
+            }
+
+            oks.show(this);
+
+        }catch (Exception e){
+
         }
 
-        oks.show(this);
+
     }
     private void screenBrightness_check()
     {
