@@ -321,6 +321,18 @@
             />
 
 
+        <receiver
+            android:name="com.android.timeTask.TimeReceiver"
+            android:exported="false"
+            >
+
+            <intent-filter>
+                <action android:name="com.android.alarmclock.TimeReceiver" />
+            </intent-filter>
+
+        </receiver>
+
+
     </application>
 
 </manifest>

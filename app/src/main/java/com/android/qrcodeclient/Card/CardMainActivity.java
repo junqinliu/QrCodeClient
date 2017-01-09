@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,9 @@ import com.android.qrcodeclient.Life.LifeActivity;
 import com.android.qrcodeclient.Personal.ApplyActivity;
 import com.android.qrcodeclient.Personal.PersonalActivity;
 import com.android.qrcodeclient.R;
+import com.android.timeTask.AlarmManagerTask;
+import com.android.timeTask.TimerListener;
+import com.android.timeTask.TimerTask;
 import com.android.utils.DialogMessageUtil;
 import com.android.utils.HttpUtil;
 import com.android.utils.ImageOpera;
@@ -145,6 +149,20 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         //开启闹钟定时任务
         //ServiceUtil.invokeTimerPOIService(this);
+
+        TimerListener timerListener2 = new TimerListener() {
+
+            @Override
+            public void timeArrival(Context context) {
+
+                Log.i("test","Task");
+
+            }
+        };
+
+        TimerTask tasktwo = new TimerTask(1000, timerListener2, "TaskTwo");
+        AlarmManagerTask.getInstance(this).addTimerTask(tasktwo);
+
     }
 
     @Override
