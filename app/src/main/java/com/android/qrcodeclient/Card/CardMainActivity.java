@@ -1248,7 +1248,8 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
                                     //展示二维码和将二维码保存到sd卡用来做分享
-                                    String qrCode = jsonObject.getString("data");
+                                    JSONObject gg = new JSONObject(jsonObject.getString("data"));
+                                    String qrCode = gg.getString("secret");
                                     binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, qrCode, QRsize, QRsize));
                                     ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, qrCode, QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
                                     //开启倒计时

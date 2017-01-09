@@ -33,11 +33,14 @@ public class DateUtil {
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateType.getType());
         return dateFormat.format(now);
     }
-    public static String simpleformat(String str) {
+    public static String simpleFormat() {
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       // SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+        return dateFormat.format(now);
 
-        return dateFormat.format(str);
+
     }
 
     /**

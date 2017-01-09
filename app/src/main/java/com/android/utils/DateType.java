@@ -14,9 +14,11 @@ public enum DateType {
     C_Hm("HH时mm分"),
     N_YMdHms("yyyy-MM-dd HH:mm:ss"),
     N_YMdHm("yyyy-MM-dd HH:mm"),
+    CodeTime("yyMMddHHmmss"),
     N_YMd("yyyy-MM-dd"),
     N_Hms("HH:mm:ss"),
     N_Hm("HH:mm");
+
 
     private String type;
     private DateType(String type){
