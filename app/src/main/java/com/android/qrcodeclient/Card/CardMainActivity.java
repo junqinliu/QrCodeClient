@@ -1125,7 +1125,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
 
-                                getQrcodeAdv();
+                                if (NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+                                    getQrcodeAdv();
+                                }
 
                             }
 
@@ -1657,7 +1660,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     card_layout.setClickable(true);
                     binaryCode.setClickable(true);
                     //binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
-                    getQrcodeAdv();
+                    if (NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+                        getQrcodeAdv();
+                    }
                 }
 
             }catch (Exception e){
@@ -1732,7 +1738,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     /**
-     * 生成二维码
+     * 本地生成二维码
      */
     private void generateCode(){
 
