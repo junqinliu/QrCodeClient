@@ -19,6 +19,7 @@ import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.LoginActivity;
 import com.android.qrcodeclient.Personal.Cell.CellActivity;
 import com.android.qrcodeclient.R;
+import com.android.timeTask.AlarmManagerTask;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
@@ -203,6 +204,9 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
             startActivity(intent);
             SharedPreferenceUtil.getInstance(PersonalActivity.this).deleteData();
             ExitApplication.getInstance().exitActivity();
+
+            //停止定时任务
+            AlarmManagerTask.getInstance(PersonalActivity.this).cancelAlarmManager();
 
         }
     };
