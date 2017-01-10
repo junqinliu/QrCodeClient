@@ -155,7 +155,17 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
             @Override
             public void timeArrival(Context context) {
 
-                Log.i("test","Task");
+
+
+                if (NetUtil.checkNetInfo(CardMainActivity.this)) {
+
+                    Log.i("test", "Task");
+                    //获取广告列表
+                    getAdList();
+                    //获取离线数据
+                    getOfflineData();
+                }
+
 
             }
         };
@@ -317,8 +327,17 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
             EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
-            //实时调用后台生成二维码的接口
-            getQrCodeByBuildID(entranceBean.getBuildid());
+            if(!NetUtil.checkNetInfo(CardMainActivity.this)){
+
+                //本地生成二维码
+                generateCode();
+
+
+            }else{
+                //实时调用后台生成二维码的接口
+                getQrCodeByBuildID(entranceBean.getBuildid());
+
+            }
 
         }else{
 
@@ -375,8 +394,21 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""))) {
 
                     EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
-                    //实时调用后台生成二维码的接口
-                    getQrCodeByBuildID(entranceBean.getBuildid());
+
+
+                    if(!NetUtil.checkNetInfo(CardMainActivity.this)){
+
+                        //本地生成二维码
+                        generateCode();
+
+
+                    }else{
+                        //实时调用后台生成二维码的接口
+                        getQrCodeByBuildID(entranceBean.getBuildid());
+
+                    }
+
+
 
 
 
@@ -441,7 +473,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 super.onStart();
                 if (!NetUtil.checkNetInfo(CardMainActivity.this)) {
 
-                    showToast("当前网络不可用,请检查网络");
+                    //showToast("当前网络不可用,请检查网络");
                     List ad = new ArrayList<AdBean>();
                     ad.add(new AdBean("","",""));
                     advert.setSelectAnimClass(RotateEnter.class)
@@ -714,15 +746,18 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("UserInfo", userInfoBeanStr);
                     String BeanStr = JSON.toJSONString(offEntrancelist.get(arg2));
                     SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
-                    getQrCodeByBuildID(offEntrancelist.get(arg2).getBuildid());
-
-
+                    //getQrCodeByBuildID(offEntrancelist.get(arg2).getBuildid());
+                    //本地生成二维码
+                    generateCode();
 
                 }else{
 
                     String BeanStr = JSON.toJSONString(offEntrancelist.get(arg2));
                     SharedPreferenceUtil.getInstance(CardMainActivity.this).putData("EntranceBean", BeanStr);
-                    getQrCodeByBuildID(offEntrancelist.get(arg2).getBuildid());
+                    //getQrCodeByBuildID(offEntrancelist.get(arg2).getBuildid());
+                    //本地生成二维码
+                    generateCode();
+
                 }
                 popWindow.dismiss();
 
@@ -1695,6 +1730,55 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
 
     }
+
+    /**
+     * 生成二维码
+     */
+    private void generateCode(){
+
+        if (!TextUtil.isEmpty(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""))) {
+
+            EntranceBean entranceBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("EntranceBean", ""), EntranceBean.class);
+            title.setText(entranceBean.getHousename() + "-" + entranceBean.getBuildname());//在头部描述当前小区以及楼栋名称
+            String code = "";
+            // TODO: 2017/1/2 当获取微卡没网的时候，采用本地的算法来生成微卡  （已写）
+            if("-1".equals(entranceBean.getBuildid())){
+                //表示全开
+                code =  Tools.createQrCodeStr(Integer.parseInt(entranceBean.getBuildcode()),Integer.parseInt(entranceBean.getHousecode()),"4");
+            }else{
+
+                code = Tools.createQrCodeStr(Integer.parseInt(entranceBean.getBuildcode()),Integer.parseInt(entranceBean.getHousecode()),"0");
+            }
+
+            if(!TextUtil.isEmpty(code)){
+
+
+                binaryCode.setImageBitmap(Utils.createQRImage(CardMainActivity.this, code, QRsize, QRsize));
+                ImageOpera.savePicToSdcard(Utils.createQRImage(CardMainActivity.this, code, QRsize, QRsize), getOutputMediaFile(), "MicroCode.png");
+
+                //开启倒计时
+                time.start();
+                //给按钮添加声音
+                try {
+
+                    VoiceUtil.getInstance(CardMainActivity.this).startVoice();
+
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+
+    }
+
+
+
+
+
+
     private void screenBrightness_check()
     {
         //先关闭系统的亮度自动调节

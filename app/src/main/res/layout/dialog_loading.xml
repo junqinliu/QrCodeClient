@@ -14,8 +14,8 @@
 
         <ImageView
             android:id="@+id/loading_img"
-            android:layout_width="200px"
-            android:layout_height="200px"
+            android:layout_width="150px"
+            android:layout_height="150px"
             android:layout_gravity="center"
             android:scaleType="fitXY"
             android:src="@mipmap/icon_dialog_loading" />
