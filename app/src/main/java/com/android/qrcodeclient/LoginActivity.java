@@ -73,6 +73,12 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
                 startActivity(intent1);
                 finish();
 
+                //如果网络可以用的话 线程请求获取用户个人信息的接口
+                if (NetUtil.checkNetInfo(LoginActivity.this)) {
+
+
+                    getUserInfo(userInfoBean.getPhone());
+                }
 
             }
         }
@@ -243,6 +249,92 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
 
     }
+
+
+    /**
+     * 获取用户个人信息
+     */
+    private void getUserInfo(final String phone) {
+
+        RequestParams params = new RequestParams();
+
+
+        HttpUtil.get(Constants.HOST + Constants.getUserInfo, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+
+
+            }
+
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+
+                if (responseBody != null) {
+                    try {
+                        String str = new String(responseBody);
+                        JSONObject jsonObject = new JSONObject(str);
+                        if (jsonObject != null) {
+
+                            if (jsonObject.getBoolean("success")) {
+
+                                UserInfoBean    userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
+                                if (!TextUtil.isEmpty(phone)) {
+
+                                    userInfoBean.setPhone(phone);
+                                }
+                                String userInfoBeanStr = JSON.toJSONString(userInfoBean);
+                                SharedPreferenceUtil.getInstance(LoginActivity.this).putData("UserInfo", userInfoBeanStr);
+
+                                //配置请求接口全局token 和 userid houseid
+                                if (userInfoBean != null) {
+
+                                    HttpUtil.getClient().addHeader("Token", userInfoBean.getToken());
+                                    HttpUtil.getClient().addHeader("Userid", userInfoBean.getUserid());
+                                    HttpUtil.getClient().addHeader("Houseid", userInfoBean.getHouseid());
+
+                                }
+
+
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+                if (responseBody != null) {
+                    try {
+                        String str1 = new String(responseBody);
+                        JSONObject jsonObject1 = new JSONObject(str1);
+                      //  showToast(jsonObject1.getString("msg"));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+
+            }
+
+
+        });
+
+    }
+
 
 
 }
