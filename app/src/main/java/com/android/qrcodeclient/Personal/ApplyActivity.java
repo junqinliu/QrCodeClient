@@ -237,11 +237,18 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                    return;
                }
 
-               if(!TextUtil.isEmpty(addressBean) && !TextUtil.isEmpty(addressBean.getAreaCode())){
 
-                   Intent intent = new Intent(this,CommunityActivity.class);
-                   intent.putExtra("areacode",addressBean.getAreaCode());
-                   startActivity(intent);
+
+               if(addressBean != null){
+
+                   if(!TextUtil.isEmpty(addressBean.getAreaCode())){
+
+                       Intent intent = new Intent(this,CommunityActivity.class);
+                       intent.putExtra("areacode",addressBean.getAreaCode());
+                       startActivity(intent);
+                   }
+
+
                }
                break;
 
