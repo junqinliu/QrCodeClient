@@ -1742,6 +1742,9 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         }catch (Exception e){
 
+            Log.i("TAG","报错");
+            e.printStackTrace();
+
         }
 
 
