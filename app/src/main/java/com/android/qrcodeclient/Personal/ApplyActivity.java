@@ -291,11 +291,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
                    showToast("请输入姓名");
                    return;
                }
-               if(TextUtil.isEmpty(owner_phone_num_edit.getText().toString())){
 
-                   showToast("请输入业主号码");
-                   return;
-               }
 
                cardApply( buildid, hasSelectBuildfloor);
                break;
@@ -481,11 +477,7 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
             showToast("请输入姓名");
             return;
         }
-        if(TextUtil.isEmpty(owner_phone_num_edit.getText().toString())){
 
-            showToast("请输入业主号码");
-            return;
-        }
 
         RequestParams params = new RequestParams();
         params.put("buildid",buildid);
