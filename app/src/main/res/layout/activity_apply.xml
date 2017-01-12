@@ -405,6 +405,7 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/shape_stroke_radius_gray_one"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 android:padding="10dp">
 
                 <TextView

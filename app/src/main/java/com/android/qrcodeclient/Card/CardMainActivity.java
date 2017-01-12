@@ -69,10 +69,13 @@ import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
 /**
@@ -164,6 +167,13 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                     getAdList();
                     //获取离线数据
                     getOfflineData();
+
+                    //极光推送注册
+                    userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(CardMainActivity.this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+                    Set h=new HashSet();
+                    h.add("house_" + userInfoBean.getHouseid());
+                    JPushInterface.setAliasAndTags(getApplicationContext(),
+                            "user_" + userInfoBean.getUserid(), h, null);
                 }
 
 

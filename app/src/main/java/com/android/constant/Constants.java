@@ -6,10 +6,10 @@ public class Constants {
 	/**
 	 * url地址
 	 */
-	//public static final String HOST = "http://120.76.202.60:8080/microcard";
-	//public static final String HOST = "http://dev.2173888.com:9999";
-	public static final String HOST = "http://diyidaojia.com:8888";
-	//public static final String HOST = "https://dev.2173888.com:8443";
+
+	//public static final String HOST = "http://diyidaojia.com:8888";
+	public static final String HOST = "http://101.201.223.67:8888";
+
 
 	/**
 	 * 注册接口

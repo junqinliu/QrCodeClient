@@ -34,6 +34,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 
 /**
@@ -207,6 +208,9 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
 
             //停止定时任务
             AlarmManagerTask.getInstance(PersonalActivity.this).cancelAlarmManager();
+
+            //停止极光推送
+            JPushInterface.stopPush(getApplicationContext());
 
         }
     };

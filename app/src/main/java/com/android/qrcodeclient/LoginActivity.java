@@ -25,8 +25,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.Bind;
+import cn.jpush.android.api.JPushInterface;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
@@ -69,8 +72,16 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
             UserInfoBean userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
             if (userInfoBean != null && ("PASS".equals(userInfoBean.getAduitstatus()) || "AUDITING".equals(userInfoBean.getAduitstatus()))) {
                 Intent intent1 = new Intent(LoginActivity.this, CardMainActivity.class);
-                intent1.putExtra("phone",userInfoBean.getPhone());
+                intent1.putExtra("phone", userInfoBean.getPhone());
+
+
                 startActivity(intent1);
+
+                //极光推送注册
+                Set h=new HashSet();
+                h.add("house_"+userInfoBean.getHouseid());
+                JPushInterface.setAliasAndTags(getApplicationContext(),
+                        "user_"+userInfoBean.getUserid(),h,null);
                 finish();
 
                 //如果网络可以用的话 线程请求获取用户个人信息的接口
@@ -190,6 +201,9 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
                             if (jsonObject.getBoolean("success")) {
 
                                 try {
+
+                                    //如果操作登出，这边重新登录成功后再重新恢复极光推送
+                                    JPushInterface.resumePush(getApplicationContext());
 
                                     UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
                                     userInfoBean.setPhone(ed_account.getText().toString());
