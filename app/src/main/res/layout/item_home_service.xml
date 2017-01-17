@@ -8,18 +8,31 @@
     android:paddingLeft="10dp"
     android:paddingTop="5dp">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp">
 
 
-     <!--   <TextView
-            android:id="@+id/messageType"
-            style="@style/Message_msg_type"
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/Message_msg_time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />-->
+            android:layout_height="wrap_content" />
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp">
+
+
+
         <TextView
             android:id="@+id/content"
             style="@style/Message_msg_time"

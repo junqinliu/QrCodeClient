@@ -56,7 +56,7 @@ public class MessageAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
+        holder.title.setText(list.get(i).getTitle());
         holder.time.setText(list.get(i).getTime());
         holder.content.setText(list.get(i).getContent());
         return convertView;
@@ -68,6 +68,8 @@ public class MessageAdapter extends BaseAdapter {
         TextView time;
         @Bind(R.id.content)
         TextView content;
+        @Bind(R.id.title)
+        TextView title;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

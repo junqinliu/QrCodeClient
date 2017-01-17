@@ -59,6 +59,7 @@ public class HomeServiceAdapter extends BaseAdapter {
         }
 
         holder.time.setText(list.get(i).getTime());
+        holder.title.setText(list.get(i).getTitle());
         holder.content.setText(list.get(i).getContent());
         return convertView;
     }
@@ -69,6 +70,8 @@ public class HomeServiceAdapter extends BaseAdapter {
         TextView time;
         @Bind(R.id.content)
         TextView content;
+        @Bind(R.id.title)
+        TextView title;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
