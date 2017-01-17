@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+
     @Bind(R.id.tv_center)
     TextView tv_center;
 
@@ -93,6 +95,7 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
     @Override
     public void initData() {
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
+
         //设置标题
         String titleName = getIntent().getStringExtra(getResources().getString(R.string.develop_title));
         if (!TextUtil.isEmpty(titleName)) {
@@ -126,6 +129,13 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
         family_member_start_edit.setOnClickListener(this);
         family_member_end_edit.setOnClickListener(this);
         modify_btn.setOnClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                finish();
+            }
+        });
 
     }
 
@@ -190,6 +200,8 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
             }
 
                 break;
+
+
 
             default:
                 break;

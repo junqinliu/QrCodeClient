@@ -69,6 +69,8 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
 
         title.setText(R.string.life_title);
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
+
+
     }
 
     @Override

@@ -42,6 +42,7 @@ public class FamilyMicroActivity extends BaseAppCompatActivity implements View.O
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+
     @Bind(R.id.listView)
     ListView listView;
 
@@ -65,12 +66,14 @@ public class FamilyMicroActivity extends BaseAppCompatActivity implements View.O
     @Override
     public void initView() {
 
-        add_img.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     public void initData() {
         toolbar.setNavigationIcon(android.R.drawable.ic_menu_revert);
+        add_img.setImageResource(android.R.drawable.ic_menu_add);
+        add_img.setVisibility(View.VISIBLE);
         //设置标题
         String titleName = getIntent().getStringExtra(getResources().getString(R.string.develop_title));
         if (!TextUtil.isEmpty(titleName)) {
