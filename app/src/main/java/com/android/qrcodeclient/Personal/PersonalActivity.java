@@ -23,6 +23,7 @@ import com.android.timeTask.AlarmManagerTask;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
+import com.android.utils.TextUtil;
 import com.android.view.ExitHintDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -220,9 +221,14 @@ public class PersonalActivity extends BaseAppCompatActivity implements View.OnCl
         @Override
         public void onClick(DialogInterface dialog, int which) {
 
-            //用intent启动拨打电话
-            Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "15522503900"));
-           startActivity(intent1);
+            if(!TextUtil.isEmpty(tel.getText().toString())){
+
+                //用intent启动拨打电话
+                Intent intent1 = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tel.getText().toString()));
+                startActivity(intent1);
+            }
+
+
 
         }
     };

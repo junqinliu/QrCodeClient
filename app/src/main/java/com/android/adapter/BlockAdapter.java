@@ -1,6 +1,7 @@
 package com.android.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -59,7 +60,7 @@ public class BlockAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.block_txt.setText(list.get(i).getBuildname());
-
+        convertView.setBackgroundColor(Color.parseColor("#F0F0F0"));
         return convertView;
     }
 
