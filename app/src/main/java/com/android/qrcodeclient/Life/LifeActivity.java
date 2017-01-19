@@ -139,7 +139,7 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
             red_point.setVisibility(View.VISIBLE);
         }else{
 
-            red_point.setVisibility(View.GONE);
+            red_point.setVisibility(View.INVISIBLE);
         }
     }
 
