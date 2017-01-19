@@ -77,6 +77,8 @@ public class MessageActivity extends BaseAppCompatActivity implements View.OnCli
         list = new ArrayList<>();
         adapter = new MessageAdapter(this,list);
         listView.setAdapter(adapter);
+
+        Constants.isShowRedPoint = false;
         getData();
     }
 

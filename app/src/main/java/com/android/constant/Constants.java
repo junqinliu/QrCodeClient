@@ -172,5 +172,9 @@ public class Constants {
 
 	public static final String  OfflineData = "/v0.1/place/offline/mycards";
 
+	/**
+	 *  静态变量
+	 */
 
+	public static  boolean isShowRedPoint = false;
 }

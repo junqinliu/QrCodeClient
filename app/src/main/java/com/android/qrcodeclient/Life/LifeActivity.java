@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -55,6 +56,9 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
     @Bind(R.id.message_layout)
     LinearLayout message_layout;
     LifeAdapter lifeAdapter;
+
+    @Bind(R.id.red_point)
+    RelativeLayout red_point;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,6 +130,18 @@ public class LifeActivity extends BaseAppCompatActivity implements View.OnClickL
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(Constants.isShowRedPoint){
+
+            red_point.setVisibility(View.VISIBLE);
+        }else{
+
+            red_point.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onClick(View view) {

@@ -99,6 +99,20 @@
             android:orientation="vertical"
             android:id="@+id/life_layout">
 
+            <RelativeLayout
+                android:id="@+id/red_point"
+                android:layout_width="30dp"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="25px"
+                    android:layout_height="25px"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/red"/>
+
+            </RelativeLayout>
+
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"

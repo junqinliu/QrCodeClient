@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -104,6 +105,10 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     @Bind(R.id.time_count_txt)
     TextView time_count_txt;
 
+
+    @Bind(R.id.red_point)
+    RelativeLayout red_point;
+
     int intScreenBrightness;
     int pageNumber = 0;
     int pageSize = 30;
@@ -177,6 +182,24 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 }
 
 
+                //红点提示
+                if(Constants.isShowRedPoint){
+
+                    if(red_point != null){
+
+                        red_point.setVisibility(View.VISIBLE);
+                    }
+                }else{
+
+                    if(red_point != null){
+
+                        red_point.setVisibility(View.GONE);
+                    }
+
+
+                }
+
+
             }
         };
 
@@ -191,6 +214,9 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         advert = (SimpleImageBanner) this.findViewById(R.id.advert);
         add_img.setVisibility(View.VISIBLE);
         time = new TimeCount(30000, 1000);//构造CountDownTimer对象
+
+
+
     }
 
     @Override
@@ -381,6 +407,15 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         UpdateAPPVersion();
         //获取离线数据
         getOfflineData();
+
+
+        if(Constants.isShowRedPoint){
+
+            red_point.setVisibility(View.VISIBLE);
+        }else{
+
+            red_point.setVisibility(View.GONE);
+        }
 
     }
 
