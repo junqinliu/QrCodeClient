@@ -158,6 +158,36 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
         //开启闹钟定时任务
         //ServiceUtil.invokeTimerPOIService(this);
 
+        TimerListener timerListener1 = new TimerListener() {
+
+            @Override
+            public void timeArrival(Context context) {
+
+                //红点提示
+                if(Constants.isShowRedPoint){
+
+                    if(red_point != null){
+
+                        red_point.setVisibility(View.VISIBLE);
+                    }
+                }else{
+
+                    if(red_point != null){
+
+                        red_point.setVisibility(View.GONE);
+                    }
+
+
+                }
+
+
+            }
+        };
+
+        TimerTask taskone = new TimerTask(1, timerListener1, "TaskOne");
+        AlarmManagerTask.getInstance(this).addTimerTask(taskone);
+
+
         TimerListener timerListener2 = new TimerListener() {
 
             @Override
@@ -182,22 +212,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 }
 
 
-                //红点提示
-                if(Constants.isShowRedPoint){
 
-                    if(red_point != null){
-
-                        red_point.setVisibility(View.VISIBLE);
-                    }
-                }else{
-
-                    if(red_point != null){
-
-                        red_point.setVisibility(View.GONE);
-                    }
-
-
-                }
 
 
             }
