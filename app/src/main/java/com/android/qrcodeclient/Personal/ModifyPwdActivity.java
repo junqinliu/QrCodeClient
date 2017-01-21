@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
@@ -175,7 +176,15 @@ public class ModifyPwdActivity extends BaseAppCompatActivity implements View.OnC
                                 finish();
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(ModifyPwdActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

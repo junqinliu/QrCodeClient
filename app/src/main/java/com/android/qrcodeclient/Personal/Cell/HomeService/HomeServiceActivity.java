@@ -19,6 +19,7 @@ import com.android.constant.Constants;
 import com.android.model.HomeServiceBean;
 import com.android.model.MessageBean;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
@@ -183,12 +184,20 @@ public class HomeServiceActivity extends BaseAppCompatActivity implements View.O
 
                                 if(list == null || list.size() <=0){
 
-                                    showToast("暂无消息通告");
+                                    showToast("暂无服务项目");
                                 }
 
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(HomeServiceActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

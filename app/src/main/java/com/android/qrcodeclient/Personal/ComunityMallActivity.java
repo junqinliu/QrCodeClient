@@ -19,6 +19,7 @@ import com.android.model.ComunityMallBean;
 import com.android.model.LifeItemBean;
 import com.android.qrcodeclient.Personal.Cell.ComunityMall.WebViewActivity;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
@@ -150,7 +151,15 @@ public class ComunityMallActivity extends BaseAppCompatActivity implements View.
 
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(ComunityMallActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

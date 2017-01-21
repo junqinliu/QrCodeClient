@@ -19,6 +19,7 @@ import com.android.model.FamilyMicroCardBean;
 import com.android.model.LogBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
@@ -167,7 +168,15 @@ public class EntranceActivity extends BaseAppCompatActivity implements View.OnCl
 
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(EntranceActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

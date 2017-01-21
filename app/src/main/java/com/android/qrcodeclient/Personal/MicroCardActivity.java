@@ -29,6 +29,7 @@ import com.android.timeselect.wheelview.JudgeDate;
 import com.android.timeselect.wheelview.ScreenInfo;
 import com.android.timeselect.wheelview.WheelMain;
 import com.android.utils.DateUtil;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
@@ -328,7 +329,15 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
                                 finish();
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(MicroCardActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }
@@ -408,7 +417,15 @@ public class MicroCardActivity extends BaseAppCompatActivity implements View.OnC
                                 finish();
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(MicroCardActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

@@ -18,6 +18,7 @@ import com.android.model.ProviceBean;
 import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
@@ -157,7 +158,15 @@ public class ProviceActivity extends BaseAppCompatActivity implements View.OnCli
 
                             }else{
 
-                                showToast("请求接口失败，请联系管理员");
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(ProviceActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

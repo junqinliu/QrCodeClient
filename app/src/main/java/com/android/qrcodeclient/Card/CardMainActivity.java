@@ -46,6 +46,7 @@ import com.android.qrcodeclient.R;
 import com.android.timeTask.AlarmManagerTask;
 import com.android.timeTask.TimerListener;
 import com.android.timeTask.TimerTask;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.DialogMessageUtil;
 import com.android.utils.HttpUtil;
 import com.android.utils.ImageOpera;
@@ -148,7 +149,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
     PopupWindow popWindow;
 
     int  showTitle = 1000; //0 表示 提示去门禁申请或联系物业 1表示 黑白名单 或者 超时
-
+    boolean isExit = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -157,6 +158,39 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
         //开启闹钟定时任务
         //ServiceUtil.invokeTimerPOIService(this);
+
+
+
+    }
+
+    @Override
+    public void initView() {
+        ExitApplication.getInstance().addActivity(this);
+        advert = (SimpleImageBanner) this.findViewById(R.id.advert);
+        add_img.setVisibility(View.VISIBLE);
+        time = new TimeCount(30000, 1000);//构造CountDownTimer对象
+
+
+
+    }
+
+    @Override
+    public void initData() {
+
+
+        //TODO 当一次注册登录后 也申请了门禁卡 但是物业后台还没审核 这时候 进入首页点击其他按钮 不应该再跳到门禁申请界面
+
+        userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
+
+           //配置请求接口全局token 和 userid houseid
+        if (userInfoBean != null) {
+
+            HttpUtil.getClient().addHeader("Token", userInfoBean.getToken());
+            HttpUtil.getClient().addHeader("Userid", userInfoBean.getUserid());
+            HttpUtil.getClient().addHeader("Houseid", userInfoBean.getHouseid());
+
+        }
+
 
         TimerListener timerListener1 = new TimerListener() {
 
@@ -212,44 +246,14 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                 }
 
 
-
-
-
             }
         };
 
         TimerTask tasktwo = new TimerTask(1000, timerListener2, "TaskTwo");
         AlarmManagerTask.getInstance(this).addTimerTask(tasktwo);
 
-    }
-
-    @Override
-    public void initView() {
-        ExitApplication.getInstance().addActivity(this);
-        advert = (SimpleImageBanner) this.findViewById(R.id.advert);
-        add_img.setVisibility(View.VISIBLE);
-        time = new TimeCount(30000, 1000);//构造CountDownTimer对象
 
 
-
-    }
-
-    @Override
-    public void initData() {
-
-
-        //TODO 当一次注册登录后 也申请了门禁卡 但是物业后台还没审核 这时候 进入首页点击其他按钮 不应该再跳到门禁申请界面
-
-        userInfoBean = JSON.parseObject(SharedPreferenceUtil.getInstance(this).getSharedPreferences().getString("UserInfo", ""), UserInfoBean.class);
-
-           //配置请求接口全局token 和 userid houseid
-        if (userInfoBean != null) {
-
-            HttpUtil.getClient().addHeader("Token", userInfoBean.getToken());
-            HttpUtil.getClient().addHeader("Userid", userInfoBean.getUserid());
-            HttpUtil.getClient().addHeader("Houseid", userInfoBean.getHouseid());
-
-        }
 
         toolbar.setNavigationIcon(R.mipmap.qiehuan);
 
@@ -370,6 +374,23 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+       // super.onBackPressed();
+
+        if(isExit){
+
+            return;
+        }
+
+        super.onBackPressed();
+//        Intent i= new Intent(Intent.ACTION_MAIN);
+//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        i.addCategory(Intent.CATEGORY_HOME);
+//        startActivity(i);
+
+    }
 
     @OnClick(R.id.binaryCode)
     public void onClick() {
@@ -581,7 +602,16 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                //token已经失效了
+//                                if("0".equals(jsonObject.getString("code"))){
+//
+//                                    DialogMessageExit.getInstance(CardMainActivity.this).showDialog();
+//
+//                                }else{
+//
+//                                    showToast(jsonObject.getString("msg"));
+//                                }
+                               // showToast(jsonObject.getString("msg"));
                             }
 
                         }
@@ -887,6 +917,17 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                             } else {
 
+
+                                //token已经失效了
+//                                if("0".equals(jsonObject.getString("code"))){
+//
+//                                    DialogMessageExit.getInstance(CardMainActivity.this).showDialog();
+//
+//                                }else{
+//
+//                                    showToast(jsonObject.getString("msg"));
+//                                }
+
                                 showToast(jsonObject.getString("msg"));
                             }
 
@@ -1176,6 +1217,16 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                                 }
 
+                                //token已经失效了
+//                                if("0".equals(jsonObject.getString("code"))){
+//
+//                                    DialogMessageExit.getInstance(CardMainActivity.this).showDialog();
+//
+//                                }else{
+//
+//                                    showToast(jsonObject.getString("msg"));
+//                                }
+
                                 showToast(jsonObject.getString("msg"));
                                 //这种场景是刚注册登录进来 还没门禁申请 时去点击获取微卡
                                 if("小区无该用户".equals(jsonObject.getString("msg"))){
@@ -1396,6 +1447,20 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                     }
 
 
+                            }else{
+
+
+                                //token已经失效了
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(CardMainActivity.this).showDialog();
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
+
+                               // showToast(jsonObject.getString("msg"));
                             }
                         }
 
@@ -1483,6 +1548,16 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                }
 
                             }else{
+
+                                //token已经失效了
+                               /* if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(CardMainActivity.this).showDialog();
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }*/
 
                                 showToast(jsonObject.getString("msg"));
                                 binaryCode.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.default_qrcode));
@@ -1660,7 +1735,16 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
 
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                //token已经失效了
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(CardMainActivity.this).showDialog();
+                                    isExit = true;
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

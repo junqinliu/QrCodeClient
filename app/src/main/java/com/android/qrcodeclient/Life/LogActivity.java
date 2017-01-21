@@ -17,6 +17,7 @@ import com.android.constant.Constants;
 import com.android.model.CommunityBean;
 import com.android.model.LogBean;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -161,7 +162,15 @@ public class LogActivity extends BaseAppCompatActivity implements View.OnClickLi
 
                             } else {
 
-                                showToast("请求接口失败，请联系管理员");
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(LogActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

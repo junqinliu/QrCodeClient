@@ -22,6 +22,7 @@ import com.android.model.KeyAddressBean;
 import com.android.model.UserInfoBean;
 import com.android.qrcodeclient.Card.CardMainActivity;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
@@ -523,7 +524,15 @@ public class ApplyActivity extends BaseAppCompatActivity implements View.OnClick
 
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(ApplyActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.base.BaseAppCompatActivity;
 import com.android.constant.Constants;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.TextUtil;
@@ -170,7 +171,15 @@ public class WarrantyActivity extends BaseAppCompatActivity implements View.OnCl
                                 finish();
                             }else{
 
-                                showToast(jsonObject.getString("msg"));
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(WarrantyActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }

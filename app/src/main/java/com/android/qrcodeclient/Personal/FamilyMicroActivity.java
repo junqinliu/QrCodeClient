@@ -19,6 +19,7 @@ import com.android.constant.Constants;
 import com.android.model.FamilyMicroCardBean;
 import com.android.qrcodeclient.LoginActivity;
 import com.android.qrcodeclient.R;
+import com.android.utils.DialogMessageExit;
 import com.android.utils.HttpUtil;
 import com.android.utils.NetUtil;
 import com.android.utils.SharedPreferenceUtil;
@@ -199,7 +200,15 @@ public class FamilyMicroActivity extends BaseAppCompatActivity implements View.O
 
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(FamilyMicroActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }
@@ -285,7 +294,15 @@ public class FamilyMicroActivity extends BaseAppCompatActivity implements View.O
 
                             } else {
 
-                                showToast(jsonObject.getString("msg"));
+                                if("0".equals(jsonObject.getString("code"))){
+
+                                    DialogMessageExit.getInstance(FamilyMicroActivity.this).showDialog();
+
+
+                                }else{
+
+                                    showToast(jsonObject.getString("msg"));
+                                }
                             }
 
                         }
