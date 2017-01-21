@@ -1453,7 +1453,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 //token已经失效了
                                 if("0".equals(jsonObject.getString("code"))){
 
-                                    DialogMessageExit.getInstance(CardMainActivity.this).showDialog();
+                                    DialogMessageExit.getInstance(CardMainActivity.this).showMainDialog();
 
                                 }else{
 
@@ -1738,7 +1738,7 @@ public class CardMainActivity extends BaseAppCompatActivity implements View.OnCl
                                 //token已经失效了
                                 if("0".equals(jsonObject.getString("code"))){
 
-                                    DialogMessageExit.getInstance(CardMainActivity.this).showDialog();
+                                    DialogMessageExit.getInstance(CardMainActivity.this).showMainDialog();
                                     isExit = true;
 
                                 }else{

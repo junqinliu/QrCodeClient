@@ -55,7 +55,21 @@ public class DialogMessageExit {
         }
 
 
+    }
+    public   void showMainDialog(){
 
+        if(!((Activity) context).isFinishing()){
+
+
+            if(noticeDialog == null){
+
+            noticeDialog =   new AlertDialog.Builder(context, AlertDialog.THEME_HOLO_LIGHT).setTitle("提示")
+                    .setMessage("该账号已经在别的设备上登录了,将退出应用")
+                    .setPositiveButton("退出", dialogListener).create();noticeDialog.setCancelable(false);
+            noticeDialog.show();
+        }
+
+        }
 
 
     }
