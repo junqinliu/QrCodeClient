@@ -204,7 +204,7 @@ public class LoginActivity extends BaseAppCompatActivity implements View.OnClick
 
                                     //如果操作登出，这边重新登录成功后再重新恢复极光推送
                                     JPushInterface.resumePush(getApplicationContext());
-
+                                    Constants.isShowRedPoint = false;
                                     UserInfoBean userInfoBean = JSON.parseObject(jsonObject.getJSONObject("data").toString(), UserInfoBean.class);
                                     userInfoBean.setPhone(ed_account.getText().toString());
                                     String userInfoBeanStr = JSON.toJSONString(userInfoBean);

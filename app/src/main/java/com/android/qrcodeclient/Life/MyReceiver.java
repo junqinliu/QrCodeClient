@@ -25,7 +25,11 @@ public class MyReceiver  extends BroadcastReceiver{
 
         }
 
-        Constants.isShowRedPoint = true;
+        if(!"cn.jpush.android.intent.REGISTRATION".equals(intent.getAction())){
+
+            Constants.isShowRedPoint = true;
+        }
+
 
     }
 }

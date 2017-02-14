@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -260,6 +261,7 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
 
     private void shareToPlatForm(){
 
+        try {
         OnekeyShare oks = new OnekeyShare();
         //关闭sso授权
         oks.disableSSOWhenAuthorize();
@@ -271,7 +273,12 @@ public class SendCardActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         oks.show(this);
+        }catch (Exception e){
 
+            Log.i("TAG", "报错");
+            e.printStackTrace();
+
+        }
 
     }
 
